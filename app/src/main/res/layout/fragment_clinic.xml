@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/_10sdp"
+    tools:context=".ui.patient.fragments.clinics.ClinicFragment">
+
+        <View
+            android:id="@+id/maskView"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:background="@drawable/edt_bg"
+            app:layout_constraintEnd_toStartOf="@id/sanitizerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/maskIcon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_mask"
+            app:layout_constraintBottom_toTopOf="@+id/maskLbl"
+            app:layout_constraintEnd_toEndOf="@id/maskView"
+            app:layout_constraintStart_toStartOf="@id/maskView"
+            app:layout_constraintTop_toTopOf="@id/maskView" />
+
+        <TextView
+            android:id="@+id/maskLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Mask\nMandatory"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/maskView"
+            app:layout_constraintEnd_toEndOf="@id/maskView"
+            app:layout_constraintStart_toStartOf="@id/maskView"
+            app:layout_constraintTop_toBottomOf="@+id/maskIcon" />
+
+        <View
+            android:id="@+id/sanitizerView"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="@drawable/edt_bg"
+            app:layout_constraintEnd_toStartOf="@id/socialDistancingView"
+            app:layout_constraintStart_toEndOf="@id/maskView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/sanitizerIcon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_sanitizer"
+            app:layout_constraintBottom_toTopOf="@+id/maskLbl"
+            app:layout_constraintEnd_toEndOf="@id/sanitizerView"
+            app:layout_constraintStart_toStartOf="@id/sanitizerView"
+            app:layout_constraintTop_toTopOf="@id/sanitizerView" />
+
+        <TextView
+            android:id="@+id/sanitizerLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Sanitizer\nof visitors"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/sanitizerView"
+            app:layout_constraintEnd_toEndOf="@id/sanitizerView"
+            app:layout_constraintStart_toStartOf="@id/sanitizerView"
+            app:layout_constraintTop_toBottomOf="@+id/sanitizerIcon" />
+
+        <View
+            android:id="@+id/socialDistancingView"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="@drawable/edt_bg"
+            app:layout_constraintEnd_toStartOf="@id/temperatureView"
+            app:layout_constraintStart_toEndOf="@id/sanitizerView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/socialDistancingIcon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_social_distancing"
+            app:layout_constraintBottom_toTopOf="@+id/maskLbl"
+            app:layout_constraintEnd_toEndOf="@id/socialDistancingView"
+            app:layout_constraintStart_toStartOf="@id/socialDistancingView"
+            app:layout_constraintTop_toTopOf="@id/socialDistancingView" />
+
+        <TextView
+            android:id="@+id/socialDistancingLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Social\nDistancing"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/socialDistancingView"
+            app:layout_constraintEnd_toEndOf="@id/socialDistancingView"
+            app:layout_constraintStart_toStartOf="@id/socialDistancingView"
+            app:layout_constraintTop_toBottomOf="@+id/socialDistancingIcon" />
+
+        <View
+            android:id="@+id/temperatureView"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:background="@drawable/edt_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/socialDistancingView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/temperatureIcon"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_thermometer_gun"
+            app:layout_constraintBottom_toTopOf="@+id/maskLbl"
+            app:layout_constraintEnd_toEndOf="@id/temperatureView"
+            app:layout_constraintStart_toStartOf="@id/temperatureView"
+            app:layout_constraintTop_toTopOf="@id/temperatureView" />
+
+        <TextView
+            android:id="@+id/temperatureLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Temperature\nCheck"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="@id/temperatureView"
+            app:layout_constraintEnd_toEndOf="@id/temperatureView"
+            app:layout_constraintStart_toStartOf="@id/temperatureView"
+            app:layout_constraintTop_toBottomOf="@+id/temperatureIcon" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/topViews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="maskView,sanitizerView,socialDistancingView,temperatureView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/clinicRv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topViews"
+            tools:listitem="@layout/item_clinics" />
+
+        <View
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_65sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Something went Wrong, Please try again later.."
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/noData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_65sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="No Clinics Available to show"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

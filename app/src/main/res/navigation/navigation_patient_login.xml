@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_login"
+    app:startDestination="@id/introductionOneFragment">
+
+    <fragment
+        android:id="@+id/introductionOneFragment"
+        android:name="com.doctorsplaza.app.ui.patient.loginSignUp.introduction.IntroductionOneFragment"
+        android:label="fragment_introduction_one"
+        tools:layout="@layout/fragment_introduction_one" />
+    <fragment
+        android:id="@+id/introductionTwoFragment"
+        android:name="com.doctorsplaza.app.ui.patient.loginSignUp.introduction.IntroductionTwoFragment"
+        android:label="fragment_introduction_two"
+        tools:layout="@layout/fragment_introduction_two" />
+    <fragment
+        android:id="@+id/patientLoginFragment"
+        android:name="com.doctorsplaza.app.ui.patient.loginSignUp.fragments.PatientLoginFragment"
+        android:label="fragment_patient_login"
+        tools:layout="@layout/fragment_patient_login" >
+
+        <action
+            android:id="@+id/action_patientLoginFragment_to_patientSignUpFragment"
+            app:destination="@id/patientSignUpFragment"
+            app:popUpTo="@id/patientLoginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/patientSignUpFragment"
+        android:name="com.doctorsplaza.app.ui.patient.loginSignUp.fragments.PatientSignUpFragment"
+        android:label="fragment_patient_sign_up"
+        tools:layout="@layout/fragment_patient_sign_up" >
+        <action
+            android:id="@+id/action_patientSignUpFragment_to_OTPFragment"
+            app:destination="@id/OTPFragment"
+            app:popUpTo="@id/introductionTwoFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_patientSignUpFragment_to_patientLoginFragment"
+            app:destination="@id/patientLoginFragment"
+            app:popUpTo="@id/patientSignUpFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/OTPFragment"
+        android:name="com.doctorsplaza.app.ui.patient.loginSignUp.fragments.OTPFragment"
+        android:label="fragment_o_t_p"
+        tools:layout="@layout/fragment_o_t_p" />
+</navigation>

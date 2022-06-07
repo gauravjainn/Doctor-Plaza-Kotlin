@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="srn_root_layout" type="id" />
+    <item type="id" name="scrollview"/>
+
+</resources>

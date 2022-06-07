@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_10sdp">
+
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/clinicImage"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="@dimen/_90sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_hospital"
+
+        android:background="@color/purple_lite_200"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundPercent="0.2" />
+
+    <TextView
+        android:id="@+id/clinicName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Doctors Plaza, Gagan Vihar"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@+id/clinicAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/clinicImage"
+        app:layout_constraintTop_toTopOf="@id/clinicImage" />
+
+    <TextView
+        android:id="@+id/clinicAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_5sdp"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="16, Gagan Vihar Main Rd, Krishna Nagar Delhi"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:drawableStartCompat="@drawable/ic_location_green"
+        app:layout_constraintBottom_toTopOf="@+id/clinicTimings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicName"
+        app:layout_constraintTop_toBottomOf="@id/clinicName" />
+
+    <TextView
+        android:id="@+id/clinicTimings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_5sdp"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="09:00 AM - 10:00 PM"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:drawableStartCompat="@drawable/ic_time_circle"
+        app:layout_constraintBottom_toTopOf="@+id/clinicPhone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicName"
+        app:layout_constraintTop_toBottomOf="@id/clinicAddress" />
+
+    <TextView
+        android:id="@+id/clinicPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_5sdp"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="+9198765414"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:drawableStartCompat="@drawable/ic_call_green"
+        app:layout_constraintBottom_toTopOf="@+id/clinicHereForDoctors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicName"
+        app:layout_constraintTop_toBottomOf="@id/clinicTimings" />
+
+    <TextView
+        android:id="@+id/clinicHereForDoctors"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autoLink="all"
+        android:drawablePadding="@dimen/_5sdp"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:text="@string/click_to_view_doctors_lbl"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintBottom_toBottomOf="@id/clinicImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicName"
+        app:layout_constraintTop_toBottomOf="@id/clinicPhone" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="#e3e3e3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clinicImage" />
+</androidx.constraintlayout.widget.ConstraintLayout>

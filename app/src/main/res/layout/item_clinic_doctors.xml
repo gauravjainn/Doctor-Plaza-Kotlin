@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    >
+
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/doctorImage"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/doctorRating"
+        app:roundPercent="0.2" />
+
+    <TextView
+        android:id="@+id/doctorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:text="Dr.Peter Willson "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:maxWidth="@dimen/_200sdp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/doctorSpecialistIn"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toTopOf="@id/doctorImage"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/verifiedIcon"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_verified"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/doctorName"
+        app:layout_constraintStart_toEndOf="@id/doctorName"
+
+        />
+
+    <TextView
+        android:id="@+id/doctorSpecialistIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:text="Counselling Psychologist"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintBottom_toTopOf="@id/doctorDegree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorName" />
+
+    <TextView
+        android:id="@+id/doctorDegree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:text="MS - Counselling Psychologist,  MS - Counselling Psychologist "
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@id/doctorExperience"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorSpecialistIn" />
+
+    <TextView
+        android:id="@+id/doctorExperience"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="2 years"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@id/starIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorDegree" />
+
+
+    <ImageView
+        android:id="@+id/starIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toBottomOf="@id/doctorImage"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorExperience" />
+
+    <TextView
+        android:id="@+id/doctorRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="4.9"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/starIcon"
+        app:layout_constraintStart_toEndOf="@id/starIcon"
+        app:layout_constraintTop_toTopOf="@id/starIcon" />
+
+    <TextView
+        android:id="@+id/doctorRatingCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:text="(1.5K)"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/doctorRating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorRating"
+        app:layout_constraintTop_toTopOf="@id/doctorRating" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3sp"
+        android:background="@color/devider"
+        android:layout_marginVertical="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/doctorImage"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

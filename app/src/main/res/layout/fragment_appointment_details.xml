@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.fragments.appointments.AppointmentDetailsFragment">
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_notification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Appointment Details"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <ImageView
+        android:id="@+id/videoCallIcon"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/video_camera"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/doctorImage"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_user_image"
+                app:layout_constraintBottom_toBottomOf="@+id/doctorLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundPercent="0.2" />
+
+            <TextView
+                android:id="@+id/doctorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_medium"
+                android:maxWidth="@dimen/_180sdp"
+                android:maxLines="1"
+                android:text="Dr.Peter Willson"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintBottom_toTopOf="@+id/doctorSpecialistIn"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/doctorImage"
+                app:layout_constraintTop_toTopOf="@id/doctorImage"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/verifiedIcon"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_verified"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/doctorName"
+                app:layout_constraintTop_toTopOf="@id/doctorName"
+
+                />
+
+            <TextView
+                android:id="@+id/doctorSpecialistIn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:text="Counselling Psychologist"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintBottom_toTopOf="@id/doctorDegree"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/doctorName" />
+
+            <TextView
+                android:id="@+id/doctorDegree"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="2"
+                android:text="MS - Counselling Psychologist,  MS - Counselling Psychologist "
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintBottom_toTopOf="@id/doctorLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/doctorSpecialistIn" />
+
+            <TextView
+                android:id="@+id/doctorLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawableStart="@drawable/ic_location_green"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="New Delhi"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/doctorDegree" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@color/devider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/doctorImage" />
+
+            <TextView
+                android:id="@+id/patientDetailsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/patient_details_lbl"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@id/divider"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+
+            <TextView
+                android:id="@+id/editPatientDetailsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:drawableEnd="@drawable/ic_edit_profile"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Edit"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/divider"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
+
+            <TextView
+                android:id="@+id/nameLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_profile"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/patientDetailsLbl" />
+
+
+            <TextView
+                android:id="@+id/patientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="John Doe"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/nameLbl" />
+
+            <TextView
+                android:id="@+id/appointmentDateTimeLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Appointment Date &amp; Time"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/patientName" />
+
+            <TextView
+                android:id="@+id/appointmentDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Wednesday, 27 April 2022 4:30 Pm"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/appointmentDateTimeLbl" />
+
+            <TextView
+                android:id="@+id/clinicDetailsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_hospital_icon"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/clinic_details_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/appointmentDateTime" />
+
+            <TextView
+                android:id="@+id/clinicDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="16, Gagan Vihar Main Rd, Krishna Nagar Delhi"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/clinicDetailsLbl" />
+
+            <TextView
+                android:id="@+id/contactDetailsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_calling"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/contact_details_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/clinicDetails" />
+
+            <TextView
+                android:id="@+id/contactDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="+919876543214"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/contactDetailsLbl" />
+
+            <TextView
+                android:id="@+id/ageLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_age"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/age_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/contactDetails" />
+
+
+            <TextView
+                android:id="@+id/ageDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="+919876543214"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/ageLbl" />
+
+            <TextView
+                android:id="@+id/genderLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_gender"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Gender"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/ageDetails" />
+
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_28sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Male"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/genderLbl" />
+
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@color/devider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/gender" />
+
+            <TextView
+                android:id="@+id/applyCouponLbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/apply_coupons_optional_lbl"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+            <EditText
+                android:id="@+id/couponEdt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_discount"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="start"
+                android:hint="ABC234"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/applyCouponBtn"
+                app:layout_constraintStart_toStartOf="@id/applyCouponLbl"
+                app:layout_constraintTop_toBottomOf="@id/applyCouponLbl" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/applyCouponBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="Apply"
+                android:visibility="gone"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@id/couponEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/couponEdt" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@color/devider"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/couponEdt" />
+
+            <TextView
+                android:id="@+id/paymentDetailsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/payment_details_lbl"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+
+            <TextView
+                android:id="@+id/paymentStatus"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/green_corner_radius"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="Successful"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8sdp"
+                app:layout_constraintBottom_toBottomOf="@id/paymentDetailsLbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/paymentDetailsLbl"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/consultationLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Consultation fee"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/paymentDetailsLbl" />
+
+
+            <TextView
+                android:id="@+id/consultationFees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="₹1400.00"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/consultationLbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/consultationLbl" />
+
+
+            <TextView
+                android:id="@+id/totalAmtLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Total Amount"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consultationLbl" />
+
+
+            <TextView
+                android:id="@+id/totalAmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="₹1400.00"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/totalAmtLbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/totalAmtLbl" />
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/devider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/totalAmtLbl" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/viewPrescription"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:src="@drawable/ic_view_prescription"
+                android:scaleType="fitXY"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/divider4"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ratingAndRescheduleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/saveBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewPrescription">
+
+                <TextView
+                    android:id="@+id/rateExperienceLbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Rate your Experience"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RatingBar
+                    android:id="@+id/ratingExperienceBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:numStars="5"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rateExperienceLbl" />
+
+                <EditText
+                    android:id="@+id/experienceDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edt_bg"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="start"
+                    android:hint="Tell us more about your experience..."
+                    android:maxHeight="@dimen/_100sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ratingExperienceBar" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/ratingGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="experienceDesc,rateExperienceLbl,ratingExperienceBar" />
+
+                <TextView
+                    android:id="@+id/cancelAppointment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="@string/cancel_lbl"
+                    android:textColor="@color/red"
+                    app:layout_constraintEnd_toStartOf="@id/reschedule"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/reschedule"
+                    app:layout_constraintBottom_toBottomOf="@id/reschedule"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reschedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:text="Reschedule"
+                    app:cornerRadius="@dimen/_5sdp"
+                    app:layout_constraintStart_toEndOf="@id/cancelAppointment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experienceDesc" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/rescheduleCancelGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="reschedule,cancelAppointment" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="@string/save_lbl"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingAndRescheduleLayout" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <View
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/something_went_wrong_lbl"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg" />
+</androidx.constraintlayout.widget.ConstraintLayout>

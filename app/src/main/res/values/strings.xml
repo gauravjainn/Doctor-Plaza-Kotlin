@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">DoctorPlaza</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="view_all_lbl">View all</string>
+    <string name="next_lbl">Next</string>
+    <string name="get_started_lbl">Get Started</string>
+    <string name="forgot_password_lbl">Forgot Password?</string>
+    <string name="save_next_lbl"><![CDATA[Save & Next]]></string>
+    <string name="email_lbl">Email</string>
+    <string name="verify_lbl">Verify</string>
+    <string name="doctor_details_lbl">Doctor Details</string>
+    <string name="our_doctor_lbl">Our Doctor</string>
+    <string name="book_appointment_lbl">Book Appointment</string>
+    <string name="something_went_wrong_lbl">Something went wrong</string>
+    <string name="phone_number_lbl">Phone Number</string>
+    <string name="address_lbl">Address</string>
+    <string name="profile_lbl">Profile</string>
+    <string name="set_reminder_lbl">Set Reminder</string>
+    <string name="no_reminders_to_show_lbl">No Reminders to Show</string>
+    <string name="notifications_lbl">Notifications</string>
+
+    <string name="srn_drawer_open">Drawer open</string>
+    <string name="srn_drawer_close">Drawer close</string>
+    <string name="welcome_lbl">Welcome</string>
+    <string name="customer_support_lbl">Customer Support</string>
+    <string name="log_out_lbl">Log out</string>
+    <string name="settings_lbl">Settings</string>
+    <string name="privacy_policy_lbl">Privacy Policy</string>
+    <string name="about_us_lbl">About Us</string>
+    <string name="terms_of_service_lbl">Terms Of Service</string>
+    <string name="delete_account_lbl">Delete Account</string>
+    <string name="submit_lbl">Submit</string>
+    <string name="cancel_lbl">Cancel</string>
+    <string name="click_to_view_doctors_lbl">Click to view doctors</string>
+    <string name="to_lbl">To</string>
+    <string name="admin_email">doctorsplaza.pb@gmail.com</string>
+    <string name="time_lbl">Time</string>
+    <string name="patient_details_lbl">Patient Details</string>
+    <string name="contact_details_lbl">Contact Details</string>
+    <string name="age_lbl">Age</string>
+    <string name="call_now">Call Now</string>
+    <string name="order_nmedicines_lbl">Order\nmedicines</string>
+    <string name="past_appointments_lbl">Past Appointments</string>
+    <string name="reports_lbl">Reports</string>
+    <string name="add_reports_lbl">Add Reports</string>
+    <string name="apply_coupons_optional_lbl">Apply Coupons (optional)</string>
+    <string name="payment_details_lbl">Payment Details</string>
+    <string name="confirmation_lbl">Confirmation</string>
+    <string name="patient_id_lbl">Patient ID</string>
+    <string name="done_lbl">Done</string>
+    <string name="patient_user_id_lbl">Patient User Id</string>
+    <string name="gender_lbl">Gender</string>
+    <string name="select_clinic_lbl">Select Clinic</string>
+    <string name="consultation_fees_lbl">Consultation Fees</string>
+    <string name="save_lbl">Save</string>
+    <string name="patient_name_lbl">Patient Name</string>
+    <string name="prescription_lbl">Prescription</string>
+    <string name="turn_day_off_lbl">Turn day Off</string>
+    <string name="department_lbl">Department</string>
+    <string name="clinic_details_lbl">Clinic Details</string>
+    <string name="attended_appointments_lbl">Attended appointments</string>
+    <string name="reschedule_appointments_lbl">Reschedule appointments</string>
+
+
+</resources>

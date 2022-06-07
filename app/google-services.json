@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "179968408827",
+    "project_id": "doctors-plaza-149b2",
+    "storage_bucket": "doctors-plaza-149b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179968408827:android:25ea145f1f1e76171ac45e",
+        "android_client_info": {
+          "package_name": "com.doctorsplaza.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179968408827-gkooladp9ng3ca6mmhga2gic46g5f09i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVZLxZKl3RSknZ6ePX10LF8Y6MLMBS6z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179968408827-gkooladp9ng3ca6mmhga2gic46g5f09i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "179968408827-ghv1jlt0kb6anv8vcom08rprmm3pieev.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Doctors-Plaza.vayuz.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_patient"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/appointmentFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentFragment"
+        android:label="fragment_appointment"
+        tools:layout="@layout/fragment_appointment" />
+
+    <fragment
+        android:id="@+id/clinicFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.clinics.ClinicFragment"
+        android:label="fragment_clinic"
+        tools:layout="@layout/fragment_clinic" />
+
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.reminder.ReminderFragment"
+        android:label="fragment_reminder"
+        tools:layout="@layout/fragment_reminder" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/ourDoctorsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.ClinicDoctorsFragment"
+        android:label="fragment_our_doctors"
+        tools:layout="@layout/fragment_our_doctors" />
+
+    <fragment
+        android:id="@+id/doctorDetailsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.doctorDetails.DoctorDetailsFragment"
+        android:label="fragment_doctor_details"
+        tools:layout="@layout/fragment_doctor_details" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.profile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/addReminderFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.reminder.AddReminderFragment"
+        android:label="fragment_add_reminder"
+        tools:layout="@layout/fragment_add_reminder" >
+        <action
+            android:id="@+id/action_addReminderFragment_to_appointmentFragment"
+            app:popUpTo="@id/reminderFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/reminderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.Notifications.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/slugsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.slugs.SlugsFragment"
+        android:label="fragment_slugs"
+        tools:layout="@layout/fragment_slugs" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/contactUsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.contactUs.ContactUsFragment"
+        android:label="fragment_contact_us"
+        tools:layout="@layout/fragment_contact_us" />
+    <fragment
+            android:id="@+id/bookAppointmentFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.bookAppointment.BookAppointmentFragment"
+        android:label="fragment_book_appointment"
+        tools:layout="@layout/fragment_book_appointment" />
+    <fragment
+        android:id="@+id/checkOutBookingAppointmentFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.bookAppointment.CheckOutBookingAppointmentFragment"
+        android:label="fragment_check_out_booking_appointment"
+        tools:layout="@layout/fragment_check_out_booking_appointment" >
+        <action
+            android:id="@+id/action_checkOutBookingAppointmentFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addAppointmentFormFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.AddAppointmentFormFragment"
+        android:label="fragment_add_appoinmnet_form"
+        tools:layout="@layout/fragment_add_appoinmnet_form" >
+        <action
+            android:id="@+id/action_addAppointmentFormFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_addAppointmentFormFragment_to_appointmentFragment"
+            app:destination="@id/appointmentFragment"
+            app:popUpTo="@id/appointmentFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/appointmentDetailsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentDetailsFragment"
+        android:label="fragment_appointment_details"
+        tools:layout="@layout/fragment_appointment_details" >
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_appointmentDetailsFragment_to_appointmentFragment"
+            app:destination="@id/appointmentFragment"
+            app:popUpTo="@id/appointmentFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/prescriptionFragment"
+        android:name="com.doctorsplaza.app.ui.patient.prescription.PrescriptionFragment"
+        android:label="fragment_prescription"
+        tools:layout="@layout/fragment_prescription" />
+</navigation>

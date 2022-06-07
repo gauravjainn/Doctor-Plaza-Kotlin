@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
+    tools:context=".ui.patient.fragments.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/noData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_12sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Something went Wrong"
+            android:textColor="@color/colorPrimaryLight"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/search_bar_bg"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/poppins"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:text="Search doctors, speciality or clinics"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/patientsBannerCv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/patientsBanner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bannerDots"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_15sdp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/patientsBannerCv"
+            app:tabBackground="@drawable/banner_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp" />
+
+        <TextView
+            android:id="@+id/specialistsLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Our Specialist"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/bannerDots" />
+
+        <TextView
+            android:id="@+id/specialistsViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_17sdp"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:drawableTint="@color/colorPrimary"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/view_all_lbl"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/bannerDots" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/specialistsRv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/specialistsLbl"
+            app:spanCount="3"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_our_specialist" />
+
+        <TextView
+            android:id="@+id/ourDoctorsLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Our Doctors"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/specialistsRv" />
+
+        <TextView
+            android:id="@+id/ourDoctorsViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_17sdp"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:drawableTint="@color/colorPrimary"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/view_all_lbl"
+
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/ourDoctorsLbl"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toTopOf="@+id/ourDoctorsLbl" />
+
+        <TextView
+            android:id="@+id/noDoctorsLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Currently there are no doctors available"
+            android:textColor="@color/colorPrimaryLight"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ourServicesLbl"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/ourDoctorsLbl" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ourDoctorsRv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/ourServicesLbl"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/ourDoctorsLbl"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_our_doctor" />
+
+        <TextView
+            android:id="@+id/ourServicesLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Our Services"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/ourDoctorsRv" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bookBloodTestBg"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:cardBackgroundColor="#eb8c6d"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@+id/physioTherapyBg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ourServicesLbl" />
+
+        <TextView
+            android:id="@+id/bookBloodLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Book blood\ntest at home"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/bookBloodTestBg"
+            app:layout_constraintTop_toTopOf="@+id/bookBloodTestBg" />
+
+        <TextView
+            android:id="@+id/bookBloodCallNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/call_now"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/bookBloodTestBg"
+            app:layout_constraintTop_toBottomOf="@id/bookBloodLbl" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:elevation="1dp"
+            android:src="@drawable/blood_test"
+            app:layout_constraintBottom_toBottomOf="@id/bookBloodTestBg"
+            app:layout_constraintEnd_toEndOf="@id/bookBloodTestBg"
+            app:layout_constraintStart_toStartOf="@id/bookBloodTestBg"
+            app:layout_constraintTop_toBottomOf="@+id/bookBloodCallNow" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/physioTherapyBg"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="@dimen/_130sdp"
+            app:cardBackgroundColor="#5cc9e4"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@id/bookBloodTestBg"
+            app:layout_constraintEnd_toStartOf="@+id/orderMedicineBg"
+            app:layout_constraintStart_toEndOf="@id/bookBloodTestBg"
+            app:layout_constraintTop_toTopOf="@id/bookBloodTestBg" />
+
+        <TextView
+            android:id="@+id/physioTherapyLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Physiotherapy\nat home"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/physioTherapyBg"
+            app:layout_constraintTop_toTopOf="@+id/physioTherapyBg" />
+
+        <TextView
+            android:id="@+id/physioCallNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/call_now"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/physioTherapyBg"
+            app:layout_constraintTop_toBottomOf="@id/physioTherapyLbl" />
+
+        <ImageView
+            android:layout_width="@dimen/_98sdp"
+            android:layout_height="@dimen/_125sdp"
+            android:layout_marginStart="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:elevation="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/physiotheraphy"
+
+            app:layout_constraintBottom_toBottomOf="@id/physioTherapyBg"
+            app:layout_constraintEnd_toEndOf="@id/physioTherapyBg"
+            app:layout_constraintStart_toStartOf="@id/physioTherapyBg" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/orderMedicineBg"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_135sdp"
+            app:cardBackgroundColor="#417df2"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@id/physioTherapyBg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/physioTherapyBg"
+            app:layout_constraintTop_toTopOf="@id/physioTherapyBg" />
+
+        <TextView
+            android:id="@+id/orderMedicineLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/order_nmedicines_lbl"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/orderMedicineBg"
+            app:layout_constraintTop_toTopOf="@+id/orderMedicineBg" />
+
+        <TextView
+            android:id="@+id/orderMedicineCallNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:elevation="@dimen/_1sdp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/call_now"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="@+id/orderMedicineBg"
+            app:layout_constraintTop_toBottomOf="@id/orderMedicineLbl" />
+
+        <ImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:elevation="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/order_medicine"
+            app:layout_constraintBottom_toBottomOf="@id/orderMedicineBg"
+            app:layout_constraintEnd_toEndOf="@id/orderMedicineBg"
+            app:layout_constraintStart_toStartOf="@id/orderMedicineBg" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ourServicesRv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/ourServicesLbl"
+            tools:itemCount="0"
+            tools:listitem="@layout/item_our_doctor" />
+
+
+        <TextView
+            android:id="@+id/appointmentLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Upcoming Appointment"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/bookBloodTestBg" />
+
+        <TextView
+            android:id="@+id/appointmentViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_17sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/view_all_lbl"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_11sdp"
+            app:drawableEndCompat="@drawable/ic_arrow_right"
+            app:drawableTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/appointmentLbl"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toTopOf="@+id/appointmentLbl" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appointmentRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/appointmentLbl" />
+
+        <ImageView
+            android:id="@+id/noAppointments"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_140sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_no_appointment_data"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/patientsBannerCv"
+            app:layout_constraintStart_toStartOf="@id/patientsBannerCv"
+            app:layout_constraintTop_toBottomOf="@id/appointmentLbl" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

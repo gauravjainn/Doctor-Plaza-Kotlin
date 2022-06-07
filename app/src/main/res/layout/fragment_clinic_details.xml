@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.doctor.fragment.clinics.ClinicDetailsFragment">
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_notification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/clinic_details_lbl"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/clinicImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_130sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_image"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg"
+        app:roundPercent="0.1" />
+
+    <TextView
+        android:id="@+id/clinicName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Clinic Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicImage" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/aboutClinicScroll"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="@dimen/_65sdp"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="@id/notifications"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicName">
+
+        <TextView
+            android:id="@+id/aboutClinic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. Elit justo lectus in at mattis aliquam. Urna, semper in tellus mi elit. Metus vivamus neque nulla sit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.em ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. "
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/videoConsultView"
+            app:layout_constraintTop_toBottomOf="@+id/aboutLbl" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aboutClinicScroll" />
+
+    <TextView
+        android:id="@+id/clinicDetailsLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawableStart="@drawable/ic_hospital_icon"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/clinic_details_lbl"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <TextView
+        android:id="@+id/clinicDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="16, Gagan Vihar Main Rd, Krishna Nagar Delhi"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicDetailsLbl" />
+
+    <TextView
+        android:id="@+id/contactDetailsLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawableStart="@drawable/ic_calling"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/contact_details_lbl"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicDetails" />
+
+    <TextView
+        android:id="@+id/contactDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="+919876543214"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintEnd_toEndOf="@id/clinicImage"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/contactDetailsLbl" />
+
+    <TextView
+        android:id="@+id/visitingHoursLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawableStart="@drawable/ic_alarm_clock"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Visiting hours"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/contactDetails" />
+
+
+    <TextView
+        android:id="@+id/visitingHoursDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="+919876543214"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+
+        app:layout_constraintTop_toBottomOf="@id/visitingHoursLbl" />
+
+    <TextView
+        android:id="@+id/clinicFloorsLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawableStart="@drawable/ic_hospital"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Total Floors"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/visitingHoursDetails" />
+    <TextView
+        android:id="@+id/clinicFloors"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="4"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintEnd_toEndOf="@id/clinicImage"
+        app:layout_constraintStart_toStartOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicFloorsLbl" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

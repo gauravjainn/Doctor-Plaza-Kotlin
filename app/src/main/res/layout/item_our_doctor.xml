@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_260sdp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:layout_margin="@dimen/_5sdp"
+
+    app:cardBackgroundColor="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/doctorImage"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_user_image"
+            android:scaleType="fitXY"
+            app:roundPercent="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/doctorName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Dr.Peter Willson "
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="@dimen/_12sdp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@+id/doctorSpecialistIn"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="@id/doctorImage"
+            app:layout_constraintStart_toEndOf="@id/doctorImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/doctorSpecialistIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Counselling Psychologist"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/doctorDegree"
+            app:layout_constraintTop_toBottomOf="@id/doctorName"
+            app:layout_constraintStart_toEndOf="@id/doctorImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/doctorDegree"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="MS - Counselling Psychologist,  MS - Counselling Psychologist "
+            android:textColor="@color/colorPrimaryLight"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_9sdp"
+            android:maxLines="2"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/starIcon"
+            app:layout_constraintTop_toBottomOf="@id/doctorSpecialistIn"
+            app:layout_constraintStart_toEndOf="@id/doctorImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <ImageView
+            android:id="@+id/starIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="@id/doctorImage"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/doctorDegree"
+            app:layout_constraintStart_toEndOf="@id/doctorImage"/>
+
+        <TextView
+            android:id="@+id/doctorRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.9"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:layout_constraintBottom_toBottomOf="@id/starIcon"
+            app:layout_constraintTop_toTopOf="@id/starIcon"
+            app:layout_constraintStart_toEndOf="@id/starIcon"
+             />
+
+        <TextView
+            android:id="@+id/doctorRatingCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="(1.5K)"
+            android:textColor="@color/colorPrimaryLight"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_10sdp"
+            android:maxLines="2"
+            android:gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="@id/doctorRating"
+            app:layout_constraintBottom_toBottomOf="@id/doctorRating"
+            app:layout_constraintStart_toEndOf="@id/doctorRating"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

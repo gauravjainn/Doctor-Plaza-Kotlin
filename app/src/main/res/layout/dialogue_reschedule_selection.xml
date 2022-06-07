@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:layout_gravity="center">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/timeSlotLbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Reschedule Appointment"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@color/devider"
+            app:layout_constraintTop_toBottomOf="@+id/timeSlotLbl" />
+
+        <TextView
+            android:id="@+id/offlineTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offline"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:background="@drawable/green_radius"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@id/onlineTxt"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/onlineTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Online"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_2sdp"
+            android:background="@drawable/radius_box"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_11sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/offlineTxt"
+            app:layout_constraintTop_toTopOf="@id/offlineTxt"
+            app:layout_constraintBottom_toBottomOf="@id/offlineTxt"
+            />
+
+        <TextView
+            android:id="@+id/consultationDateLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:elevation="@dimen/_4sdp"
+            android:fontFamily="@font/poppins"
+            android:text="Consultation Date"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintEnd_toStartOf="@id/consultationTimeLbl"
+            app:layout_constraintStart_toStartOf="@id/consultationDate"
+            app:layout_constraintTop_toBottomOf="@id/offlineTxt" />
+
+        <TextView
+            android:id="@+id/consultationDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/edt_bg"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintEnd_toStartOf="@id/consultationTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/consultationDateLbl" />
+
+        <TextView
+            android:id="@+id/consultationTimeLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:elevation="@dimen/_4sdp"
+            android:fontFamily="@font/poppins"
+            android:text="Consultation Time"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/consultationDateLbl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/consultationDateLbl"
+            app:layout_constraintTop_toTopOf="@id/consultationDateLbl" />
+
+        <TextView
+            android:id="@+id/consultationTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/edt_bg"
+            android:drawableStart="@drawable/ic_time_line"
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="start"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/consultationDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/consultationDate"
+            app:layout_constraintTop_toTopOf="@+id/consultationDate" />
+
+
+        <TextView
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/cancel_lbl"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:textAllCaps="false"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toStartOf="@id/submitBtn"
+            app:layout_constraintBottom_toBottomOf="@id/submitBtn"
+            app:layout_constraintTop_toTopOf="@id/submitBtn"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submitBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/submit_lbl"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_10sdp"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/consultationDate" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.cardview.widget.CardView>

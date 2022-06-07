@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.loginSignUp.fragments.PatientLoginFragment">
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:src="@drawable/ic_dr_plaza_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/introLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:src="@drawable/ic_login_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintBottom_toTopOf="@id/loginBg"/>
+
+    <View
+        android:id="@+id/loginBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp"
+        android:background="@drawable/top_corner_radius"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/introLogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/emailLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Email"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <EditText
+        android:id="@+id/emailEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_message"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/emailLbl" />
+
+    <TextView
+        android:id="@+id/passwordLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Password"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/emailEdt" />
+
+    <EditText
+        android:id="@+id/passwordEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLbl" />
+
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="@string/forgot_password_lbl"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="@id/passwordEdt"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdt" />
+
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="forgotPassword,passwordLbl,passwordEdt,emailLbl,emailEdt,forgotPassword"/>
+
+
+    <TextView
+        android:id="@+id/phoneNumberLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Phone Number"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <EditText
+        android:id="@+id/phoneNumberEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_calling"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLbl" />
+
+    <View
+        android:id="@+id/loginSubmitView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/gree_corner_radius"
+        android:elevation="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@id/loginSubmit"
+        app:layout_constraintEnd_toEndOf="@id/loginSubmit"
+        app:layout_constraintStart_toStartOf="@id/loginSubmit"
+        app:layout_constraintTop_toTopOf="@id/loginSubmit" />
+
+    <TextView
+        android:id="@+id/loginSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text="Sign In"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/notHaveAccount"/>
+
+    <TextView
+        android:id="@+id/notHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text="New to Doctors Plaza?"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/notHaveAccountSignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
+         />
+
+    <TextView
+        android:id="@+id/notHaveAccountSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_9sdp"
+        android:text=" SignUp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/notHaveAccount"
+        app:layout_constraintBottom_toBottomOf="@id/notHaveAccount"
+        app:layout_constraintTop_toTopOf="@id/notHaveAccount"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

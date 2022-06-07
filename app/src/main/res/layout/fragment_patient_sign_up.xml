@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.loginSignUp.fragments.PatientSignUpFragment">
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:src="@drawable/ic_dr_plaza_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/introLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:src="@drawable/ic_login_image"
+        app:layout_constraintBottom_toTopOf="@+id/loginBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo" />
+
+    <View
+        android:id="@+id/loginBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_250sdp"
+        android:background="@drawable/top_corner_radius"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/introLogo" />
+
+    <TextView
+        android:id="@+id/nameLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Name"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <EditText
+        android:id="@+id/userNameEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_profile"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/nameLbl" />
+
+    <TextView
+        android:id="@+id/genderLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Gender"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEdt" />
+
+    <View
+        android:id="@+id/genderSpinnerBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/edt_bg"
+        android:elevation="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/genderLbl" />
+
+    <ImageView
+        android:id="@+id/genderIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:src="@drawable/ic_gender"
+        app:layout_constraintBottom_toBottomOf="@id/genderSpinnerBg"
+        app:layout_constraintStart_toStartOf="@+id/genderSpinnerBg"
+        app:layout_constraintTop_toTopOf="@id/genderSpinnerBg" />
+
+    <Spinner
+        android:id="@+id/genderSpinner"
+        style="@style/SpinnerTheme"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:entries="@array/gender_menu"
+        app:layout_constraintBottom_toBottomOf="@+id/genderSpinnerBg"
+        app:layout_constraintEnd_toEndOf="@+id/genderSpinnerBg"
+        app:layout_constraintStart_toEndOf="@+id/genderIcon"
+        app:layout_constraintTop_toTopOf="@+id/genderSpinnerBg" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/userNameGenderGrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="nameLbl,userNameEdt,genderIcon,genderLbl,genderSpinner,genderSpinnerBg" />
+
+
+    <TextView
+        android:id="@+id/dobLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Date of Birth"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <TextView
+        android:id="@+id/dobEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_calendar"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/dobLbl" />
+
+    <TextView
+        android:id="@+id/emailLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="@string/email_lbl"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/dobEdt" />
+
+    <EditText
+        android:id="@+id/emailEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_message"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/emailLbl" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/dobEmailGrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="emailEdt,emailLbl,dobEdt,dobLbl" />
+
+
+    <TextView
+        android:id="@+id/phoneNumberLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Phone Number"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <EditText
+        android:id="@+id/phoneNumberEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_calling"
+        android:drawablePadding="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:inputType="number"
+        android:maxLength="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLbl" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/userPhoneGrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="phoneNumberLbl,phoneNumberEdt"
+        />
+
+    <View
+        android:id="@+id/saveAndNext"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/gree_corner_radius"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@id/loginSubmit"
+        app:layout_constraintEnd_toEndOf="@id/loginSubmit"
+        app:layout_constraintStart_toStartOf="@id/loginSubmit"
+        app:layout_constraintTop_toTopOf="@id/loginSubmit" />
+
+    <TextView
+        android:id="@+id/loginSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text="@string/save_next_lbl"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/haveAccount"/>
+
+    <TextView
+        android:id="@+id/haveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text="Already Registered With Us? "
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/haveAccountSignIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
+
+    <TextView
+        android:id="@+id/haveAccountSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text=" SignIn"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/haveAccount"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/alreadyHaveAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="haveAccount,haveAccountSignIn"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

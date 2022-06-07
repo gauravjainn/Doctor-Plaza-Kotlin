@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_doctor"
+    app:startDestination="@id/doctorHomeFragment">
+
+    <fragment
+        android:id="@+id/doctorHomeFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.home.DoctorHomeFragment"
+        android:label="fragment_docto_home"
+        tools:layout="@layout/fragment_docto_home" />
+
+    <fragment
+        android:id="@+id/clinicFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.clinics.ClinicDoctorsFragment"
+        android:label="fragment_clinic"
+        tools:layout="@layout/fragment_clinic" />
+    <fragment
+        android:id="@+id/doctorAppointmentFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.appointments.DoctorAppointmentFragment"
+        android:label="fragment_doctor_appointment"
+        tools:layout="@layout/fragment_doctor_appointment" />
+    <fragment
+        android:id="@+id/doctorProfileFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.profile.DoctorProfileFragment"
+        android:label="fragment_doctor_profile"
+        tools:layout="@layout/fragment_doctor_profile" />
+    <fragment
+        android:id="@+id/editDoctorProfileFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.profile.EditDoctorProfileFragment"
+        android:label="fragment_edit_doctor_profile"
+        tools:layout="@layout/fragment_edit_doctor_profile" />
+    <fragment
+        android:id="@+id/revenueReportsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.reports.RevenueReportsFragment"
+        android:label="fragment_revenue_reports"
+        tools:layout="@layout/fragment_revenue_reports" />
+    <fragment
+        android:id="@+id/clinicDetailsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.clinics.ClinicDetailsFragment"
+        android:label="fragment_clinic_details"
+        tools:layout="@layout/fragment_clinic_details" />
+
+</navigation>

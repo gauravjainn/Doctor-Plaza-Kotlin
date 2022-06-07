@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/doctorImage"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/consultationFees"
+        app:roundPercent="0.2" />
+
+    <TextView
+        android:id="@+id/doctorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:text="Dr.Peter Willson"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:maxWidth="@dimen/_165sdp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/doctorSpecialistIn"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toTopOf="@id/doctorImage"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/appointmentStatus"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="wrap_content"
+        android:text="Success"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_8sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:background="@drawable/green_corner_radius"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/doctorName"
+        app:layout_constraintTop_toTopOf="@id/doctorName" />
+
+    <TextView
+        android:id="@+id/doctorSpecialistIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:text="Counselling Psychologist"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+
+        app:layout_constraintBottom_toTopOf="@id/appointmentTimings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorName" />
+
+    <TextView
+        android:id="@+id/appointmentTimings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:drawableStart="@drawable/ic_calendar_green"
+        android:drawablePadding="@dimen/_6sdp"
+        android:text="01 April 2022, 5:00PM - 6:30PM"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/consultationFees"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorSpecialistIn" />
+
+    <TextView
+        android:id="@+id/consultationFees"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="₹1400.00"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/appointmentTimings" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3sp"
+        android:background="@color/devider"
+        android:layout_marginVertical="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/doctorImage"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

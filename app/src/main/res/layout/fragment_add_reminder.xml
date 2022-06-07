@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.fragments.reminder.AddReminderFragment">
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_notification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/set_reminder_lbl"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/medicineLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Medicine"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg" />
+
+
+    <EditText
+        android:id="@+id/medicine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:background="@drawable/edt_bg"
+        android:drawablePadding="@dimen/_6sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:drawableStartCompat="@drawable/ic_medicine"
+        app:layout_constraintEnd_toEndOf="@id/medicineLbl"
+        app:layout_constraintStart_toStartOf="@id/medicineLbl"
+        app:layout_constraintTop_toBottomOf="@id/medicineLbl" />
+
+    <TextView
+        android:id="@+id/frequencyLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Frequency"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="@id/medicineLbl"
+        app:layout_constraintStart_toStartOf="@id/medicineLbl"
+        app:layout_constraintTop_toBottomOf="@id/medicine" />
+
+
+    <View
+        android:id="@+id/frequencySpinnerBg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/edt_bg"
+        app:layout_constraintStart_toStartOf="@id/medicineLbl"
+        app:layout_constraintEnd_toEndOf="@id/medicineLbl"
+        app:layout_constraintTop_toBottomOf="@+id/frequencyLbl" />
+
+    <ImageView
+        android:id="@+id/frequencyIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:src="@drawable/ic_frequency"
+        app:layout_constraintBottom_toBottomOf="@id/frequencySpinnerBg"
+        app:layout_constraintStart_toStartOf="@+id/frequencySpinnerBg"
+        app:layout_constraintTop_toTopOf="@id/frequencySpinnerBg" />
+
+    <Spinner
+        android:id="@+id/frequencySpinner"
+        style="@style/SpinnerTheme"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:elevation="@dimen/_5sdp"
+        android:popupBackground="@color/white"
+        android:entries="@array/medicine_frequency"
+        android:fontFamily="@font/poppins_medium"
+        app:layout_constraintBottom_toBottomOf="@+id/frequencySpinnerBg"
+        app:layout_constraintEnd_toEndOf="@+id/frequencySpinnerBg"
+        app:layout_constraintStart_toEndOf="@+id/frequencyIcon"
+        app:layout_constraintTop_toTopOf="@+id/frequencySpinnerBg" />
+
+    <EditText
+        android:visibility="gone"
+        android:id="@+id/frequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:background="@drawable/edt_bg"
+        android:drawablePadding="@dimen/_6sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:drawableStartCompat="@drawable/ic_frequency"
+        app:layout_constraintEnd_toEndOf="@id/frequencyLbl"
+        app:layout_constraintStart_toStartOf="@id/frequencyLbl"
+        app:layout_constraintTop_toBottomOf="@id/frequencyLbl" />
+
+    <TextView
+        android:id="@+id/dateLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Date"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="@id/medicineLbl"
+        app:layout_constraintStart_toStartOf="@id/medicineLbl"
+        app:layout_constraintTop_toBottomOf="@id/frequencySpinnerBg" />
+
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:background="@drawable/edt_bg"
+        android:drawablePadding="@dimen/_6sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:drawableStartCompat="@drawable/ic_calendar"
+        app:layout_constraintEnd_toEndOf="@id/dateLbl"
+        app:layout_constraintStart_toStartOf="@id/dateLbl"
+        app:layout_constraintTop_toBottomOf="@id/dateLbl" />
+
+    <TextView
+        android:id="@+id/timeLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Time"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintEnd_toEndOf="@id/medicineLbl"
+        app:layout_constraintStart_toStartOf="@id/medicineLbl"
+        app:layout_constraintTop_toBottomOf="@id/date" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:background="@drawable/edt_bg"
+        android:drawablePadding="@dimen/_6sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_8sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:drawableStartCompat="@drawable/ic_time_line"
+        app:layout_constraintEnd_toEndOf="@id/timeLbl"
+        app:layout_constraintStart_toStartOf="@id/timeLbl"
+        app:layout_constraintTop_toBottomOf="@id/timeLbl" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:backgroundTint="@color/colorPrimary"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:text="Save"
+        app:cornerRadius="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

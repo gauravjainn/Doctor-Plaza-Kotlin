@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_marginBottom="@dimen/_10sdp">
+
+    <ImageView
+        android:id="@+id/specialistIcon"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/ic_user_image"
+        android:padding="@dimen/_5sdp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/specialistName"/>
+
+    <TextView
+        android:id="@+id/specialistName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Specialist In Specialist In"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/specialistIcon"
+        app:layout_constraintStart_toStartOf="@+id/specialistIcon"
+        app:layout_constraintEnd_toEndOf="@+id/specialistIcon"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

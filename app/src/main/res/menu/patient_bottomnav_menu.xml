@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btnHome"
+        android:icon="@drawable/ic_home_selected"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/btnSearchClinic"
+        android:icon="@drawable/ic_hospital"
+        android:title="Clinic" />
+
+    <item
+        android:id="@+id/btnSettings"
+        android:icon="@drawable/ic_calendar"
+        android:title="Appointments" />
+
+    <item
+        android:id="@+id/btnContactUs"
+        android:icon="@drawable/ic_alarm_clock"
+        android:title="Reminder" />
+
+    <item
+        android:id="@+id/btnSignOut"
+        android:icon="@drawable/ic_user"
+        android:title="Sign out" />
+
+
+</menu>

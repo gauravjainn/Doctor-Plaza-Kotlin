@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.fragments.addAppointmentForm.AddAppointmentFormFragment">
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_notification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Book Appointment"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarBg">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
+
+
+            <TextView
+                android:id="@+id/bookAsLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Book As"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <View
+                android:id="@+id/selfRadioBg"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintEnd_toStartOf="@+id/guestRadioBg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bookAsLbl" />
+
+            <RadioButton
+                android:id="@+id/selfRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:buttonTint="@color/colorPrimary"
+                android:checked="true"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Self"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintBottom_toBottomOf="@id/selfRadioBg"
+                app:layout_constraintStart_toStartOf="@id/selfRadioBg"
+                app:layout_constraintTop_toTopOf="@id/selfRadioBg" />
+
+            <View
+                android:id="@+id/guestRadioBg"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintBottom_toBottomOf="@id/selfRadioBg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/selfRadioBg"
+                app:layout_constraintTop_toTopOf="@id/selfRadioBg" />
+
+            <RadioButton
+                android:id="@+id/guestRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:buttonTint="@color/colorPrimary"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Guest"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintBottom_toBottomOf="@id/guestRadioBg"
+                app:layout_constraintStart_toStartOf="@id/guestRadioBg"
+                app:layout_constraintTop_toTopOf="@id/guestRadioBg" />
+
+
+            <TextView
+                android:id="@+id/patientUserIdLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Patient Name"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selfRadioBg" />
+
+            <EditText
+                android:id="@+id/patientId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_id_card"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="Patient Name"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/patientUserIdLbl" />
+
+            <TextView
+                android:id="@+id/ageLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/age_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/patientId" />
+
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_age"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="Eg:- 24"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ageLbl" />
+
+            <TextView
+                android:id="@+id/phoneNumberLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Phone Number"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/age" />
+
+            <EditText
+                android:id="@+id/phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_calling"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="+91987654345"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneNumberLbl" />
+
+            <TextView
+                android:id="@+id/genderLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/gender_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+
+
+            <View
+                android:id="@+id/maleRadioBg"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintEnd_toStartOf="@+id/guestRadioBg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/genderLbl" />
+
+            <RadioButton
+                android:id="@+id/maleRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:buttonTint="@color/colorPrimary"
+                android:checked="true"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Male"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintBottom_toBottomOf="@id/maleRadioBg"
+                app:layout_constraintStart_toStartOf="@id/maleRadioBg"
+                app:layout_constraintTop_toTopOf="@id/maleRadioBg" />
+
+            <View
+                android:id="@+id/femaleRadioBg"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintBottom_toBottomOf="@id/maleRadioBg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/maleRadioBg"
+                app:layout_constraintTop_toTopOf="@id/maleRadioBg" />
+
+            <RadioButton
+                android:id="@+id/femaleRadioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:buttonTint="@color/colorPrimary"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Female"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintBottom_toBottomOf="@id/femaleRadioBg"
+                app:layout_constraintStart_toStartOf="@id/femaleRadioBg"
+                app:layout_constraintTop_toTopOf="@id/femaleRadioBg" />
+
+            <TextView
+                android:id="@+id/selectClinicLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/select_clinic_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/maleRadioBg" />
+
+            <View
+                android:id="@+id/clinicSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintTop_toBottomOf="@+id/selectClinicLbl" />
+
+            <ImageView
+                android:id="@+id/clinicIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:src="@drawable/ic_hospital"
+                app:layout_constraintBottom_toBottomOf="@id/clinicSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/clinicSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/clinicSpinnerBg" />
+
+            <Spinner
+                android:id="@+id/clinicSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                android:entries="@array/medicine_frequency"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/clinicSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/clinicSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/clinicIcon"
+                app:layout_constraintTop_toTopOf="@+id/clinicSpinnerBg" />
+
+
+            <TextView
+                android:id="@+id/selectSpecializationLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Select Specialization"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clinicSpinnerBg" />
+
+            <View
+                android:id="@+id/specializationSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintTop_toBottomOf="@+id/selectSpecializationLbl" />
+
+            <ImageView
+                android:id="@+id/specializationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:src="@drawable/ic_stethoscope"
+                app:layout_constraintBottom_toBottomOf="@id/specializationSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/specializationSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/specializationSpinnerBg" />
+
+            <Spinner
+                android:id="@+id/specializationSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                android:entries="@array/medicine_frequency"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/specializationSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/specializationSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/specializationIcon"
+                app:layout_constraintTop_toTopOf="@+id/specializationSpinnerBg" />
+
+
+            <TextView
+                android:id="@+id/selectDoctorLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Select Doctor"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/specializationSpinnerBg" />
+
+            <View
+                android:id="@+id/doctorSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintTop_toBottomOf="@+id/selectDoctorLbl" />
+
+            <ImageView
+                android:id="@+id/doctorIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:src="@drawable/ic_doctor_icon"
+                app:layout_constraintBottom_toBottomOf="@id/doctorSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/doctorSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/doctorSpinnerBg" />
+
+            <Spinner
+                android:id="@+id/doctorSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                android:entries="@array/medicine_frequency"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/doctorSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/doctorSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/doctorIcon"
+                app:layout_constraintTop_toTopOf="@+id/doctorSpinnerBg" />
+
+            <TextView
+                android:id="@+id/consultationFeesLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/consultation_fees_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/doctorSpinnerBg" />
+
+            <TextView
+                android:id="@+id/consultationFees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_rupee_icon"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="1400"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consultationFeesLbl" />
+
+            <TextView
+                android:id="@+id/describeYourProblemLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Describe your problem"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consultationFees" />
+
+            <EditText
+                android:id="@+id/describeYourProblem"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="start"
+                android:maxHeight="@dimen/_100sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/describeYourProblemLbl" />
+
+
+            <TextView
+                android:id="@+id/selectAppointmentLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Select Appointment Type"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/describeYourProblem" />
+
+            <View
+                android:id="@+id/selectAppointmentSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintTop_toBottomOf="@+id/selectAppointmentLbl" />
+
+            <ImageView
+                android:id="@+id/selectAppointmentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintBottom_toBottomOf="@id/selectAppointmentSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/selectAppointmentSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/selectAppointmentSpinnerBg" />
+
+            <Spinner
+                android:id="@+id/selectAppointmentSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                android:entries="@array/appointment_type"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/selectAppointmentSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/selectAppointmentSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/selectAppointmentIcon"
+                app:layout_constraintTop_toTopOf="@+id/selectAppointmentSpinnerBg" />
+
+
+            <TextView
+                android:id="@+id/consultationDateLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Consultation Date"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@id/consultationTimeLbl"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectAppointmentSpinnerBg" />
+
+            <TextView
+                android:id="@+id/consultationDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@id/consultationTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consultationDateLbl" />
+
+            <TextView
+                android:id="@+id/consultationTimeLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Consultation Time"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/consultationDateLbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/consultationDateLbl"
+                app:layout_constraintTop_toTopOf="@id/consultationDateLbl" />
+
+            <TextView
+                android:id="@+id/consultationTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_time_line"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="start"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/consultationDate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/consultationDate"
+                app:layout_constraintTop_toTopOf="@+id/consultationDate" />
+
+
+            <TextView
+                android:id="@+id/selectPaymentModeLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Select Payment Mode"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consultationDate" />
+
+
+            <TextView
+                android:id="@+id/paymentMode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_credit_card"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectPaymentModeLbl" />
+
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/selectPaymentModeSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintTop_toBottomOf="@+id/selectPaymentModeLbl" />
+
+            <ImageView
+                android:id="@+id/selectPaymentModeIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:visibility="gone"
+                android:src="@drawable/ic_credit_card"
+                app:layout_constraintBottom_toBottomOf="@id/selectPaymentModeSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/selectPaymentModeSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/selectPaymentModeSpinnerBg" />
+
+            <Spinner
+                android:id="@+id/selectPaymentModeSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:elevation="@dimen/_5sdp"
+                android:entries="@array/payment_type"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/selectPaymentModeSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/selectPaymentModeSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/selectPaymentModeIcon"
+                app:layout_constraintTop_toTopOf="@+id/selectPaymentModeSpinnerBg" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bookAppointmentBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="Book Appointment"
+                android:fontFamily="@font/poppins_medium"
+                android:textAllCaps="false"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/paymentMode"
+                 />
+
+            <TextView
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingVertical="@dimen/_10sdp"
+                android:text="Cancel"
+                android:textColor="@color/red"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins_medium"
+                app:cornerRadius="@dimen/_5sdp"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintStart_toStartOf="@id/bookAppointmentBtn"
+                app:layout_constraintEnd_toEndOf="@id/bookAppointmentBtn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookAppointmentBtn"
+                 />
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/loader"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/white"
+                android:elevation="@dimen/_5sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/errorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/something_went_wrong_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:elevation="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_225sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

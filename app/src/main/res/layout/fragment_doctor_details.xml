@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.patient.fragments.doctorDetails.DoctorDetailsFragment">
+
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:visibility="gone"
+        android:src="@drawable/ic_notification"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Doctor Details"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/doctorImage"
+        android:layout_width="@dimen/_75sdp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_user_image"
+        app:layout_constraintBottom_toBottomOf="@+id/doctorLocation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg"
+        app:roundPercent="0.2" />
+
+    <TextView
+        android:id="@+id/doctorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_medium"
+        android:maxWidth="@dimen/_200sdp"
+        android:maxLines="1"
+        android:text="Dr.Peter Willson "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@+id/doctorSpecialistIn"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toTopOf="@id/doctorImage"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/verifiedIcon"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_verified"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/doctorName"
+        app:layout_constraintTop_toTopOf="@id/doctorName"
+
+        />
+
+    <TextView
+        android:id="@+id/doctorSpecialistIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="1"
+        android:text="Counselling Psychologist"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/doctorDegree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorName" />
+
+    <TextView
+        android:id="@+id/doctorDegree"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:text="MS - Counselling Psychologist,  MS - Counselling Psychologist "
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintBottom_toTopOf="@id/doctorLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorSpecialistIn" />
+
+    <TextView
+        android:id="@+id/doctorLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:drawableStart="@drawable/ic_location_green"
+        android:drawablePadding="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="New Delhi"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toEndOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorDegree" />
+
+    <View
+
+        android:id="@+id/verifiedView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/radius_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/doctorImage" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/verifiedBanner"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_verified_banner"
+        app:layout_constraintStart_toStartOf="@id/verifiedView"
+        app:layout_constraintTop_toTopOf="@id/verifiedView" />
+
+    <TextView
+        android:id="@+id/verifiedLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:text="Doctors Plaza has verified the details."
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintBottom_toBottomOf="@id/verifiedView"
+        app:layout_constraintStart_toStartOf="@id/verifiedBanner"
+        app:layout_constraintTop_toBottomOf="@id/verifiedBanner" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/verifiedViewGrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:constraint_referenced_ids="verifiedView,verifiedBanner,verifiedLbl" />
+
+    <View
+        android:id="@+id/clinicConsultView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/verifiedView" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/inClinicIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_20sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_in_clinic"
+        app:layout_constraintBottom_toBottomOf="@+id/clinicConsultView"
+        app:layout_constraintStart_toStartOf="@id/clinicConsultView"
+        app:layout_constraintTop_toTopOf="@id/clinicConsultView" />
+
+
+    <TextView
+        android:id="@+id/inClinicLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:text="In Clinic Consult"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/inClinicIcon"
+        app:layout_constraintStart_toEndOf="@id/inClinicIcon"
+        app:layout_constraintTop_toTopOf="@+id/inClinicIcon" />
+
+    <TextView
+        android:id="@+id/availableLbl1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@drawable/green_radius"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_2sdp"
+        android:text="Available"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/inClinicIcon"
+        app:layout_constraintStart_toEndOf="@id/inClinicLbl"
+        app:layout_constraintTop_toTopOf="@+id/inClinicIcon" />
+
+    <RadioButton
+        android:id="@+id/inClinicRadioBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:buttonTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/clinicConsultView"
+        app:layout_constraintEnd_toEndOf="@id/clinicConsultView"
+        app:layout_constraintTop_toTopOf="@id/clinicConsultView"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:visibility="gone"
+        android:id="@+id/rightArrowOne"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_20sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/clinicConsultView"
+        app:layout_constraintEnd_toEndOf="@id/clinicConsultView"
+        app:layout_constraintTop_toTopOf="@id/clinicConsultView" />
+
+
+    <View
+        android:id="@+id/videoConsultView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_55sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/edt_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicConsultView" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/videoIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_20sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_video_call"
+        app:layout_constraintBottom_toBottomOf="@+id/videoConsultView"
+        app:layout_constraintStart_toStartOf="@id/videoConsultView"
+        app:layout_constraintTop_toTopOf="@id/videoConsultView" />
+
+
+    <TextView
+        android:id="@+id/videoConsultLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="2"
+        android:text="Video Consult"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/videoIcon"
+        app:layout_constraintStart_toEndOf="@id/videoIcon"
+        app:layout_constraintTop_toTopOf="@+id/videoIcon" />
+
+    <TextView
+        android:id="@+id/availableLbl2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:background="@drawable/green_radius"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_2sdp"
+        android:text="Available"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/videoIcon"
+        app:layout_constraintStart_toEndOf="@id/videoConsultLbl"
+        app:layout_constraintTop_toTopOf="@+id/videoIcon" />
+
+    <RadioButton
+        android:id="@+id/onlineRadioBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/availableLbl2"
+        app:layout_constraintEnd_toEndOf="@id/clinicConsultView"
+        app:layout_constraintTop_toTopOf="@id/availableLbl2"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:visibility="gone"
+        android:id="@+id/rightArrowTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_20sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/availableLbl2"
+        app:layout_constraintEnd_toEndOf="@id/clinicConsultView"
+        app:layout_constraintTop_toTopOf="@id/availableLbl2" />
+
+    <TextView
+        android:id="@+id/aboutLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="About"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintStart_toStartOf="@id/videoConsultView"
+        app:layout_constraintTop_toBottomOf="@id/videoConsultView" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_65sdp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/notifications"
+        app:layout_constraintStart_toStartOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/aboutLbl">
+
+        <TextView
+            android:id="@+id/about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. Elit justo lectus in at mattis aliquam. Urna, semper in tellus mi elit. Metus vivamus neque nulla sit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.em ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. "
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/videoConsultView"
+            app:layout_constraintTop_toBottomOf="@+id/aboutLbl" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bookAppointment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:backgroundTint="@color/colorPrimary"
+        android:paddingVertical="@dimen/_10sdp"
+        android:text="@string/book_appointment_lbl"
+        app:cornerRadius="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:elevation="@dimen/_2sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/noData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_2sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/something_went_wrong_lbl"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

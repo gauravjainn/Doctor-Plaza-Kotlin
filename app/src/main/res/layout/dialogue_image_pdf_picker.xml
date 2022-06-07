@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_10sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_20sdp">
+
+        <ImageView
+            android:id="@+id/cameraIcon"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/camera_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cameraPick"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_40sdp"
+            android:text="Camera"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/cameraIcon"
+            app:layout_constraintTop_toTopOf="@+id/cameraIcon" />
+
+        <ImageView
+            android:id="@+id/galleryIcon"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/gallery_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cameraPick" />
+
+        <TextView
+            android:id="@+id/galleryPick"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_40sdp"
+            android:text="Gallery"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/galleryIcon"
+            app:layout_constraintTop_toTopOf="@+id/galleryIcon" />
+
+        <ImageView
+            android:id="@+id/pdfIcon"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@drawable/pdf_icon"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/galleryPick" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/pdfPick"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_40sdp"
+            android:text="PDF"
+
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/pdfIcon"
+            app:layout_constraintTop_toTopOf="@+id/pdfIcon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
