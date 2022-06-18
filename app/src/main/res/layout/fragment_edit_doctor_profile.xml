@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:padding="@dimen/_10sdp"
     tools:context=".ui.doctor.fragment.profile.EditDoctorProfileFragment">
 
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notifications"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_notification"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/edit_profile_lbl"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,64 +83,15 @@
                 app:roundPercent="0.2" />
 
 
-            <TextView
-                android:id="@+id/profileEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:drawableEnd="@drawable/ic_edit_profile"
-                android:drawablePadding="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Edit"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="@id/userImage"
+            <ImageView
+                android:id="@+id/changeProfileImage"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:src="@drawable/ic_change_image"
                 app:layout_constraintStart_toStartOf="@id/userImage"
-                app:layout_constraintTop_toBottomOf="@id/userImage" />
-
-            <View
-                android:id="@+id/turnDayOffView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/edt_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileEdit" />
-
-            <TextView
-                android:id="@+id/turnDayOffLbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_1sdp"
-                android:background="@drawable/edt_bg"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_8sdp"
-                android:text="@string/turn_day_off_lbl"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/turnDayOffView" />
-
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/dayOffSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edt_bg"
-                android:checked="true"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:scaleX="0.7"
-                android:scaleY="0.85"
-                android:thumb="@drawable/switch_custom_thumb"
-                app:layout_constraintBottom_toBottomOf="@id/turnDayOffView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/turnDayOffView"
-                app:switchMinWidth="@dimen/_10sdp"
-                app:track="@drawable/custom_switch_track"
-
-                />
+                app:layout_constraintTop_toTopOf="@id/userImage" />
 
             <TextView
                 android:id="@+id/consultationLbl"
@@ -99,10 +104,10 @@
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dayOffSwitch" />
+                app:layout_constraintTop_toBottomOf="@id/userImage" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/consultationFees"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,7 +139,7 @@
                 app:layout_constraintTop_toBottomOf="@id/consultationFees" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -166,40 +171,38 @@
                 app:layout_constraintTop_toBottomOf="@id/name" />
 
 
-                <View
-                    android:id="@+id/departmentSpinnerBg"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:background="@drawable/edt_bg"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/departmentLbl" />
+            <View
+                android:id="@+id/departmentSpinnerBg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/edt_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/departmentLbl" />
 
-                <ImageView
-                    android:id="@+id/departmentIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:elevation="@dimen/_5sdp"
-                    android:src="@drawable/ic_department"
-                    app:layout_constraintBottom_toBottomOf="@id/departmentSpinnerBg"
-                    app:layout_constraintStart_toStartOf="@+id/departmentSpinnerBg"
-                    app:layout_constraintTop_toTopOf="@id/departmentSpinnerBg" />
+            <ImageView
+                android:id="@+id/departmentIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/ic_department"
+                app:layout_constraintBottom_toBottomOf="@id/departmentSpinnerBg"
+                app:layout_constraintStart_toStartOf="@+id/departmentSpinnerBg"
+                app:layout_constraintTop_toTopOf="@id/departmentSpinnerBg" />
 
-                <Spinner
-                    android:id="@+id/departmentSpinner"
-                    style="@style/SpinnerTheme"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:elevation="@dimen/_5sdp"
-                    android:entries="@array/gender_menu"
-                    android:fontFamily="@font/poppins_medium"
-                    android:popupBackground="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/departmentSpinnerBg"
-                    app:layout_constraintEnd_toEndOf="@+id/departmentSpinnerBg"
-                    app:layout_constraintStart_toEndOf="@+id/departmentIcon"
-                    app:layout_constraintTop_toTopOf="@+id/departmentSpinnerBg" />
+            <Spinner
+                android:id="@+id/departmentSpinner"
+                style="@style/SpinnerTheme"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:entries="@array/gender_menu"
+                android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/departmentSpinnerBg"
+                app:layout_constraintEnd_toEndOf="@+id/departmentSpinnerBg"
+                app:layout_constraintStart_toEndOf="@+id/departmentIcon"
+                app:layout_constraintTop_toTopOf="@+id/departmentSpinnerBg" />
 
 
             <TextView
@@ -212,6 +215,7 @@
                 android:text="Date of birth"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/departmentSpinnerBg" />
 
@@ -230,6 +234,7 @@
                 android:text="29 April 1995"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
 
                 app:drawableStartCompat="@drawable/ic_calendar"
                 app:layout_constraintStart_toStartOf="parent"
@@ -262,7 +267,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:elevation="@dimen/_5sdp"
                 android:src="@drawable/ic_gender"
                 app:layout_constraintBottom_toBottomOf="@id/genderSpinnerBg"
                 app:layout_constraintStart_toStartOf="@+id/genderSpinnerBg"
@@ -274,10 +278,9 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:elevation="@dimen/_5sdp"
-                android:popupBackground="@color/white"
                 android:entries="@array/gender_menu"
                 android:fontFamily="@font/poppins_medium"
+                android:popupBackground="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/genderSpinnerBg"
                 app:layout_constraintEnd_toEndOf="@+id/genderSpinnerBg"
                 app:layout_constraintStart_toEndOf="@+id/genderIcon"
@@ -298,7 +301,7 @@
                 app:layout_constraintTop_toBottomOf="@id/genderSpinner" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -330,7 +333,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email" />
 
-            <TextView
+            <EditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -344,7 +347,8 @@
                 android:text="9865543145"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
+                android:inputType="number"
+                android:maxLength="10"
                 app:drawableStartCompat="@drawable/ic_calling"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/phoneLbl" />
@@ -362,7 +366,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/phone" />
 
-            <TextView
+            <EditText
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

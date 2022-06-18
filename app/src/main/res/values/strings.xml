@@ -55,7 +55,6 @@
     <string name="gender_lbl">Gender</string>
     <string name="select_clinic_lbl">Select Clinic</string>
     <string name="consultation_fees_lbl">Consultation Fees</string>
-    <string name="save_lbl">Save</string>
     <string name="patient_name_lbl">Patient Name</string>
     <string name="prescription_lbl">Prescription</string>
     <string name="turn_day_off_lbl">Turn day Off</string>
@@ -63,6 +62,17 @@
     <string name="clinic_details_lbl">Clinic Details</string>
     <string name="attended_appointments_lbl">Attended appointments</string>
     <string name="reschedule_appointments_lbl">Reschedule appointments</string>
+    <string name="specialization_lbl">Specialization</string>
+    <string name="consultation_fee_lbl">Consultation Fee</string>
+    <string name="state_lbl">State</string>
+    <string name="city_lbl">city</string>
+    <string name="pincode_lbl">pincode</string>
+    <string name="thank_you_text">Thank you for expressing your interest in Doctors Plaza. \n\nWe\'ll review your application and get back to you in next 24 hrs.</string>
+    <string name="edit_profile_lbl">Edit Profile</string>
+    <string name="add_prescription_lbl">Add Prescription</string>
+    <string name="save_lbl">Save</string>
+    <string name="prescribe_medicine_lbl">Prescribe Medicine</string>
+    <string name="add_lbl">Add</string>
 
 
 </resources>

@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 class ClinicDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<ClinicDoctorsAdapter.ViewHolder>() {
     private lateinit var  context: Context
-    private var doctorQualification=""
     inner class  ViewHolder(private val itemClinicDoctorsBinding: ItemClinicDoctorsBinding):RecyclerView.ViewHolder(itemClinicDoctorsBinding.root){
         fun bind(data: DoctorData) {
             with(itemClinicDoctorsBinding){
@@ -24,15 +23,8 @@ class ClinicDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<ClinicDoc
                 doctorRating.text = data.rating.toString()
                 doctorRatingCount.text = "(${data.ratings_count})"
 
-                data.qualification.forEach {
-                    doctorQualification = if(doctorQualification.isEmpty()){
-                        it
 
-                    }else{
-                        "$doctorQualification , $it"
-                    }
-                }
-                doctorDegree.text = doctorQualification
+                doctorDegree.text = data.qualification
 
                 Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.profile_picture).fitCenter().into(doctorImage)
                 root.setOnClickListener {

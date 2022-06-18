@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentAppointmentBinding
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentData
+import com.doctorsplaza.app.data.commonModel.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.adapter.PastAppointmentsAdapter
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
@@ -83,6 +83,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             currentView = inflater.inflate(R.layout.fragment_appointment, container, false)
             binding = FragmentAppointmentBinding.bind(currentView!!)
             init()
+            setPullRefresh()
             setObserver()
             setOnAdapterClickListener()
             setOnClickListener()
@@ -90,12 +91,22 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
         return currentView!!
     }
 
-
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
 //        appointmentViewModel.getAppointments(pageNo = pageNo.toString())
         appointmentViewModel.getAppointments(pageNo = pageNo.toString(), "new")
         appointmentViewModel.getPastAppointments(pageNo = pageNo.toString(), "old")
+    }
+
+
+    private fun setPullRefresh() {
+        binding.pullToRefresh.setOnRefreshListener {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("id", session.loginId)
+            appointmentViewModel.getAppointments(pageNo = pageNo.toString(), "new")
+            appointmentViewModel.getPastAppointments(pageNo = pageNo.toString(), "old")
+            binding.pullToRefresh.isRefreshing = false
+        }
     }
 
 
@@ -129,6 +140,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
                     binding.loader.isVisible = true
                     binding.errorMsg.isVisible = true
                     appLoader.dismiss()
+                    showToast(response.message!!)
                 }
             }
         }
@@ -153,6 +165,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
 
                 is Resource.Error -> {
                     appLoader.dismiss()
+                    showToast(response.message!!)
                 }
             }
         }
@@ -173,6 +186,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
                 }
                 is Resource.Error -> {
                     appLoader.dismiss()
+                    showToast(response.message!!)
                 }
             }
         }

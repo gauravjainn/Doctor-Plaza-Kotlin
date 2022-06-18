@@ -7,27 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
-import com.doctorsplaza.app.databinding.FragmentClinicBinding
 import com.doctorsplaza.app.databinding.FragmentClinicDetailsBinding
-import com.doctorsplaza.app.ui.doctor.fragment.clinics.adapter.DoctorClinicsAdapter
-import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
-import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
-import com.doctorsplaza.app.ui.patient.fragments.home.HomeViewModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.ui.doctor.fragment.clinics.model.ClinicData
+import com.doctorsplaza.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ClinicDetailsFragment : Fragment(R.layout.fragment_clinic_details), View.OnClickListener {
+    private var clinicId: String = ""
+
     private lateinit var binding: FragmentClinicDetailsBinding
 
-    private val homeViewModel: HomeViewModel by viewModels()
-
-    private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private val clinicsViewModel: ClinicsViewModel by viewModels()
 
     @Inject
     lateinit var session: SessionManager
@@ -35,12 +29,6 @@ class ClinicDetailsFragment : Fragment(R.layout.fragment_clinic_details), View.O
     private var currentView: View? = null
 
     private lateinit var appLoader: DoctorPlazaLoader
-
-    @Inject
-    lateinit var bookTimeAdapter: BookTimeAdapter
-
-    @Inject
-    lateinit var clinicDoctorsAdapter: DoctorClinicsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,29 +48,40 @@ class ClinicDetailsFragment : Fragment(R.layout.fragment_clinic_details), View.O
 
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
-        setClinicsData()
-
+        clinicId = arguments?.getString("clinicId").toString()
+        clinicsViewModel.getClinicsDetails(clinicId)
     }
 
     private fun setObserver() {
-        homeViewModel.patientBanner.observe(viewLifecycleOwner) { response ->
+        clinicsViewModel.clinicsDetails.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    appLoader.dismiss()
                     if (response.data?.status == 200) {
-                        setClinicsData()
+                        setClinicsData(response.data.data)
                     }
                 }
                 is Resource.Loading -> {
+                    appLoader.show()
                 }
                 is Resource.Error -> {
+                    appLoader.dismiss()
+                    showToast(response.message.toString())
                 }
             }
         }
-
     }
 
-    private fun setClinicsData() {
-
+    private fun setClinicsData(data: ClinicData) {
+        with(binding){
+            clinicName.text = data.clinicName
+            aboutClinic.text = ""
+            clinicDetails.text = data.location
+            contactDetails.text = data.clinicContactNumber.toString()
+            visitingHoursDetails.text = "${data.start_time} to ${data.end_time}"
+            clinicFloors.text = data.floorCount
+            Glide.with(requireContext()).applyDefaultRequestOptions(clinicRequestOption()).load(data.image).into(clinicImage)
+        }
 
     }
 
@@ -90,10 +89,7 @@ class ClinicDetailsFragment : Fragment(R.layout.fragment_clinic_details), View.O
         with(binding) {
             backArrow.setOnClickListener(this@ClinicDetailsFragment)
         }
-
-
     }
-
 
     override fun onClick(v: View?) {
         when (v?.id) {

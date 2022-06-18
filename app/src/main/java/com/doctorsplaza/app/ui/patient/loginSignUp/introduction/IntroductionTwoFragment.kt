@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentIntroductionTwoBinding
 import com.doctorsplaza.app.ui.doctor.DoctorMainActivity
+import com.doctorsplaza.app.ui.doctor.loginSignUp.DoctorLoginSignupActivity
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +70,7 @@ class IntroductionTwoFragment : Fragment(R.layout.fragment_introduction_two), Vi
                 findNavController().navigate(R.id.patientSignUpFragment)
             }
             R.id.loginAsDoctor -> {
-                startActivity(Intent(requireActivity(),DoctorMainActivity::class.java))
+                startActivity(Intent(requireActivity(),DoctorLoginSignupActivity::class.java))
 
             }
         }

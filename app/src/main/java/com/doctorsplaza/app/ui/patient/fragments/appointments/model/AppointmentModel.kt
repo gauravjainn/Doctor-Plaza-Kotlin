@@ -1,6 +1,6 @@
 package com.doctorsplaza.app.ui.patient.fragments.appointments.model
 
-import com.doctorsplaza.app.ui.patient.fragments.appointments.model.asd.*
+import java.io.Serializable
 
 
 data class AppointmentModel(
@@ -33,9 +33,9 @@ data class AppointmentData(
     val status: String,
     val updatedAt: String,
     val user_id: UserId,
-    val rating:Rating,
+    val rating:Rating?,
     val prescription:String
-)
+) : Serializable
 
 data class PaymentId(
     val _id: String,
@@ -93,7 +93,7 @@ data class DoctorId(
     val pincode: String,
     val profile_picture: String,
     val promoted: Boolean,
-    val qualification: List<String>,
+    val qualification: String,
     val rating: Double,
     val ratings_count: Int,
     val roomId: String,

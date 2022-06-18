@@ -1,10 +1,22 @@
 package com.doctorsplaza.app.data
 
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentsModel
-import com.doctorsplaza.app.ui.patient.commonModel.CommonModel
-import com.doctorsplaza.app.ui.patient.fragments.Notifications.model.NotificationModel
+import com.doctorsplaza.app.ui.doctor.fragment.clinics.model.ClinicDetailsModel
+import com.doctorsplaza.app.ui.doctor.fragment.clinics.model.ClinicsListModel
+import com.doctorsplaza.app.ui.doctor.fragment.home.model.DoctorUpcomingAppointmentModel
+import com.doctorsplaza.app.ui.doctor.fragment.profile.model.DoctorProfileModel
+import com.doctorsplaza.app.ui.doctor.fragment.reports.model.AppointmentsCountModel
+import com.doctorsplaza.app.ui.doctor.fragment.reports.model.FinancialModel
+import com.doctorsplaza.app.ui.doctor.fragment.reports.model.RentStatusModel
+import com.doctorsplaza.app.ui.doctor.loginSignUp.model.*
+import com.doctorsplaza.app.data.commonModel.AppointmentsModel
+import com.doctorsplaza.app.data.commonModel.CommonModel
+import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.GetPrescriptionDetailsModel
+import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionPDFModel
+import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.AddPrescriptionModel
+import com.doctorsplaza.app.ui.patient.fragments.notifications.model.NotificationModel
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.*
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentModel
+import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponModel
 import com.doctorsplaza.app.ui.patient.fragments.clinics.model.ClinicModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurSpecialistsModel
@@ -138,6 +150,7 @@ interface DoctorPlazaApi {
         @Path("patientId") patientId: String
     ): Response<CommonModel>
 
+
     @POST("contactUs")
     suspend fun contactUs(@Body jsonBody: JsonObject): Response<CommonModel>
 
@@ -151,11 +164,17 @@ interface DoctorPlazaApi {
     suspend fun getDoctorListByClinic(@Body jsonBody: JsonObject): Response<GetDoctorsByClinicDepartment>
 
     @POST("getRoomSlotDetailsByDrAndClinicId")
-    suspend fun getRoomSlotDetailsByDrAndClinicId(@Query("type") type:String, @Body jsonBody: JsonObject): Response<ConsultationTimeSlotsModel>
+    suspend fun getRoomSlotDetailsByDrAndClinicId(
+        @Query("type") type: String,
+        @Body jsonBody: JsonObject
+    ): Response<ConsultationTimeSlotsModel>
 
     @Multipart
     @POST("patientImageUpload/{id}")
-    suspend fun patientImageUpload(@Path("id") id: String, @Part file: MultipartBody.Part?): Response<ProfileImageUploadModel>
+    suspend fun patientImageUpload(
+        @Path("id") id: String,
+        @Part file: MultipartBody.Part?
+    ): Response<ProfileImageUploadModel>
 
     @POST("appointment/bookAppointment")
     suspend fun bookAppointment(@Body jsonBody: JsonObject): Response<CommonModel>
@@ -173,17 +192,124 @@ interface DoctorPlazaApi {
     suspend fun bookingAppointment(@Body jsonBody: JsonObject): Response<CommonModel>
 
     @PUT("appointment/cancelAppointment/{appointmentId}")
-    suspend fun cancelAppointment(@Path("appointmentId") appointmentId: String, @Body jsonBody: JsonObject): Response<CommonModel>
+    suspend fun cancelAppointment(
+        @Path("appointmentId") appointmentId: String,
+        @Body jsonBody: JsonObject
+    ): Response<CommonModel>
 
     @POST("review/addReview")
-    suspend fun reviewAppointment( @Body jsonBody: JsonObject): Response<CommonModel>
+    suspend fun reviewAppointment(@Body jsonBody: JsonObject): Response<CommonModel>
 
     @PUT("appointment/updateAppointmentDate/{appointmentId}")
-    suspend fun rescheduleAppointment(@Path("appointmentId") appointmentId: String, @Body jsonBody: JsonObject): Response<RescheduleModel>
+    suspend fun rescheduleAppointment(
+        @Path("appointmentId") appointmentId: String,
+        @Body jsonBody: JsonObject
+    ): Response<RescheduleModel>
 
     @POST("appointment/getAppointementById")
     suspend fun getAppointmentDetails(@Body jsonBody: JsonObject): Response<AppointmentModel>
 
     @POST("searchDoctor")
-    suspend fun search(@Query("name") name:String): Response<SearchModel>
+    suspend fun search(@Query("name") name: String): Response<SearchModel>
+
+    @POST("applycoupon")
+    suspend fun applyCoupon(@Body jsonBody: JsonObject): Response<CouponModel>
+
+    /**
+     *  Doctor Api
+     */
+
+    @POST("signInDoctorMobile")
+    suspend fun loginDoctor(@Body jsonBody: JsonObject): Response<DoctorLoginModel>
+
+    @POST("addDoctor")
+    suspend fun registerDoctor(@Body jsonBody: JsonObject): Response<DoctorSignupModel>
+
+    @POST("getDeptName")
+    suspend fun getSpecializations(): Response<SpecialistsModel>
+
+    @POST("getState")
+    suspend fun getState(): Response<StateModel>
+
+    @POST("getCity")
+    suspend fun getCity(@Body jsonBody: JsonObject): Response<CityModel>
+
+    @POST("appointment/getDoctorAppointement")
+    suspend fun getDoctorUpcomingAppointment(
+        @Query("type") type: String,
+        @Body jsonBody: JsonObject
+    ): Response<DoctorUpcomingAppointmentModel>
+
+    @POST("appointment/getDoctorAppointmentsByDrId")
+    suspend fun getDoctorDashBoardData(@Body jsonBody: JsonObject): Response<DoctorDashBoard>
+
+    @POST("SignupotpMatch")
+    suspend fun doctorVerifyOTP(@Body jsonBody: JsonObject): Response<OTPModel>
+
+    @POST("SigninotpMatch")
+    suspend fun doctorVerifyOtpLogin(@Body jsonBody: JsonObject): Response<OTPModel>
+
+    @GET("doctor/{id}")
+    suspend fun getDoctorProfile(@Path("id") id: String): Response<DoctorProfileModel>
+
+    @POST("doctorPersonalDetails")
+    suspend fun editDoctorProfile(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("doctorDayOn")
+    suspend fun turnDayOn(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("doctorDayOff")
+    suspend fun turnDayOff(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @Multipart
+    @POST("doctorImageUpload/{id}")
+    suspend fun doctorImageUpload(
+        @Path("id") id: String,
+        @Part file: MultipartBody.Part?
+    ): Response<ProfileImageUploadModel>
+
+    @POST("adminreport/appointmentsdoctorsfilterbycounts")
+    suspend fun getAppointmentsReports(@Body jsonBody: JsonObject): Response<AppointmentsCountModel>
+
+    @POST("adminreport/appointmentsdoctorsfilterbycounts")
+    suspend fun financialReport(@Body jsonBody: JsonObject): Response<FinancialModel>
+
+    @POST("getRoomRentByDrId")
+    suspend fun rentStatus(@Body jsonBody: JsonObject): Response<RentStatusModel>
+
+    @POST("getMyClinic")
+    suspend fun getDoctorClinicList(@Body jsonBody: JsonObject): Response<ClinicsListModel>
+
+    @GET("asset/{clinicId}")
+    suspend fun getClinicDetails(@Path("clinicId") clinicId: String): Response<ClinicDetailsModel>
+
+    @POST("notifications/notificationsOfDoctorwithpagination")
+    suspend fun getDoctorNotification(@Body jsonBody: JsonObject): Response<NotificationModel>
+
+    @POST("appointment/getAppointementById")
+    suspend fun getDoctorAppointmentDetails(@Body jsonBody: JsonObject): Response<AppointmentModel>
+
+    @DELETE("removedoctor/{id}")
+    suspend fun deleteDoctorAccount(id: String): Response<CommonModel>
+
+    @POST("addPrescription")
+    suspend fun addPrescription(@Body jsonBody: JsonObject): Response<AddPrescriptionModel>
+
+    @GET("getPrescriptionByAppointmentId/{id}")
+    suspend fun getAppointmentPrescription(@Path("id") appointmentId: String): Response<GetPrescriptionDetailsModel>
+
+    @POST("changestatusbydoctor")
+    suspend fun updateAppointmentStatus(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("downloadprescription/{id}")
+    suspend fun getPrescriptionUrl(@Path("id") prescriptionId: String): Response<PrescriptionPDFModel>
+
+    @Multipart
+    @POST("uploadprescription")
+    suspend fun uploadPrescription(
+        @Part("appointment_id") appointmentId: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): Response<CommonModel>
+
 }
+

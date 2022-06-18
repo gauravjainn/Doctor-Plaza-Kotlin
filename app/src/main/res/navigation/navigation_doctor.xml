@@ -13,33 +13,122 @@
 
     <fragment
         android:id="@+id/clinicFragment"
-        android:name="com.doctorsplaza.app.ui.doctor.fragment.clinics.ClinicDoctorsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.clinics.ClinicsFragment"
         android:label="fragment_clinic"
         tools:layout="@layout/fragment_clinic" />
+
     <fragment
         android:id="@+id/doctorAppointmentFragment"
         android:name="com.doctorsplaza.app.ui.doctor.fragment.appointments.DoctorAppointmentFragment"
         android:label="fragment_doctor_appointment"
         tools:layout="@layout/fragment_doctor_appointment" />
+
     <fragment
         android:id="@+id/doctorProfileFragment"
         android:name="com.doctorsplaza.app.ui.doctor.fragment.profile.DoctorProfileFragment"
         android:label="fragment_doctor_profile"
         tools:layout="@layout/fragment_doctor_profile" />
+
     <fragment
         android:id="@+id/editDoctorProfileFragment"
         android:name="com.doctorsplaza.app.ui.doctor.fragment.profile.EditDoctorProfileFragment"
         android:label="fragment_edit_doctor_profile"
-        tools:layout="@layout/fragment_edit_doctor_profile" />
+        tools:layout="@layout/fragment_edit_doctor_profile" >
+        <action
+            android:id="@+id/action_editDoctorProfileFragment_to_doctorProfileFragment"
+            app:destination="@id/doctorProfileFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/doctorProfileFragment"/>
+    </fragment>
+
     <fragment
         android:id="@+id/revenueReportsFragment"
         android:name="com.doctorsplaza.app.ui.doctor.fragment.reports.RevenueReportsFragment"
         android:label="fragment_revenue_reports"
         tools:layout="@layout/fragment_revenue_reports" />
+
     <fragment
         android:id="@+id/clinicDetailsFragment"
         android:name="com.doctorsplaza.app.ui.doctor.fragment.clinics.ClinicDetailsFragment"
         android:label="fragment_clinic_details"
         tools:layout="@layout/fragment_clinic_details" />
+
+
+
+    <fragment
+        android:id="@+id/doctorContactUsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.contactUs.ContactUsFragment"
+        android:label="fragment_contact_us2"
+        tools:layout="@layout/fragment_contact_us2" />
+
+    <fragment
+        android:id="@+id/doctorNotificationsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.notifications.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/doctorSlugsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.slugs.SlugsFragment"
+        android:label="fragment_slugs"
+        tools:layout="@layout/fragment_slugs" />
+    <fragment
+        android:id="@+id/doctorsSettingsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.settings.DoctorsSettingsFragment"
+        android:label="DoctorsSettingsFragment"
+        tools:layout="@layout/fragment_settings"/>
+    <fragment
+        android:id="@+id/doctorAppointmentDetailsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.appointments.DoctorAppointmentDetailsFragment"
+        android:label="fragment_doctor_appointment_details"
+        tools:layout="@layout/fragment_doctor_appointment_details" >
+        <action
+            android:id="@+id/action_doctorAppointmentDetailsFragment_to_doctorAppointmentFragment"
+            app:destination="@id/doctorAppointmentFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/doctorAppointmentFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/addBasicPrescriptionFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.AddBasicPrescriptionFragment"
+        android:label="AddBasicPrescriptionFragment"
+        tools:layout="@layout/fragment_add_basic_prescription"/>
+    <fragment
+        android:id="@+id/addPrescriptionWithMedicineFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.AddPrescriptionWithMedicineFragment"
+        android:label="fragment_add_prescription_with_medicine"
+        tools:layout="@layout/fragment_add_prescription_with_medicine" >
+        <action
+                android:id="@+id/action_addPrescriptionWithMedicineFragment_to_doctorAppointmentFragment"
+            app:destination="@id/doctorAppointmentFragment"
+            app:popUpTo="@id/doctorAppointmentFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_addPrescriptionWithMedicineFragment_to_doctorAppointmentDetailsFragment"
+            app:destination="@id/doctorAppointmentDetailsFragment"
+            app:popUpTo="@id/doctorAppointmentDetailsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addMedicineFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.AddMedicineFragment"
+        android:label="fragment_add_medicine"
+        tools:layout="@layout/fragment_add_medicine" />
+    <fragment
+        android:id="@+id/successAppointmentDetailsFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.appointments.SuccessAppointmentDetailsFragment"
+        android:label="fragment_success_appointment_detaiks"
+        tools:layout="@layout/fragment_success_appointment_detaiks" />
+    <fragment
+        android:id="@+id/prescriptionFragment2"
+        android:name="com.doctorsplaza.app.ui.patient.prescription.PrescriptionFragment"
+        android:label="fragment_prescription"
+        tools:layout="@layout/fragment_prescription" />
+    <fragment
+        android:id="@+id/imagePrescriptionViewFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.ImagePrescriptionViewFragment"
+        android:label="fragment_image_prescription_view"
+        tools:layout="@layout/fragment_image_prescription_view" />
+
 
 </navigation>

@@ -183,20 +183,12 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
     }
 
     private fun setDoctorData() {
-        var doctorQualification = ""
         with(binding) {
             Glide.with(requireContext()).load(doctorDetails.profile_picture).into(doctorImage)
             doctorName.text = doctorDetails.doctorName
             doctorSpecialistIn.text = doctorDetails.specialization
             doctorLocation.text = doctorDetails.city
-            doctorDetails.qualification.forEach {
-                doctorQualification = if (doctorQualification.isEmpty()) {
-                    it
-                } else {
-                    "$doctorQualification , $it"
-                }
-            }
-            doctorDegree.text = doctorQualification
+            doctorDegree.text = doctorDetails.qualification
             verifiedIcon.isVisible = doctorDetails.is_approved
         }
     }

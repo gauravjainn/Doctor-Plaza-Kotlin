@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentsModel
+import com.doctorsplaza.app.data.commonModel.AppointmentsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurSpecialistsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.PatientBannerModel

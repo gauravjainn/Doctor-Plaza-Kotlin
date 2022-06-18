@@ -3,7 +3,6 @@ package com.doctorsplaza.app.ui.patient.fragments.clinics
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
-import com.doctorsplaza.app.ui.patient.commonModel.CommonModel
 import com.doctorsplaza.app.ui.patient.fragments.clinics.model.ClinicModel
 import com.doctorsplaza.app.utils.Resource
 import com.gym.gymapp.utils.SingleLiveEvent

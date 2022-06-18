@@ -79,6 +79,7 @@
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:scaleX="0.7"
                 android:scaleY="0.85"
+
                 android:thumb="@drawable/switch_custom_thumb"
                 app:layout_constraintBottom_toBottomOf="@id/turnDayOffView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -230,6 +231,7 @@
                 android:text="Date of birth"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="@dimen/_9sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/department" />
 
@@ -248,7 +250,7 @@
                 android:text="29 April 1995"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
+                android:visibility="gone"
                 app:drawableStartCompat="@drawable/ic_calendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateOfBirthLbl" />

@@ -23,10 +23,9 @@
         android:id="@+id/revenuePieChart"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_120sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/attendedAppointmentLbl"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="@id/attendedAppointmentLbl"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/attendedAppointmentLbl" />
 
     <TextView
         android:id="@+id/revenueCount"
@@ -47,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_7sdp"
-        android:text="Attended\nappointments"
+        android:text="Onile\nPayment"
         android:fontFamily="@font/poppins_medium"
         android:textColor="@color/colorPrimaryLight"
         android:gravity="center"
@@ -57,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="@id/revenuePieChart"/>
 
     <TextView
-        android:id="@+id/yearlyAppointment"
+        android:id="@+id/totalAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Yearly        50"
@@ -68,14 +67,14 @@
         android:drawableLeft="@drawable/ic_yellow_rectangle"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginVertical="@dimen/_5sdp"
-        app:layout_constraintBottom_toTopOf="@id/monthlyAppointment"
+        app:layout_constraintBottom_toTopOf="@id/onlineAppointment"
         app:layout_constraintTop_toTopOf="@id/revenuePieChart"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <TextView
-        android:id="@+id/monthlyAppointment"
+        android:id="@+id/onlineAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Monthly    50"
@@ -85,14 +84,14 @@
         android:drawablePadding="@dimen/_10sdp"
         android:drawableLeft="@drawable/ic__purple_rectangle"
         android:layout_marginVertical="@dimen/_5sdp"
-        app:layout_constraintBottom_toTopOf="@id/weeeklyAppointment"
-        app:layout_constraintTop_toBottomOf="@+id/yearlyAppointment"
+        app:layout_constraintBottom_toTopOf="@id/cashAppointment"
+        app:layout_constraintTop_toBottomOf="@+id/totalAppointment"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <TextView
-        android:id="@+id/weeeklyAppointment"
+        android:id="@+id/cashAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Weekly     50"
@@ -102,7 +101,7 @@
         android:drawablePadding="@dimen/_10sdp"
         android:drawableLeft="@drawable/ic_red_rectangle"
         android:layout_marginVertical="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@id/monthlyAppointment"
+        app:layout_constraintTop_toBottomOf="@id/onlineAppointment"
         app:layout_constraintBottom_toBottomOf="@id/revenuePieChart"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -117,4 +116,11 @@
         app:layout_constraintTop_toBottomOf="@id/revenuePieChart"/>
 
 
+    <View
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

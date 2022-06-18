@@ -20,15 +20,7 @@ class OurDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<OurDoctorsAd
                 doctorName.text = data.doctorName
                 doctorSpecialistIn.text = data.specialization
                 doctorRating.text = data.rating.toString()
-                doctorRatingCount.text = "(${data.ratings_count})"
-                data.qualification.forEach {
-                    doctorQualification = if(doctorQualification.isEmpty()){
-                        it
-
-                    }else{
-                        "$doctorQualification , $it"
-                    }
-                }
+                doctorRatingCount.text = data.qualification
                 doctorDegree.text = doctorQualification
                 Glide.with(context).load(data.profile_picture).into(doctorImage)
                 root.setOnClickListener {

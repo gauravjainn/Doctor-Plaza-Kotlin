@@ -3,7 +3,6 @@ package com.doctorsplaza.app.data
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -71,15 +70,12 @@ class Repository @Inject constructor() {
 
     suspend fun getSlugs() = service.getSlugs()
 
-    suspend fun deletePatientAccount(patientId: String, jsonObject: JsonObject) =
-        service.deletePatientAccount(patientId)
+    suspend fun deletePatientAccount(patientId: String) = service.deletePatientAccount(patientId)
+
 
     suspend fun contactUs(jsonObject: JsonObject) = service.contactUs(jsonBody = jsonObject)
 
-    suspend fun uploadPatientImage(
-        patientId: String,
-        reportFile: MultipartBody.Part?
-    ) = service.patientImageUpload(patientId, reportFile)
+    suspend fun uploadPatientImage(patientId: String, reportFile: MultipartBody.Part?) = service.patientImageUpload(patientId, reportFile)
 
     suspend fun bookAppointment(json: JsonObject) = service.bookAppointment(json)
 
@@ -95,11 +91,71 @@ class Repository @Inject constructor() {
 
     suspend fun reviewAppointment(jsonBody: JsonObject) = service.reviewAppointment(jsonBody)
 
-
     suspend fun getAppointmentDetails(jsonBody: JsonObject) = service.getAppointmentDetails(jsonBody)
 
     suspend fun rescheduleAppointment(appointmentId:String,jsonBody: JsonObject) = service.rescheduleAppointment(appointmentId,jsonBody)
 
     suspend fun search(search:String) = service.search(search)
+
+    suspend fun applyCoupon(json: JsonObject) = service.applyCoupon(json)
+
+
+    /**
+     *  Doctor Api's
+     */
+
+    suspend fun doctorLogin(json: JsonObject) = service.loginDoctor(json)
+
+    suspend fun doctorRegister(json: JsonObject) = service.registerDoctor(json)
+
+    suspend fun getCity(json: JsonObject) = service.getCity(json)
+
+    suspend fun getState() = service.getState()
+
+    suspend fun getSpecialization() = service.getSpecializations()
+
+    suspend fun getDoctorUpComingAppointments(type: String,json: JsonObject) = service.getDoctorUpcomingAppointment(type,json)
+
+    suspend fun getDoctorDashBoardData(json: JsonObject) = service.getDoctorDashBoardData(json)
+
+    suspend fun doctorVerifyOTP(json: JsonObject) = service.doctorVerifyOTP(json)
+
+    suspend fun doctorVerifyOtpLogin(json: JsonObject) = service.doctorVerifyOtpLogin(json)
+
+    suspend fun getDoctorProfile(id:String) = service.getDoctorProfile(id)
+
+    suspend fun editDoctorProfile(json: JsonObject) = service.editDoctorProfile(json)
+
+    suspend fun uploadDoctorProfile(doctorId: String, file: MultipartBody.Part?) = service.doctorImageUpload(doctorId,file)
+
+    suspend fun doctorTurnDayOn(json: JsonObject) = service.turnDayOn(json)
+
+    suspend fun doctorTurnDayOff(json: JsonObject) = service.turnDayOff(json)
+
+    suspend fun getAppointmentsReports(json: JsonObject) = service.getAppointmentsReports(jsonBody = json)
+
+    suspend fun getFinancialReports(json: JsonObject) = service.financialReport(jsonBody = json)
+
+    suspend fun getRentStatus(json: JsonObject) = service.rentStatus(jsonBody = json)
+
+    suspend fun getDoctorClinicList(json: JsonObject) = service.getDoctorClinicList(jsonBody = json)
+
+    suspend fun getClinicDetails(clinicId: String) = service.getClinicDetails(clinicId)
+
+    suspend fun getDoctorNotification(json: JsonObject) = service.getDoctorNotification(json)
+
+    suspend fun getDoctorAppointmentDetails(json: JsonObject) = service.getDoctorAppointmentDetails(json)
+
+    suspend fun deleteDoctorAccount(doctorId: String) = service.deleteDoctorAccount(doctorId)
+
+    suspend fun addPrescription(jsonObject: JsonObject) = service.addPrescription(jsonObject)
+
+    suspend fun getAppointmentPrescription(id: String) = service.getAppointmentPrescription(id)
+
+    suspend fun updateAppointmentStatus(json: JsonObject) = service.updateAppointmentStatus(json)
+
+    suspend fun uploadPrescription(appointmentId: RequestBody, file: MultipartBody.Part?) = service.uploadPrescription(appointmentId,file)
+
+    suspend fun getPrescriptionUrl(prescriptionId: String) = service.getPrescriptionUrl(prescriptionId =prescriptionId)
 
 }

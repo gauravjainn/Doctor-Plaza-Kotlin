@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.databinding.ItemClinicsBinding
-import com.doctorsplaza.app.ui.patient.fragments.clinics.model.ClinicData
+import com.doctorsplaza.app.ui.doctor.fragment.clinics.model.ClinicData
 import com.doctorsplaza.app.utils.clinicRequestOption
 import javax.inject.Inject
 
@@ -19,23 +19,23 @@ class DoctorClinicsAdapter @Inject constructor() :
 
     inner class ViewHolder(private val binding: ItemClinicsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
+        fun bind(clinicData: ClinicData) {
             with(binding) {
                 clinicHereForDoctors.text = "Click to View Appointments"
                 clinicHereForDoctors.paintFlags = clinicHereForDoctors.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-                /* clinicHereForDoctors.text = "Click to View Appointments"
+                 clinicHereForDoctors.text = "Click to View Appointments"
                  clinicHereForDoctors.paintFlags = clinicHereForDoctors.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
-                 clinicName.text = data.clinicName
-                 clinicAddress.text = data.location
-                 clinicTimings.text = "${data.start_time} - ${data.end_time}"
-                 clinicPhone.text = data.clinicContactNumber.toString()
-                 Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.image).fitCenter().into(clinicImage)
+                 clinicName.text = clinicData.clinicName
+                 clinicAddress.text = clinicData.location
+                 clinicTimings.text = "${clinicData.start_time} - ${clinicData.end_time}"
+                 clinicPhone.text = clinicData.clinicContactNumber.toString()
+                 Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(clinicData.image).fitCenter().into(clinicImage)
                  clinicHereForDoctors.setOnClickListener {
                      viewAppointmentsClickListener?.let {
-                         it(data)
+                         it(clinicData)
                      }
-                 }*/
+                 }
 
                 clinicHereForDoctors.setOnClickListener {
                     viewAppointmentsClickListener?.let {
@@ -45,13 +45,13 @@ class DoctorClinicsAdapter @Inject constructor() :
 
                 root.setOnClickListener {
                         viewClinicsDetailsClickListener?.let {
-                        it(null)
+                        it(clinicData)
                     }
                 }
             }
         }
     }
-
+    
     private val diffUtil = object : DiffUtil.ItemCallback<ClinicData>() {
         override fun areItemsTheSame(oldItem: ClinicData, newItem: ClinicData): Boolean {
             return oldItem == newItem
@@ -85,10 +85,10 @@ class DoctorClinicsAdapter @Inject constructor() :
 
 
     override fun onBindViewHolder(holder: DoctorClinicsAdapter.ViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(differ.currentList[position])
     }
 
-    override fun getItemCount(): Int = /*differ.currentList.size*/ 10
+    override fun getItemCount(): Int = differ.currentList.size
 
 
     fun setOnViewAppointments(listener: (data: ClinicData?) -> Unit) {

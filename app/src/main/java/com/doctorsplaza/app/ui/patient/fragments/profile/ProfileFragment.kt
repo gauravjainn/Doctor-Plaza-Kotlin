@@ -3,8 +3,10 @@ package com.doctorsplaza.app.ui.patient.fragments.profile
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.ContentUris
+import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,16 +14,21 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.DisplayMetrics
 import android.view.*
+import android.webkit.MimeTypeMap
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.transaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +48,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+private const val LAST_OPENED_URI_KEY = "com.example.android.actionopendocument.pref.LAST_OPENED_URI_KEY"
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListener {
@@ -65,6 +73,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     lateinit var reportAdapter: PatientReportAdapter
 
     private lateinit var profileData: ProfileData
+
+    private lateinit var pdfPicker:ActivityResultLauncher<String>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,11 +92,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     }
 
 
+
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
         binding.loader.isVisible = true
         profileViewModel.getProfile()
         profileViewModel.getPatientReport()
+
+        requireActivity().getSharedPreferences("Profile", Context.MODE_PRIVATE).let { sharedPreferences ->
+            if (sharedPreferences.contains(LAST_OPENED_URI_KEY)) {
+                val documentUri =
+                    sharedPreferences.getString(LAST_OPENED_URI_KEY, null)?.toUri() ?: return@let
+                openDocument(documentUri)
+            }
+        }
     }
 
 
@@ -208,9 +228,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                 address.text = session.loginAddress
             }
         }
-        Glide.with(requireContext()).applyDefaultRequestOptions(profileRequestOption())
+        Glide.with(requireContext()).applyDefaultRequestOptions(patientRequestOption())
             .load(session.loginImage).into(binding.userImage)
     }
+
+    private fun openDocument(documentUri: Uri) {
+        requireActivity().getSharedPreferences("Profile", Context.MODE_PRIVATE).edit {
+            putString(LAST_OPENED_URI_KEY, documentUri.toString())
+        }
+    }
+
 
     private fun setOnClickListener() {
         binding.profileEdit.setOnClickListener(this@ProfileFragment)
@@ -299,6 +326,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         val cameraPick = pickerDialog.findViewById<TextView>(R.id.cameraPick)
         val galleryPick = pickerDialog.findViewById<TextView>(R.id.galleryPick)
         val pdfPick = pickerDialog.findViewById<TextView>(R.id.pdfPick)
+        val pdfIcon = pickerDialog.findViewById<ImageView>(R.id.pdfIcon)
+
+        pdfIcon.isVisible = true
+        pdfPick.isVisible = true
 
         cameraPick.setOnClickListener {
             ImagePicker.with(this)
@@ -319,10 +350,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
 
             pickerDialog.dismiss()
         }
+
         pdfPick.setOnClickListener {
-            val intent = Intent()
-            intent.type = "application/pdf"
-            intent.action = Intent.ACTION_OPEN_DOCUMENT
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "application/pdf"
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
             launchPDFActivity.launch(intent)
             pickerDialog.dismiss()
         }
@@ -345,25 +378,32 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent = result.data!!
 
-                val uri: Uri = data?.data!!
+                val uri: Uri = data.data!!
+                requireActivity().contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 val uriString: String = uri.toString()
                 var pdfName: String? = null
                 requireActivity().contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                println("rsdasdadad ${RealPathUtil.getRealPath(requireContext(), uri)}")
+                println("rsdasdadad ${RealPathUtil.getRealPath(requireContext(), uri)} $uri")
                 if (uriString.startsWith("content://")) {
                     var myCursor: Cursor? = null
                     try {
                         // Setting the PDF to the TextView
                         myCursor = requireContext().contentResolver.query(uri, null, null, null, null)
                         if (myCursor != null && myCursor.moveToFirst()) {
+                            val pdfFile = File(uri.path)
+                            val name = FileProvider.getUriForFile(requireContext(), uri.authority!!,pdfFile)
                             pdfName = myCursor.getString(myCursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
+                            println("kkkkkk $pdfName  $name")
                         }
                     } finally {
                         myCursor?.close()
                     }
                 }
-                reportImage = File(RealPathUtil.getRealPath(requireContext(), uri))
-                addReport()
+//                reportImage = File(RealPathUtil.getRealPath(requireContext(), uri))
+//                addReport()
 //
             }
          }

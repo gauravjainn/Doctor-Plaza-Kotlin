@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentCheckOutBookingAppointmentBinding
 import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
+import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponData
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
 import com.doctorsplaza.app.ui.patient.payment.PaymentActivity
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
@@ -120,10 +121,10 @@ class CheckOutBookingAppointmentFragment :
 
     private fun setPatientData(from: String) {
         with(binding) {
-            if(from == "user"){
+            if (from == "user") {
                 patientName.setText(session.loginName)
                 ageDetails.setText(session.loginAge)
-            }else{
+            } else {
                 patientName.setText("")
                 ageDetails.setText("")
             }
@@ -191,7 +192,7 @@ class CheckOutBookingAppointmentFragment :
             }
         }
 
-        bookType.observe(viewLifecycleOwner){
+        bookType.observe(viewLifecycleOwner) {
             when (it) {
                 "user" -> {
                     binding.editPatientDetailsLbl.isVisible = true
@@ -223,26 +224,51 @@ class CheckOutBookingAppointmentFragment :
                 }
             }
         }
+
+
+        appointmentViewModel.applyCoupon.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    appLoader.dismiss()
+                    showToast(response.data?.message.toString())
+                    if (response.data?.code == 200) {
+                        setCouponApplied(response.data.data)
+                    }
+                }
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun setCouponApplied(data: CouponData) {
+        with(binding) {
+            applyCouponBtn.text = "Applied"
+            applyCouponBtn.isEnabled = false
+            couponEdt.isEnabled = false
+            couponAmt.isVisible = true
+            couponAppliedLbl.isVisible = true
+
+            consultationFees.text = "₹${data.original_price}"
+            couponAmt.text = "-₹${data.discounted_price}"
+            totalAmt.text = "₹${data.final_price}"
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setDoctorData() {
-        var doctorQualification = ""
+
         with(binding) {
             Glide.with(requireContext()).load(doctorDetails.profile_picture).into(doctorImage)
             doctorName.text = doctorDetails.doctorName
             doctorSpecialistIn.text = doctorDetails.specialization
             doctorLocation.text = doctorDetails.city
-            doctorDetails.qualification.forEach {
-                doctorQualification = if (doctorQualification.isEmpty()) {
-                    it
-                } else {
-                    "$doctorQualification , $it"
-                }
-            }
-            doctorDegree.text = doctorQualification
+            doctorDegree.text = doctorDetails.qualification
             verifiedIcon.isVisible = doctorDetails.is_approved
-
             consultationFees.text = "₹${doctorDetails.consultationfee}"
             totalAmt.text = "₹${doctorDetails.consultationfee}"
         }
@@ -269,6 +295,7 @@ class CheckOutBookingAppointmentFragment :
 
             femaleRadioBg.setOnClickListener(this@CheckOutBookingAppointmentFragment)
             femaleRadioBtn.setOnClickListener(this@CheckOutBookingAppointmentFragment)
+            applyCouponBtn.setOnClickListener(this@CheckOutBookingAppointmentFragment)
 
         }
     }
@@ -349,7 +376,26 @@ class CheckOutBookingAppointmentFragment :
                 binding.payAtClinicCheckBox.isChecked = false
                 selectedPaymentType = "Online"
             }
+
+            R.id.applyCouponBtn -> {
+                applyCoupon()
+            }
         }
+    }
+
+    private fun applyCoupon() {
+        val couponCode = binding.couponEdt.text.toString()
+        if (couponCode.isEmpty()) {
+            showToast("please enter a valid coupon code")
+            return
+        }
+        val jsonObject = JsonObject().apply {
+            addProperty("code", couponCode)
+            addProperty("patientId", session.patientId)
+            addProperty("doctorId", doctorId)
+        }
+        appointmentViewModel.applyCoupon(jsonObject)
+
     }
 
     private fun validateAndPay() {
@@ -502,7 +548,7 @@ class CheckOutBookingAppointmentFragment :
                     appLoader.dismiss()
 
                     if (response.data?.success!!) {
-                        findNavController().navigate(R.id.action_addAppointmentFormFragment_to_appointmentFragment)
+                        findNavController().navigate(R.id.appointmentFragment)
                         showConfirmDialog()
                     } else {
                         showToast(response.data.message)
@@ -537,7 +583,11 @@ class CheckOutBookingAppointmentFragment :
 
         confirmDialog.findViewById<View>(R.id.doneBtn).setOnClickListener {
             confirmDialog.dismiss()
-            findNavController().navigate(R.id.action_checkOutBookingAppointmentFragment_to_homeFragment)
+            if (selectedPaymentType == "Online") {
+                confirmDialog.dismiss()
+            } else {
+                findNavController().navigate(R.id.action_checkOutBookingAppointmentFragment_to_homeFragment)
+            }
         }
 
 

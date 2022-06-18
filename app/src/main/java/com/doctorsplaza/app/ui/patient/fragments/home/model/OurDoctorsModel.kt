@@ -39,6 +39,6 @@ data class OurDoctorData(
     val updatedAt: String,
     val rating: String,
     val ratings_count: String,
-    val qualification: List<String>,
+    val qualification: String,
 
 )

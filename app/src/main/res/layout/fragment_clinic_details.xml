@@ -82,22 +82,21 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/aboutClinicScroll"
         android:layout_width="0dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="@dimen/_65sdp"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="@id/notifications"
         app:layout_constraintStart_toStartOf="@id/clinicImage"
         app:layout_constraintTop_toBottomOf="@id/clinicName">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/aboutClinic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="@dimen/_90sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:fontFamily="@font/poppins_medium"
             android:paddingBottom="@dimen/_15sdp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. Elit justo lectus in at mattis aliquam. Urna, semper in tellus mi elit. Metus vivamus neque nulla sit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.em ipsum dolor sit amet, consectetur adipiscing elit. Id bibendum nec sapien turpis accumsan morbi elementum. "
             android:textColor="@color/colorPrimaryLight"
             android:textSize="@dimen/_9sdp"
             app:layout_constraintBottom_toBottomOf="parent"

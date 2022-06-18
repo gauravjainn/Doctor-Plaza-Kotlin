@@ -65,14 +65,14 @@
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder" >
         <action
-            android:id="@+id/action_addReminderFragment_to_appointmentFragment"
+            android:id="@+id/action_addReminderFragment_to_reminderFragment"
             app:popUpTo="@id/reminderFragment"
             app:popUpToInclusive="true"
             app:destination="@id/reminderFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
-        android:name="com.doctorsplaza.app.ui.patient.fragments.Notifications.NotificationsFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
@@ -143,4 +143,15 @@
         android:name="com.doctorsplaza.app.ui.patient.prescription.PrescriptionFragment"
         android:label="fragment_prescription"
         tools:layout="@layout/fragment_prescription" />
+    <fragment
+        android:id="@+id/addPrescriptionWithMedicineFragment2"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.AddPrescriptionWithMedicineFragment"
+        android:label="fragment_add_prescription_with_medicine"
+        tools:layout="@layout/fragment_add_prescription_with_medicine" />
+    <fragment
+        android:id="@+id/imagePrescriptionViewFragment2"
+        android:name="com.doctorsplaza.app.ui.doctor.fragment.prescription.ImagePrescriptionViewFragment"
+        android:label="fragment_image_prescription_view"
+        tools:layout="@layout/fragment_image_prescription_view" />
+
 </navigation>

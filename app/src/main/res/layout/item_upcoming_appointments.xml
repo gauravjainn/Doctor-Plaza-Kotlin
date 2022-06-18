@@ -46,6 +46,8 @@
         app:layout_constraintStart_toEndOf="@id/doctorImage"
         app:layout_constraintTop_toTopOf="@id/doctorImage" />
 
+
+
     <TextView
         android:id="@+id/doctorSpecialistIn"
         android:layout_width="0dp"
@@ -93,8 +95,9 @@
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:text="11-00 - 12:00"
+        android:drawableTint="@color/white"
         android:textColor="@color/white"
-        app:drawableStartCompat="@drawable/ic_time_circle"
+        app:drawableStartCompat="@drawable/ic_time_line"
         app:layout_constraintBottom_toBottomOf="@id/appointmentDateTimeView"
         app:layout_constraintStart_toEndOf="@+id/appointmentDate"
         app:layout_constraintTop_toTopOf="@id/appointmentDateTimeView" />

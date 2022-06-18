@@ -89,7 +89,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:defaultNavHost="true"
-
                 app:layout_constraintBottom_toTopOf="@id/bottomNavBar"
                 app:layout_constraintTop_toBottomOf="@+id/mainAppBar"
                 app:navGraph="@navigation/navigation_doctor" />

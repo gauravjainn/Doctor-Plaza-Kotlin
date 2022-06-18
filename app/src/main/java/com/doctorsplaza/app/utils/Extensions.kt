@@ -1,21 +1,30 @@
 package com.doctorsplaza.app.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.text.TextUtils
 import android.util.Log
+import android.util.Patterns
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.doctorsplaza.app.R
+import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
+import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.UpdatedProfileData
+import com.gym.gymapp.utils.SingleLiveEvent
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,6 +100,9 @@ val doctorMenuItems = arrayOf(
     )
 )
 
+fun CharSequence.isValidEmail(): Boolean =
+    !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
 @SuppressLint("CheckResult")
 fun clinicRequestOption(): RequestOptions {
     return RequestOptions().apply {
@@ -99,11 +111,39 @@ fun clinicRequestOption(): RequestOptions {
         diskCacheStrategy(DiskCacheStrategy.ALL)
     }
 }
+
 @SuppressLint("CheckResult")
 fun profileRequestOption(): RequestOptions {
     return RequestOptions().apply {
         placeholder(R.drawable.ic_user_image)
         error(R.drawable.ic_user_image).centerInside()
+        diskCacheStrategy(DiskCacheStrategy.NONE)
+    }
+}
+
+@SuppressLint("CheckResult")
+fun patientRequestOption(): RequestOptions {
+    return RequestOptions().apply {
+        placeholder(R.drawable.patient)
+        error(R.drawable.patient).centerInside()
+        diskCacheStrategy(DiskCacheStrategy.NONE)
+    }
+}
+
+@SuppressLint("CheckResult")
+fun prescriptionRequestOption(): RequestOptions {
+    return RequestOptions().apply {
+        placeholder(R.drawable.ic_medicine)
+        error(R.drawable.ic_medicine).centerInside()
+        diskCacheStrategy(DiskCacheStrategy.NONE)
+    }
+}
+
+@SuppressLint("CheckResult")
+fun doctorRequestOption(): RequestOptions {
+    return RequestOptions().apply {
+        placeholder(R.drawable.doctor_placeholder)
+        error(R.drawable.doctor_placeholder).centerInside()
         diskCacheStrategy(DiskCacheStrategy.NONE)
     }
 }
@@ -136,7 +176,6 @@ fun getDateFormatted(date: String, inputPattern: String, outputPattern: String):
     val output = SimpleDateFormat(outputPattern, Locale.getDefault())
     return output.format(input.parse(date))
 }
-
 
 
 fun getRequestBodyFromString(value: String): Any {
@@ -199,5 +238,30 @@ fun covertTimeToText(dataDate: String?): String? {
     return convTime
 }
 
+fun checkResponseBody(body: Any?): Any? = body?.let { it }
+
+fun checkThrowable(t: Throwable): String {
+    return when (t) {
+        is IOException ->
+            "Network Failure"
+        else -> "Conversion Error ${t.message}"
+
+    }
+}
+
+
+fun hideKeyboard(activity: Activity) {
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = activity.currentFocus
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+
+
+val doctorProfileUpdated = SingleLiveEvent<Boolean>()
 val profileImageUpdated = MutableLiveData<String>()
 val profileDetailsUpdated = MutableLiveData<UpdatedProfileData>()
+val addMedicine = SingleLiveEvent<Medicine>()

@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentSettingsBinding
-import com.doctorsplaza.app.ui.patient.commonModel.CommonViewModel
+import com.doctorsplaza.app.data.commonModel.CommonViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
@@ -63,7 +63,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
         jsonObject.addProperty("patientid", session.patientId)
         jsonObject.addProperty("mobilenumber", session.mobile)
         jsonObject.addProperty("description", reason)
-        commonViewModel.deletePatientAccount(jsonObject)
+        commonViewModel.deletePatientAccount()
 
         commonViewModel.deletePatientAccount.observe(viewLifecycleOwner) { response ->
             when (response) {

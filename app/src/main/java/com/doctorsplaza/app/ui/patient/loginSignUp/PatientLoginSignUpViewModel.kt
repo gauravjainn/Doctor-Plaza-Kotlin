@@ -3,7 +3,7 @@ package com.doctorsplaza.app.ui.patient.loginSignUp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
-import com.doctorsplaza.app.ui.patient.commonModel.CommonModel
+import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.LoginModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.PatientRegisterModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.VerificationModel
@@ -22,7 +22,6 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
     val checkEmail = SingleLiveEvent<Resource<CommonModel>>()
     val patientReg = SingleLiveEvent<Resource<PatientRegisterModel>>()
     val verifyOTP = SingleLiveEvent<Resource<VerificationModel>>()
-    val verifyLoginOTP = SingleLiveEvent<Resource<VerificationModel>>()
     val login = SingleLiveEvent<Resource<LoginModel>>()
 
      fun checkEmail(jsonObject: JsonObject) = viewModelScope.launch {

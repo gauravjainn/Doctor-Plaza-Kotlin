@@ -46,7 +46,7 @@ data class DoctorData(
     val pincode: String,
     val profile_picture: String,
     val promoted: Boolean,
-    val qualification: List<String>,
+    val qualification: String,
     val rating: Double,
     val ratings_count: Int,
     val searchtype: String,

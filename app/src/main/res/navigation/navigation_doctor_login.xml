@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_doctor_login"
+    app:startDestination="@id/doctorSignUpFragment">
+
+    <fragment
+        android:id="@+id/doctorSignUpFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.loginSignUp.fragments.DoctorSignUpFragment"
+        android:label="fragment_doctor_sign_up"
+        tools:layout="@layout/fragment_doctor_sign_up" >
+        <action
+            android:id="@+id/action_doctorSignUpFragment_to_doctorOTPFragment"
+            app:destination="@id/doctorOTPFragment"
+            app:popUpTo="@id/doctorSignUpFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/doctorLoginFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.loginSignUp.fragments.DoctorLoginFragment"
+        android:label="fragment_doctor_login"
+        tools:layout="@layout/fragment_doctor_login" />
+    <fragment
+        android:id="@+id/doctorOTPFragment"
+        android:name="com.doctorsplaza.app.ui.doctor.loginSignUp.fragments.DoctorOtpFragment"
+        android:label="fragment_o_t_p"
+        tools:layout="@layout/fragment_o_t_p" />
+
+
+</navigation>

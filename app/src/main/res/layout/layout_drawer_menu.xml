@@ -39,6 +39,12 @@
         android:textSize="@dimen/_14sdp"
         app:layout_constraintTop_toBottomOf="@+id/welComeLbl" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/profileClickGrp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="profileImage,userName,welComeLbl"/>
+
     <TextView
         android:id="@+id/drawerHome"
         android:layout_width="match_parent"

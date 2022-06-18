@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentHomeBinding
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentData
+import com.doctorsplaza.app.data.commonModel.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter

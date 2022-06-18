@@ -3,10 +3,13 @@ package com.doctorsplaza.app.ui.patient.fragments.appointments
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentsModel
-import com.doctorsplaza.app.ui.patient.commonModel.CommonModel
+import com.doctorsplaza.app.data.commonModel.AppointmentsModel
+import com.doctorsplaza.app.data.commonModel.CommonModel
+import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.GetPrescriptionDetailsModel
+import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionPDFModel
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.*
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentModel
+import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponModel
 
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.ClinicDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsModel
@@ -45,7 +48,10 @@ class AppointmentViewModel @Inject constructor(
 
     val appointmentDetails = SingleLiveEvent<Resource<AppointmentModel>>()
     val reviewAppointment = SingleLiveEvent<Resource<CommonModel>>()
+    val applyCoupon = SingleLiveEvent<Resource<CouponModel>>()
 
+    val getPrescriptionPdfUrl = SingleLiveEvent<Resource<PrescriptionPDFModel>>()
+    val doctorAppointmentPrescription = SingleLiveEvent<Resource<GetPrescriptionDetailsModel>>()
 
 
     fun getDoctor(doctorId: String) = viewModelScope.launch {
@@ -76,38 +82,6 @@ class AppointmentViewModel @Inject constructor(
             }
         }
     }
-
-/*
-    fun getDoctors(clinicId:String) = viewModelScope.launch {
-        val jsonObject = JsonObject()
-        jsonObject.addProperty("clinicId",clinicId)
-        safeGetDoctorsCall(jsonObject)
-    }
-
-    private suspend fun safeGetDoctorsCall(jsonObject: JsonObject) {
-        doctors.postValue(Resource.Loading())
-        try {
-            val response = repository.getClinicDoctors(jsonObject)
-            if (response.isSuccessful) {
-                response.body()?.let { clinicsResponse ->
-                    doctors.postValue(Resource.Success(clinicsResponse))
-                }
-            } else {
-                doctors.postValue(Resource.Error(response.message(), null))
-            }
-
-        } catch (t: Throwable) {
-            when (t) {
-                is IOException -> doctors.postValue(Resource.Error("Network Failure", null))
-                else -> doctors.postValue(
-                    Resource.Error(
-                        "Conversion Error ${t.message}",
-                        null
-                    )
-                )
-            }
-        }
-    }*/
 
 
     fun getAppointments(pageNo: String, type: String) = viewModelScope.launch {
@@ -570,11 +544,11 @@ class AppointmentViewModel @Inject constructor(
         }
     }
 
-    fun reviewAppointment( jsonObject: JsonObject) = viewModelScope.launch {
-        safeReviewAppointmentCall( jsonObject)
+    fun reviewAppointment(jsonObject: JsonObject) = viewModelScope.launch {
+        safeReviewAppointmentCall(jsonObject)
     }
 
-    private suspend fun safeReviewAppointmentCall( json: JsonObject) {
+    private suspend fun safeReviewAppointmentCall(json: JsonObject) {
         reviewAppointment.postValue(Resource.Loading())
         try {
             val response = repository.reviewAppointment(json)
@@ -595,6 +569,110 @@ class AppointmentViewModel @Inject constructor(
                     )
                 )
                 else -> reviewAppointment.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun applyCoupon(jsonObject: JsonObject) = viewModelScope.launch {
+        safeApplyCouponCall(jsonObject)
+    }
+
+    private suspend fun safeApplyCouponCall(json: JsonObject) {
+        applyCoupon.postValue(Resource.Loading())
+        try {
+            val response = repository.applyCoupon(json)
+            if (response.isSuccessful) {
+                response.body()?.let { doctorResponse ->
+                    applyCoupon.postValue(Resource.Success(doctorResponse))
+                }
+            } else {
+                applyCoupon.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> applyCoupon.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> applyCoupon.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun getPrescriptionPdfUrl(prescriptionId: String) = viewModelScope.launch {
+        safeGetPrescriptionPdfUrlCall(prescriptionId)
+    }
+
+    private suspend fun safeGetPrescriptionPdfUrlCall(
+        prescriptionId: String
+    ) {
+        getPrescriptionPdfUrl.postValue(Resource.Loading())
+        try {
+            val response = repository.getPrescriptionUrl(prescriptionId)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    getPrescriptionPdfUrl.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                getPrescriptionPdfUrl.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> getPrescriptionPdfUrl.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> getPrescriptionPdfUrl.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun getAppointmentPrescriptionDetails(id: String) = viewModelScope.launch {
+        safeGetAppointmentPrescriptionDetailsCall(id)
+    }
+
+    private suspend fun safeGetAppointmentPrescriptionDetailsCall(id: String) {
+        doctorAppointmentPrescription.postValue(Resource.Loading())
+        try {
+            val response = repository.getAppointmentPrescription(id)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    doctorAppointmentPrescription.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                doctorAppointmentPrescription.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> doctorAppointmentPrescription.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> doctorAppointmentPrescription.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null

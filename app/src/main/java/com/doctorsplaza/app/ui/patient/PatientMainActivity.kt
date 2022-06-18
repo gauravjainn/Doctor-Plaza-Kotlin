@@ -87,10 +87,10 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setObserver() {
         profileViewModel.getProfile()
-        Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(session.loginImage).into(binding.profile)
+        Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(session.loginImage).into(binding.profile)
         profileImageUpdated.observe(this){
-            Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(it).into(binding.profile)
-            Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(it).into(drawerProfileImage)
+            Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(it).into(binding.profile)
+            Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(it).into(drawerProfileImage)
         }
         profileDetailsUpdated.observe(this){
             drawerName.text = it.patient_name
@@ -104,8 +104,8 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
                 is Resource.Success -> {
 
                     if (response.data!!.status == 200) {
-                        Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(response.data.data.profile_picture).into(binding.profile)
-                        Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(response.data.data.profile_picture).into(drawerProfileImage)
+                        Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(response.data.data.profile_picture).into(binding.profile)
+                        Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(response.data.data.profile_picture).into(drawerProfileImage)
                         drawerName.text = response.data.data.patient_name
                     }
                 }
@@ -204,7 +204,7 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
          drawerLogout = slideLayout.findViewById(R.id.drawerLogout)
          drawerName = slideLayout.findViewById(R.id.userName)
 
-        Glide.with(this).applyDefaultRequestOptions(profileRequestOption()).load(session.loginImage).into(drawerProfileImage)
+        Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(session.loginImage).into(drawerProfileImage)
         drawerHome.setOnClickListener(this@PatientMainActivity)
         drawerSettings.setOnClickListener(this@PatientMainActivity)
         drawerContactUs.setOnClickListener(this@PatientMainActivity)

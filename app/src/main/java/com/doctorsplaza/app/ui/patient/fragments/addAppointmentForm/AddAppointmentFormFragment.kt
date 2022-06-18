@@ -26,6 +26,7 @@ import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTi
 import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
 import com.doctorsplaza.app.ui.patient.fragments.appointments.adapter.PastAppointmentsAdapter
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
+import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponData
 import com.doctorsplaza.app.ui.patient.fragments.home.adapter.UpcomingAppointmentsAdapter
 import com.doctorsplaza.app.ui.patient.payment.PaymentActivity
 import com.doctorsplaza.app.utils.*
@@ -97,7 +98,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
     private var jsonObjectOnline: JsonObject = JsonObject()
 
-    private var appointmentType:String="Offline"
+    private var appointmentType: String = "Offline"
 
     private var timeSlotSelected = false
 
@@ -126,10 +127,15 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
     }
 
     private fun setSpinners() {
-        val appointmentTypeArray = requireContext().resources.getStringArray(R.array.appointment_type)
+        val appointmentTypeArray =
+            requireContext().resources.getStringArray(R.array.appointment_type)
         val paymentTypeArray = requireContext().resources.getStringArray(R.array.payment_type)
 
-        val appointmentAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.appointment_type, R.layout.spinner_text)
+        val appointmentAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.appointment_type,
+            R.layout.spinner_text
+        )
         appointmentAdapter.setDropDownViewResource(R.layout.spinner_text)
 
         binding.selectAppointmentSpinner.adapter = appointmentAdapter
@@ -145,18 +151,15 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                     selectedAppointmentType = appointmentTypeArray[position]
                     binding.consultationDate.text = ""
                     binding.consultationTime.text = ""
-                    if(selectedAppointmentType == appointmentTypeArray[0]){
+                    if (selectedAppointmentType == appointmentTypeArray[0]) {
                         appointmentType = "Offline"
                         selectedPaymentType = "Cash"
                         binding.paymentMode.text = "In Clinic"
-//                        binding.selectPaymentModeSpinner.isEnabled = true
 
-                    }else if(selectedAppointmentType == appointmentTypeArray[1]){
+                    } else if (selectedAppointmentType == appointmentTypeArray[1]) {
                         appointmentType = "Online"
                         selectedPaymentType = "Online"
                         binding.paymentMode.text = "Online"
-//                        binding.selectPaymentModeSpinner.isEnabled = false
-//                        binding.selectPaymentModeSpinner.setSelection(0)
                     }
                 }
             }
@@ -285,6 +288,38 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             }
         }
 
+        appointmentViewModel.applyCoupon.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    appLoader.dismiss()
+                    showToast(response.data?.message.toString())
+                    if (response.data?.code == 200) {
+                        setCouponApplied(response.data.data)
+                    }
+                }
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        }
+    }
+
+
+    private fun setCouponApplied(data: CouponData) {
+        with(binding) {
+            applyCouponBtn.text = "Applied"
+            applyCouponBtn.isEnabled = false
+            couponEdt.isEnabled = false
+
+            totalLbl.isVisible = true
+            total.isVisible = true
+
+            consultationFees.text = "₹${data.original_price}"
+            total.text = "₹${data.final_price}"
+        }
     }
 
     private fun setClinicSpinner(data: List<ClinicsData>) {
@@ -384,7 +419,10 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             jsonObject.addProperty("doctorId", selectedDoctorId)
             jsonObject.addProperty("date", selectedConsultationDate)
             jsonObject.addProperty("day", consultationDay)
-            appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(appointmentType = appointmentType,jsonObject)
+            appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(
+                appointmentType = appointmentType,
+                jsonObject
+            )
         }
     }
 
@@ -396,9 +434,9 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
         timeSlotsDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         timeSlotsDialog.findViewById<View>(R.id.submitBtn).setOnClickListener {
-            if(timeSlotSelected){
+            if (timeSlotSelected) {
                 timeSlotsDialog.dismiss()
-            }else{
+            } else {
                 showToast("Please Select Any One Time Slot")
             }
         }
@@ -470,6 +508,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             consultationDate.setOnClickListener(this@AddAppointmentFormFragment)
 
             bookAppointmentBtn.setOnClickListener(this@AddAppointmentFormFragment)
+            applyCouponBtn.setOnClickListener(this@AddAppointmentFormFragment)
         }
     }
 
@@ -482,7 +521,8 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             }
             timeSlotsList[position].timeSlotData.isSelected = true
             timeSlotsListPosition = position
-            binding.consultationTime.text = "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
+            binding.consultationTime.text =
+                "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
             bookTimeAdapter.differ.submitList(timeSlotsList)
             timeSlotSelected = true
             bookTimeAdapter.notifyDataSetChanged()
@@ -550,7 +590,25 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             R.id.bookAppointmentBtn -> {
                 validateAndBookAppointment()
             }
+
+            R.id.applyCouponBtn -> {
+                applyCoupon()
+            }
         }
+    }
+
+    private fun applyCoupon() {
+        val couponCode = binding.couponEdt.text.toString()
+        if (couponCode.isEmpty()) {
+            showToast("please enter a valid coupon code")
+            return
+        }
+        val jsonObject = JsonObject().apply {
+            addProperty("code", couponCode)
+            addProperty("patientId", session.patientId)
+            addProperty("doctorId", selectedDoctorId)
+        }
+        appointmentViewModel.applyCoupon(jsonObject)
     }
 
     private fun validateAndBookAppointment() {
@@ -579,7 +637,13 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             jsonObject.addProperty("appointment_type", selectedAppointmentType)
             jsonObject.addProperty("booked_as", selectedBookType)
             jsonObject.addProperty("clinicname", clinicData!!.clinicName)
-            jsonObject.addProperty("consultation_fee", consultationFees)
+
+            if (binding.total.text.toString().isNotBlank()) {
+                jsonObject.addProperty("consultation_fee", binding.total.text.toString())
+            } else {
+                jsonObject.addProperty("consultation_fee", consultationFees)
+            }
+
             jsonObject.addProperty("date", selectedConsultationDate)
             jsonObject.addProperty("departmentname", specializationData)
             jsonObject.addProperty("doctor_id", doctorData?._id)

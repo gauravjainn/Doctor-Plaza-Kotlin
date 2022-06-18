@@ -472,6 +472,7 @@
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8sdp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/paymentDetailsLbl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/paymentDetailsLbl"
@@ -537,12 +538,12 @@
                 app:layout_constraintTop_toBottomOf="@id/totalAmtLbl" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/viewPrescription"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:src="@drawable/ic_view_prescription"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@id/divider4"/>
 

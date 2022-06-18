@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.doctorsplaza.app.databinding.ActivityPatientLoginSigupBinding
+import com.doctorsplaza.app.ui.doctor.DoctorMainActivity
 import com.doctorsplaza.app.ui.patient.PatientMainActivity
 import com.doctorsplaza.app.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,7 +13,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PatientLoginSignup : AppCompatActivity() {
 
-    private lateinit var binding:ActivityPatientLoginSigupBinding
+    private lateinit var binding: ActivityPatientLoginSigupBinding
 
     @Inject
     lateinit var session: SessionManager
@@ -22,9 +23,14 @@ class PatientLoginSignup : AppCompatActivity() {
         binding = ActivityPatientLoginSigupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(session.isLogin){
-            startActivity(Intent(this, PatientMainActivity::class.java))
-            finish()
+        if (session.isLogin) {
+            if (session.loginType == "patient") {
+                startActivity(Intent(this, PatientMainActivity::class.java))
+                finish()
+            } else if (session.loginType == "doctor") {
+                startActivity(Intent(this, DoctorMainActivity::class.java))
+                finish()
+            }
         }
     }
 }

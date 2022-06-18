@@ -88,9 +88,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
         from = arguments?.getString("from").toString()
         dob = arguments?.getString("dob").toString()
         if(!dob.isNullOrEmpty()){
-            patientDOB = isoFormat.format(dob)
+            patientDOB = isoFormat.parse(dob).toString()
         }
-        Glide.with(requireContext()).applyDefaultRequestOptions(profileRequestOption()).load(session.loginImage).into(binding.userImage)
+        Glide.with(requireContext()).applyDefaultRequestOptions(patientRequestOption()).load(session.loginImage).into(binding.userImage)
     }
 
 
@@ -147,7 +147,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
                     appLoader.dismiss()
                 }
             }
-
         }
     }
 

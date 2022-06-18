@@ -100,20 +100,12 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
     }
 
     private fun setDoctorData(data: DoctorDetailsData) {
-        var doctorQualification = ""
         with(binding) {
             Glide.with(requireContext()).load(data.profile_picture).into(doctorImage)
             doctorName.text = data.doctorName
             doctorSpecialistIn.text = data.specialization
             doctorLocation.text = data.city
-            data.qualification.forEach {
-                doctorQualification = if (doctorQualification.isEmpty()) {
-                    it
-                } else {
-                    "$doctorQualification , $it"
-                }
-            }
-            doctorDegree.text = doctorQualification
+            doctorDegree.text = data.qualification
             verifiedIcon.isVisible = data.is_approved
             verifiedViewGrp.isVisible = data.is_approved
             about.text = data.about

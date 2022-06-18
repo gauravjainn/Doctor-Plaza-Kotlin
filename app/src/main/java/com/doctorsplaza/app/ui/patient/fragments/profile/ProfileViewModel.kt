@@ -3,7 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
-import com.doctorsplaza.app.ui.patient.commonModel.CommonModel
+import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.*
 import com.doctorsplaza.app.utils.Resource
 import com.google.gson.JsonObject

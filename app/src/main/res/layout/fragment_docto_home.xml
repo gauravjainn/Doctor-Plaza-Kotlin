@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pullToRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     tools:context=".ui.doctor.fragment.home.DoctorHomeFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,7 +19,7 @@
         android:background="@color/white">
 
         <View
-            android:id="@+id/loading"
+            android:id="@+id/loader"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
@@ -51,6 +57,7 @@
             android:text="Search doctors, speciality or clinics"
             android:textColor="@color/colorPrimaryLight"
             android:textSize="@dimen/_10ssp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -114,10 +121,10 @@
                 android:id="@+id/revenueLbl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Revenue\nGenerated"
-                android:drawablePadding="@dimen/_30sdp"
                 android:drawableEnd="@drawable/ic_rupee_stats_icon"
+                android:drawablePadding="@dimen/_30sdp"
                 android:padding="@dimen/_10sdp"
+                android:text="Revenue\nGenerated"
                 app:layout_constraintEnd_toEndOf="@id/divider2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -126,113 +133,109 @@
                 android:id="@+id/revenue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23.4K"
+                android:drawablePadding="@dimen/_30sdp"
                 android:fontFamily="@font/poppins_medium"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="23.4K"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_24sdp"
-                android:paddingStart="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/revenueLbl"
-                android:drawablePadding="@dimen/_30sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                 />
+                app:layout_constraintTop_toBottomOf="@id/revenueLbl" />
 
             <View
                 android:id="@+id/divider1"
                 android:layout_width="match_parent"
                 android:layout_height="0.7dp"
                 android:background="@color/colorPrimaryLight"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/totalAppointmentsLbl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Total\nAppointments"
-                android:drawablePadding="@dimen/_20sdp"
                 android:drawableEnd="@drawable/ic_calendar_stats"
+                android:drawablePadding="@dimen/_20sdp"
                 android:padding="@dimen/_10sdp"
+                android:text="Total\nAppointments"
                 app:layout_constraintEnd_toStartOf="@id/divider2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider1"/>
+                app:layout_constraintTop_toBottomOf="@+id/divider1" />
 
             <TextView
                 android:id="@+id/totalAppointments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="34"
+                android:drawablePadding="@dimen/_30sdp"
                 android:fontFamily="@font/poppins_medium"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="34"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_24sdp"
-                android:paddingStart="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/totalAppointmentsLbl"
-                android:drawablePadding="@dimen/_30sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/totalAppointmentsLbl" />
 
             <View
                 android:id="@+id/divider2"
                 android:layout_width="0.8dp"
                 android:layout_height="0dp"
                 android:background="@color/colorPrimaryLight"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/totalClinicsLbl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Total\nClinics"
-                android:drawablePadding="@dimen/_30sdp"
                 android:drawableEnd="@drawable/ic_hospital_selected"
+                android:drawablePadding="@dimen/_30sdp"
                 android:drawableTint="@color/colorPrimary"
                 android:padding="@dimen/_10sdp"
+                android:text="Total\nClinics"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/divider2"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/totalClinics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="34"
+                android:drawablePadding="@dimen/_30sdp"
                 android:fontFamily="@font/poppins_medium"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="34"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_24sdp"
-                android:paddingStart="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/totalClinicsLbl"
-                android:drawablePadding="@dimen/_30sdp"
                 app:layout_constraintStart_toStartOf="@id/totalClinicsLbl"
-                />
+                app:layout_constraintTop_toBottomOf="@id/totalClinicsLbl" />
 
             <TextView
                 android:id="@+id/cancelledAppointmentsLbl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Cancelled\nAppointments"
-                android:drawablePadding="@dimen/_30sdp"
                 android:drawableEnd="@drawable/ic_cancelled_appointments"
+                android:drawablePadding="@dimen/_30sdp"
                 android:padding="@dimen/_10sdp"
+                android:text="Cancelled\nAppointments"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/divider2"
-                app:layout_constraintTop_toBottomOf="@+id/divider1"/>
+                app:layout_constraintTop_toBottomOf="@+id/divider1" />
 
             <TextView
                 android:id="@+id/cancelledAppointments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8"
+                android:drawablePadding="@dimen/_30sdp"
                 android:fontFamily="@font/poppins_medium"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="8"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_24sdp"
-                android:paddingStart="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/cancelledAppointmentsLbl"
-                android:drawablePadding="@dimen/_30sdp"
                 app:layout_constraintStart_toStartOf="@id/cancelledAppointmentsLbl"
-                />
+                app:layout_constraintTop_toBottomOf="@id/cancelledAppointmentsLbl" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -240,7 +243,7 @@
             android:id="@+id/appointmentLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_35sdp"
             android:fontFamily="@font/poppins_medium"
             android:text="Upcoming Appointment"
             android:textColor="@color/black"
@@ -256,6 +259,7 @@
             android:text="@string/view_all_lbl"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_11sdp"
+
             app:drawableEndCompat="@drawable/ic_arrow_right"
             app:drawableTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/appointmentLbl"
@@ -279,7 +283,9 @@
             app:layout_constraintStart_toStartOf="@id/bannerCv"
             app:layout_constraintTop_toBottomOf="@id/appointmentLbl" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.core.widget.NestedScrollView>

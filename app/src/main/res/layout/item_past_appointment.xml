@@ -9,6 +9,7 @@
         android:layout_width="@dimen/_75sdp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
+        android:background="@color/colorPrimaryLight"
         android:src="@drawable/ic_user_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +36,7 @@
 
     <TextView
         android:id="@+id/appointmentStatus"
-        android:layout_width="@dimen/_60sdp"
+        android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
         android:text="Success"
         android:gravity="center"
@@ -61,7 +62,6 @@
         android:text="Counselling Psychologist"
         android:textColor="@color/black"
         android:textSize="@dimen/_9sdp"
-
         app:layout_constraintBottom_toTopOf="@id/appointmentTimings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/doctorImage"

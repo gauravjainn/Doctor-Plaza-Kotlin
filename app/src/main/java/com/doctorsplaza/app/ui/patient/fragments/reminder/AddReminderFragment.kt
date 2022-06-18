@@ -129,7 +129,7 @@ class AddReminderFragment : Fragment(R.layout.fragment_add_reminder), View.OnCli
                 is Resource.Success -> {
                     appLoader.dismiss()
                     if (response.data?.status == 200) {
-                        findNavController().navigate(R.id.action_addReminderFragment_to_appointmentFragment)
+                        findNavController().navigate(R.id.action_addReminderFragment_to_reminderFragment)
                     } else {
                         showToast(response.data!!.message)
                     }
@@ -147,7 +147,7 @@ class AddReminderFragment : Fragment(R.layout.fragment_add_reminder), View.OnCli
                 is Resource.Success -> {
                     appLoader.dismiss()
                     if (response.data?.success!!) {
-                        findNavController().navigate(R.id.action_addReminderFragment_to_appointmentFragment)
+                        findNavController().navigate(R.id.action_addReminderFragment_to_reminderFragment)
                     } else {
                         showToast(response.data.message)
                     }

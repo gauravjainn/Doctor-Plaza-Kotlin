@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ItemUpcomingAppointmentsBinding
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentData
+import com.doctorsplaza.app.data.commonModel.AppointmentData
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

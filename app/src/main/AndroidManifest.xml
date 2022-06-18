@@ -16,12 +16,18 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/splashScreenTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.doctor.loginSignUp.DoctorLoginSignupActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".ui.doctor.DoctorMainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.patient.loginSignUp.PatientLoginSignup"
             android:exported="true"
@@ -35,10 +41,11 @@
         <activity
             android:name=".ui.patient.PatientMainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ui.patient.payment.PaymentActivity"
             android:exported="true" />
@@ -79,7 +86,7 @@
         </provider>
         <provider
             android:name=".utils.MyContentProvider"
-            android:authorities="com.example.test.document"
+            android:authorities="com.example.document"
             android:enabled="true"
             android:exported="true"
             android:grantUriPermissions="true"
@@ -88,6 +95,11 @@
                 <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
             </intent-filter>
         </provider>
+
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths" />
+
     </application>
 
 </manifest>

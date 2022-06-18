@@ -8,6 +8,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.PopupWindowCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ItemUpcomingAppointmentsBinding
-import com.doctorsplaza.app.ui.patient.commonModel.AppointmentData
+import com.doctorsplaza.app.ui.doctor.fragment.home.model.AppointmentData
+import com.doctorsplaza.app.utils.patientRequestOption
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -28,16 +30,17 @@ class DoctorsUpcomingAppointmentsAdapter @Inject constructor(): RecyclerView.Ada
     inner class  ViewHolder(private val binding: ItemUpcomingAppointmentsBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(data: AppointmentData) {
             with(binding){
-                Glide.with(context).load(data.doctor_id.profile_picture).into(doctorImage)
-                binding.doctorName.text = data.doctor_id.doctorName
-                binding.doctorSpecialistIn.text = data.doctor_id.specialization
+                binding.appointmentMore.isVisible = false
+                Glide.with(context).applyDefaultRequestOptions(patientRequestOption()).load(data.user_id.profile_picture).into(doctorImage)
+                binding.doctorName.text = data.patientname
+                binding.doctorSpecialistIn.text = "Patient Id: ${data.patient_id}"
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
                 val outputFormat = SimpleDateFormat("EEEE, dd MMM", Locale.getDefault())
                 val date: Date = inputFormat.parse(data.date)
                 val formattedDate: String = outputFormat.format(date)
 
                 binding.appointmentDate.text = formattedDate
-                binding.appointmentTime.text = "${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time}"
+                binding.appointmentTime.text = "${data.room_time_slot_id.start_time} - ${data.room_time_slot_id.end_time}"
 
                 root.setOnClickListener {
                     appointmentClickListener?.let {
@@ -113,10 +116,10 @@ class DoctorsUpcomingAppointmentsAdapter @Inject constructor(): RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: DoctorsUpcomingAppointmentsAdapter.ViewHolder, position: Int) {
-//        holder.bind(differ.currentList[position])
+        holder.bind(differ.currentList[position])
     }
 
-    override fun getItemCount(): Int = 10
+    override fun getItemCount(): Int = differ.currentList.size
 
     fun setOnAppointmentClickListener(listener: (data: AppointmentData) -> Unit) {
         appointmentClickListener = listener

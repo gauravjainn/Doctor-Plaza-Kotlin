@@ -15,24 +15,15 @@ import javax.inject.Inject
 
 class SearchDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<SearchDoctorsAdapter.ViewHolder>() {
     private lateinit var  context: Context
-    private var doctorQualification=""
     inner class  ViewHolder(private val itemClinicDoctorsBinding: ItemClinicDoctorsBinding):RecyclerView.ViewHolder(itemClinicDoctorsBinding.root){
         fun bind(data: SearchData) {
-            with(itemClinicDoctorsBinding){
+                with(itemClinicDoctorsBinding){
                 doctorName.text = data.doctorName
                 doctorSpecialistIn.text = data.specialization
                 doctorRating.text = data.rating.toString()
                 doctorRatingCount.text = "(${data.ratings_count})"
 
-                data.qualification.forEach {
-                    doctorQualification = if(doctorQualification.isEmpty()){
-                        it
-
-                    }else{
-                        "$doctorQualification , $it"
-                    }
-                }
-                doctorDegree.text = doctorQualification
+                doctorDegree.text = data.qualification
 
                 Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.profile_picture).fitCenter().into(doctorImage)
                 root.setOnClickListener {

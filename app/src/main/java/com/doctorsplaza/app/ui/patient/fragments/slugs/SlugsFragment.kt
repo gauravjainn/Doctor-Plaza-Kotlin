@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentSlugsBinding
-import com.doctorsplaza.app.ui.patient.commonModel.CommonViewModel
+import com.doctorsplaza.app.data.commonModel.CommonViewModel
 import com.doctorsplaza.app.ui.patient.fragments.slugs.model.SlugsData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource

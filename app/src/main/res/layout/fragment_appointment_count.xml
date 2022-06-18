@@ -1,122 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:padding="@dimen/_10sdp"
+    android:fillViewport="true"
     tools:context=".ui.doctor.fragment.reports.AppointmentCountFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
     <TextView
         android:id="@+id/attendedAppointmentLbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="@string/attended_appointments_lbl"
         android:fontFamily="@font/poppins_medium"
+        android:text="@string/attended_appointments_lbl"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/revenuePieChart"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_120sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/attendedAppointmentLbl"
         app:layout_constraintStart_toStartOf="@id/attendedAppointmentLbl"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/attendedAppointmentLbl" />
 
 
     <TextView
-        android:id="@+id/revenueCount"
+        android:id="@+id/appointmentsCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11sdp"
-        android:text="85"
         android:fontFamily="@font/poppins_medium"
+        android:text="85"
         android:textColor="@color/black"
-        app:layout_constraintVertical_chainStyle="packed"
+        android:textSize="@dimen/_11sdp"
         app:layout_constraintBottom_toTopOf="@id/revenueCountLbl"
-        app:layout_constraintTop_toTopOf="@id/revenuePieChart"
+        app:layout_constraintEnd_toEndOf="@id/revenuePieChart"
         app:layout_constraintStart_toStartOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="@id/revenuePieChart"/>
+        app:layout_constraintTop_toTopOf="@id/revenuePieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/revenueCountLbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_7sdp"
-        android:text="Attended\nappointments"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/colorPrimaryLight"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/revenueCount"
+        android:text="Attended\nappointments"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_7sdp"
         app:layout_constraintBottom_toBottomOf="@id/revenuePieChart"
+        app:layout_constraintEnd_toEndOf="@id/revenuePieChart"
         app:layout_constraintStart_toStartOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="@id/revenuePieChart"/>
+        app:layout_constraintTop_toBottomOf="@id/appointmentsCount" />
 
     <TextView
         android:id="@+id/yearlyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Yearly        50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_yellow_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Yearly        50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic_yellow_rectangle"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginVertical="@dimen/_5sdp"
         app:layout_constraintBottom_toTopOf="@id/monthlyAppointment"
-        app:layout_constraintTop_toTopOf="@id/revenuePieChart"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/revenuePieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 
     <TextView
         android:id="@+id/monthlyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monthly    50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic__purple_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Monthly    50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic__purple_rectangle"
-        android:layout_marginVertical="@dimen/_5sdp"
         app:layout_constraintBottom_toTopOf="@id/weeeklyAppointment"
-        app:layout_constraintTop_toBottomOf="@+id/yearlyAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/yearlyAppointment" />
 
 
     <TextView
         android:id="@+id/weeeklyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weekly     50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_red_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Weekly     50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic_red_rectangle"
-        android:layout_marginVertical="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@id/monthlyAppointment"
         app:layout_constraintBottom_toBottomOf="@id/revenuePieChart"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/monthlyAppointment" />
 
 
     <View
         android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/devider"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/revenuePieChart"/>
+        android:background="@color/devider"
+        app:layout_constraintTop_toBottomOf="@id/revenuePieChart" />
 
 
     <TextView
@@ -124,109 +128,217 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/reschedule_appointments_lbl"
         android:fontFamily="@font/poppins_medium"
+        android:text="@string/reschedule_appointments_lbl"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider1"/>
+        app:layout_constraintTop_toBottomOf="@id/divider1" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/reschedulePieChart"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_120sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/rescheduleAppointmentLbl"
         app:layout_constraintStart_toStartOf="@id/rescheduleAppointmentLbl"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/rescheduleAppointmentLbl" />
 
 
     <TextView
         android:id="@+id/rescheduleCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_11sdp"
-        android:text="85"
         android:fontFamily="@font/poppins_medium"
+        android:text="85"
         android:textColor="@color/black"
-        app:layout_constraintVertical_chainStyle="packed"
+        android:textSize="@dimen/_11sdp"
         app:layout_constraintBottom_toTopOf="@id/rescheduleCountLbl"
-        app:layout_constraintTop_toTopOf="@id/reschedulePieChart"
+        app:layout_constraintEnd_toEndOf="@id/reschedulePieChart"
         app:layout_constraintStart_toStartOf="@id/reschedulePieChart"
-        app:layout_constraintEnd_toEndOf="@id/reschedulePieChart"/>
+        app:layout_constraintTop_toTopOf="@id/reschedulePieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/rescheduleCountLbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_7sdp"
-        android:text="Attended\nappointments"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/colorPrimaryLight"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/rescheduleCount"
+        android:text="Rescheduled\nappointments"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_7sdp"
         app:layout_constraintBottom_toBottomOf="@id/reschedulePieChart"
+        app:layout_constraintEnd_toEndOf="@id/reschedulePieChart"
         app:layout_constraintStart_toStartOf="@id/reschedulePieChart"
-        app:layout_constraintEnd_toEndOf="@id/reschedulePieChart"/>
+        app:layout_constraintTop_toBottomOf="@id/rescheduleCount" />
 
     <TextView
         android:id="@+id/reYearlyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Yearly        50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_yellow_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Yearly        50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic_yellow_rectangle"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginVertical="@dimen/_5sdp"
         app:layout_constraintBottom_toTopOf="@id/reMonthlyAppointment"
-        app:layout_constraintTop_toTopOf="@id/reschedulePieChart"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/reschedulePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/reschedulePieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 
     <TextView
         android:id="@+id/reMonthlyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monthly    50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic__purple_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Monthly    50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic__purple_rectangle"
-        android:layout_marginVertical="@dimen/_5sdp"
         app:layout_constraintBottom_toTopOf="@id/reWeeeklyAppointment"
-        app:layout_constraintTop_toBottomOf="@+id/reYearlyAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/revenuePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/reYearlyAppointment" />
 
 
     <TextView
         android:id="@+id/reWeeeklyAppointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Weekly     50"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_red_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
+        android:text="Weekly     50"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"
-        android:drawablePadding="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic_red_rectangle"
-        android:layout_marginVertical="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@id/reMonthlyAppointment"
         app:layout_constraintBottom_toBottomOf="@id/reschedulePieChart"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/reschedulePieChart"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/reMonthlyAppointment" />
 
 
     <View
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/devider"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/reschedulePieChart"/>
+        android:background="@color/devider"
+        app:layout_constraintTop_toBottomOf="@id/reschedulePieChart" />
+
+    <TextView
+        android:id="@+id/cancelAppointmentLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Canceled Appointments"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/cancelPieChart"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/cancelAppointmentLbl"
+        app:layout_constraintTop_toBottomOf="@+id/cancelAppointmentLbl" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/cancelCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="85"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintBottom_toTopOf="@id/cancelCountLbl"
+        app:layout_constraintEnd_toEndOf="@id/cancelPieChart"
+        app:layout_constraintStart_toStartOf="@id/cancelPieChart"
+        app:layout_constraintTop_toTopOf="@id/cancelPieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/cancelCountLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:text="Canceled\nappointments"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_7sdp"
+        app:layout_constraintBottom_toBottomOf="@id/cancelPieChart"
+        app:layout_constraintEnd_toEndOf="@id/cancelPieChart"
+        app:layout_constraintStart_toStartOf="@id/cancelPieChart"
+        app:layout_constraintTop_toBottomOf="@id/cancelCount" />
+
+    <TextView
+        android:id="@+id/cancelYearlyAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_yellow_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Yearly        50"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@id/cancelMonthlyAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancelPieChart"
+        app:layout_constraintTop_toTopOf="@id/cancelPieChart"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <TextView
+        android:id="@+id/cancelMonthlyAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic__purple_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Monthly    50"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toTopOf="@id/cancelWeeeklyAppointment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/revenuePieChart"
+        app:layout_constraintTop_toBottomOf="@+id/cancelYearlyAppointment" />
+
+
+    <TextView
+        android:id="@+id/cancelWeeeklyAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:drawableLeft="@drawable/ic_red_rectangle"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Weekly     50"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/cancelPieChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cancelPieChart"
+        app:layout_constraintTop_toBottomOf="@id/cancelMonthlyAppointment" />
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

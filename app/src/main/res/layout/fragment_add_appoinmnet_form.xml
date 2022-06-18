@@ -637,7 +637,7 @@
 
 
             <TextView
-                android:id="@+id/selectPaymentModeLbl"
+                android:id="@+id/applyCouponLbl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -649,6 +649,53 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/consultationDate" />
+
+            <EditText
+                android:id="@+id/couponEdt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_discount"
+                android:drawablePadding="@dimen/_6sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="start"
+                android:hint="ABC234"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toStartOf="@id/applyCouponBtn"
+                app:layout_constraintStart_toStartOf="@id/applyCouponLbl"
+                app:layout_constraintTop_toBottomOf="@id/applyCouponLbl" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/applyCouponBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="Apply"
+                app:cornerRadius="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@id/couponEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/couponEdt" />
+
+            <TextView
+                android:id="@+id/selectPaymentModeLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Select Payment Mode"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/applyCouponBtn" />
 
 
             <TextView
@@ -671,15 +718,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectPaymentModeLbl" />
 
+            <TextView
+                android:id="@+id/totalLbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:elevation="@dimen/_4sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Payable Amount"
+                android:visibility="gone"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/paymentMode" />
+
+
+            <TextView
+                android:id="@+id/total"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_rupee_icon"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalLbl" />
+
 
             <View
-                android:visibility="gone"
                 android:id="@+id/selectPaymentModeSpinnerBg"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:background="@drawable/edt_bg"
-                app:layout_constraintTop_toBottomOf="@+id/selectPaymentModeLbl" />
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/total" />
 
             <ImageView
                 android:id="@+id/selectPaymentModeIcon"
@@ -687,8 +771,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:elevation="@dimen/_5sdp"
-                android:visibility="gone"
                 android:src="@drawable/ic_credit_card"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/selectPaymentModeSpinnerBg"
                 app:layout_constraintStart_toStartOf="@+id/selectPaymentModeSpinnerBg"
                 app:layout_constraintTop_toTopOf="@id/selectPaymentModeSpinnerBg" />
@@ -717,13 +801,12 @@
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:backgroundTint="@color/colorPrimary"
+                android:fontFamily="@font/poppins_medium"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Book Appointment"
-                android:fontFamily="@font/poppins_medium"
                 android:textAllCaps="false"
                 app:cornerRadius="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@+id/paymentMode"
-                 />
+                app:layout_constraintTop_toBottomOf="@+id/total" />
 
             <TextView
                 android:id="@+id/cancelBtn"
@@ -733,42 +816,41 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:backgroundTint="@color/colorPrimary"
+                android:fontFamily="@font/poppins_medium"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Cancel"
-                android:textColor="@color/red"
                 android:textAllCaps="false"
-                android:fontFamily="@font/poppins_medium"
-                app:cornerRadius="@dimen/_5sdp"
+                android:textColor="@color/red"
                 android:textSize="@dimen/_12sdp"
-                app:layout_constraintStart_toStartOf="@id/bookAppointmentBtn"
-                app:layout_constraintEnd_toEndOf="@id/bookAppointmentBtn"
+                app:cornerRadius="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bookAppointmentBtn"
-                 />
+                app:layout_constraintEnd_toEndOf="@id/bookAppointmentBtn"
+                app:layout_constraintStart_toStartOf="@id/bookAppointmentBtn"
+                app:layout_constraintTop_toBottomOf="@+id/bookAppointmentBtn" />
 
             <View
-                android:visibility="gone"
                 android:id="@+id/loader"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/white"
                 android:elevation="@dimen/_5sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/errorMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_225sdp"
+                android:elevation="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/something_went_wrong_lbl"
                 android:textColor="@color/colorPrimaryLight"
-                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:elevation="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_225sdp"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentAppointmentDetailsBinding
+import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionData
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_details),
     View.OnClickListener {
 
+    private lateinit var prescriptionData: List<PrescriptionData>
     private lateinit var rescheduleDialog: Dialog
     private var timeSlotsListPosition: Int = 0
     private lateinit var consultationDateView: TextView
@@ -68,8 +70,8 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     @Inject
     lateinit var bookTimeAdapter: BookTimeAdapter
 
-    val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-    val showDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    private val showDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -229,6 +231,79 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 }
             }
         }
+        appointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    if (response.data?.code == 200) {
+                        appLoader.dismiss()
+                        binding.loader.isVisible = false
+                        if (response.data.data.isNotEmpty()) {
+                            prescriptionData = response.data.data
+                            var scan = false
+                            var pdf = false
+
+                            prescriptionData.forEach {
+                                if (it.type == "SCAN") {
+                                    val prescriptionImage = it.image
+                                    val bundle = Bundle().apply {
+                                        putString("prescriptionImage", prescriptionImage)
+                                    }
+                                    if (!pdf) {
+                                        findNavController().navigate(
+                                            R.id.imagePrescriptionViewFragment2,
+                                            bundle
+                                        )
+                                        pdf = true
+
+                                    }
+                                } else {
+//                                    medicine = it.medicine
+                                    val bundle = Bundle().apply {
+                                        putString("from", "patient")
+                                        putString("prescriptionAdded", "yes")
+                                        putString("appointmentId", appointmentId)
+                                        putString(
+                                            "appointmentTime",
+                                            binding.appointmentDateTime.text.toString()
+                                        )
+                                        putString(
+                                            "consultationFee",
+                                            appointmentData.consultation_fee.toString()
+                                        )
+                                        putString(
+                                            "clinicName",
+                                            appointmentData.clinic_id.clinicName
+                                        )
+                                        putString(
+                                            "clinicLocation",
+                                            appointmentData.clinic_id.location
+                                        )
+                                    }
+                                    if(!scan){
+                                        findNavController().navigate(
+                                            R.id.addPrescriptionWithMedicineFragment2,
+                                            bundle
+                                        )
+                                        scan = true
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        showToast(response.data?.message.toString())
+                    }
+                }
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        }
+
+
     }
 
     private fun showTimeSlotsDialog() {
@@ -271,19 +346,10 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
 
     private fun setAppointmentsDetails(data: AppointmentData) {
-        var doctorQualification = ""
         with(binding) {
             doctorName.text = data.doctor_id.doctorName
             doctorSpecialistIn.text = data.doctor_id.specialization
-            data.doctor_id.qualification.forEach {
-                doctorQualification = if (doctorQualification.isEmpty()) {
-                    it
-
-                } else {
-                    "$doctorQualification , $it"
-                }
-            }
-            doctorDegree.text = doctorQualification
+            doctorDegree.text = data.doctor_id.qualification
             Glide.with(requireContext()).load(data.doctor_id.profile_picture).into(doctorImage)
 
             patientName.text = data.patientname
@@ -321,12 +387,12 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             }
         }
 
-        binding.viewPrescription.isVisible = !data.prescription.isEmpty()
+        binding.viewPrescription.isVisible = data.prescription.isNotEmpty()
     }
 
     private fun setOnAdapterClickListener() {
         bookTimeAdapter.setOnTimeSelectedListener { _, position ->
-            timeSlotsList.forEach { it ->
+            timeSlotsList.forEach {
                 if (it.timeSlotData.isSelected) it.timeSlotData.isSelected = false
             }
             timeSlotsList[position].timeSlotData.isSelected = true
@@ -351,8 +417,8 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.viewPrescription -> {
-                val bundle = Bundle().apply { putString("prescription",appointmentData.prescription) }
-                findNavController().navigate(R.id.prescriptionFragment,bundle)
+                appointmentViewModel.getAppointmentPrescriptionDetails(appointmentId)
+
             }
             R.id.backArrow -> {
                 findNavController().popBackStack()

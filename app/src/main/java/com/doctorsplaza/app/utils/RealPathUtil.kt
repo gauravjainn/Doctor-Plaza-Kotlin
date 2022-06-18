@@ -96,6 +96,18 @@ object RealPathUtil {
                     )
                     return getDataColumn(context, contentUri, null, null)
                 }
+                isDocument(uri) -> {
+                    val fileName = getFilePath(context, uri)
+                    if (fileName != null) {
+                        return Environment.getExternalStorageDirectory()
+                            .toString() + "/Document/" + fileName
+                    }
+                    val id = DocumentsContract.getDocumentId(uri)
+                    val contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://documents/public_downloads"), java.lang.Long.valueOf(id)
+                    )
+                    return getDataColumn(context, contentUri, null, null)
+                }
                 isMediaDocument(uri) -> {
                     val docId = DocumentsContract.getDocumentId(uri)
                     val split = docId.split(":").toTypedArray()
@@ -195,6 +207,10 @@ object RealPathUtil {
      */
     private fun isDownloadsDocument(uri: Uri): Boolean {
         return "com.android.providers.downloads.documents" == uri.authority
+    }
+
+    private fun isDocument(uri: Uri): Boolean {
+        return "com.android.providers.documents.documents" == uri.authority
     }
 
     /**
