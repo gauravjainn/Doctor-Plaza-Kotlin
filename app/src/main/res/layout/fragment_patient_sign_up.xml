@@ -274,13 +274,25 @@
         app:layout_constraintStart_toStartOf="@id/loginSubmit"
         app:layout_constraintTop_toTopOf="@id/loginSubmit" />
 
+    <ImageButton
+        android:id="@+id/loginSubmitBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ripple_effect"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/loginSubmit"
+        app:layout_constraintEnd_toEndOf="@id/loginSubmit"
+        app:layout_constraintTop_toTopOf="@id/loginSubmit"
+        app:layout_constraintBottom_toBottomOf="@id/loginSubmit"/>
+
+
     <TextView
         android:id="@+id/loginSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:elevation="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:paddingVertical="@dimen/_8sdp"
@@ -288,6 +300,9 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@id/haveAccount"/>
 
     <TextView

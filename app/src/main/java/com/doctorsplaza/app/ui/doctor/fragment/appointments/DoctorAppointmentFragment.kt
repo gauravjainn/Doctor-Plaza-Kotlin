@@ -138,7 +138,6 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
 
     private fun setOnClickListener() {
 
-
         doctorUpcomingAppointmentsAdapter.setOnAppointmentClickListener {
             val bundle = Bundle().apply {
                 putString("appointId",it._id)
@@ -152,6 +151,4 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
             findNavController().navigate(R.id.doctorAppointmentDetailsFragment,bundle)
         }
     }
-
-
 }

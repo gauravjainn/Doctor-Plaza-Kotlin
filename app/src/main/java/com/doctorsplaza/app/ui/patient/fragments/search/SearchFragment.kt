@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -29,6 +32,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener {
+    private lateinit var specialist: SpecialistData
     private var searchKey: String = ""
     private lateinit var binding: FragmentSearchBinding
 
@@ -132,12 +136,14 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
     private fun setSpecialists() {
         binding.loaderBg.isVisible = false
         binding.noDataMsg.isVisible = false
+        specialistAdapter.setAdapterSize("search")
         specialistAdapter.differ.submitList(specialistData)
         binding.specialistRv.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = specialistAdapter
         }
+        runAnimation()
     }
 
     private fun setSearchRv(data: List<SearchData>) {
@@ -148,7 +154,6 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
             adapter = searchDoctorsAdapter
         }
         searchDoctorsAdapter.notifyDataSetChanged()
-
     }
 
 
@@ -206,20 +211,13 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
         }
     }
 
+    private fun runAnimation(){
+        val context = binding.specialistRv.context
+        val layoutAnimationController: LayoutAnimationController? = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation)
+        binding.specialistRv.layoutAnimation = layoutAnimationController
+        binding.specialistRv.scheduleLayoutAnimation()
 
-    private fun onFilterChanged(filterQuery: String): ArrayList<SpecialistData> {
-        val filteredList = ArrayList<SpecialistData>()
-        for (currentData in specialistData) {
-            if (currentData.specialization.lowercase(Locale.getDefault())
-                    .contains(filterQuery) || currentData.name.lowercase(Locale.getDefault())
-                    .contains(filterQuery)
-            ) {
-                filteredList.add(currentData)
-            }
-        }
-        return filteredList
     }
-
 }
 
 

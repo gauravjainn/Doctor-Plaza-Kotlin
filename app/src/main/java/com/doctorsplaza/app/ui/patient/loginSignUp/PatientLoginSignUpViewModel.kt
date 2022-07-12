@@ -8,6 +8,8 @@ import com.doctorsplaza.app.ui.patient.loginSignUp.model.LoginModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.PatientRegisterModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.VerificationModel
 import com.doctorsplaza.app.utils.Resource
+import com.doctorsplaza.app.utils.checkResponseBody
+import com.doctorsplaza.app.utils.checkThrowable
 import com.google.gson.JsonObject
 import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,8 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
     val patientReg = SingleLiveEvent<Resource<PatientRegisterModel>>()
     val verifyOTP = SingleLiveEvent<Resource<VerificationModel>>()
     val login = SingleLiveEvent<Resource<LoginModel>>()
+
+    val resendLoginSignUpOtp = SingleLiveEvent<Resource<CommonModel>>()
 
      fun checkEmail(jsonObject: JsonObject) = viewModelScope.launch {
         safeCheckEmailCall(jsonObject)
@@ -143,6 +147,24 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 is IOException -> verifyOTP.postValue(Resource.Error("Network Failure", null))
                 else -> verifyOTP.postValue(Resource.Error("Conversion Error ${t.message}", null))
             }
+        }
+    }
+
+    fun resendLoginSignUpOtp(jsonObject: JsonObject) = viewModelScope.launch {
+        safeDoctorTurnDayOffCall(jsonObject)
+    }
+
+    private suspend fun safeDoctorTurnDayOffCall(jsonObject: JsonObject) {
+        resendLoginSignUpOtp.postValue(Resource.Loading())
+        try {
+            val response = repository.resendLoginOtp(jsonObject)
+            if (response.isSuccessful)
+                resendLoginSignUpOtp.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
+            else
+                resendLoginSignUpOtp.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            resendLoginSignUpOtp.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
 }

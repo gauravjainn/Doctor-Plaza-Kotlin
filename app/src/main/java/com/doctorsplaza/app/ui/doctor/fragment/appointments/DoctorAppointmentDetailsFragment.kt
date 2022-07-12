@@ -24,6 +24,7 @@ import com.doctorsplaza.app.ui.doctor.fragment.appointments.bottomSheet.OptionsB
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionData
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
+import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.*
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.JsonObject
@@ -198,6 +199,39 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             }
         }
 
+        doctorAppointmentViewModel.generateVideoToken.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    if (response.data?.code!=null && response.data.code == 200) {
+                        response.data.message.let { showToast(it) }
+                        appLoader.dismiss()
+                        session.callStatus = ""
+                        val jsonObject = JsonObject().apply {
+                            addProperty("type","doctor")
+                            addProperty("name",appointmentData.patientname)
+                            addProperty("status","calling")
+                            addProperty("appointmentId",appointmentId)
+                        }
+                        doctorAppointmentViewModel.callNotify(jsonObject)
+                        startActivity(Intent(requireActivity(), VideoActivity::class.java).putExtra("videoToken",response.data.data.doctor_token)
+                            .putExtra("name", appointmentData.patientname)
+                            .putExtra("appointId", appointmentData._id)
+                        )
+
+                    } else {
+                        response.data?.message?.let { showToast(it) }
+                    }
+                }
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        }
+        doctorAppointmentViewModel.callNotify.observe(viewLifecycleOwner) {  }
+
     }
 
     private fun setAppointmentData(data: AppointmentData) {
@@ -211,23 +245,22 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             appointmentDateTime.text =
                 "${data.room_time_slot_id.timeSlotData.day}  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
             clinicDetails.text = data.clinic_id.location
-            contactDetails.text = data.clinic_id.clinicContactNumber.toString()
+            contactDetails.text = data.mobile
             ageDetails.text = data.age.toString()
             gender.text = data.gender
             consultationFees.text = "₹${data.consultation_fee}"
-
+            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
             if(data.problem.isNullOrEmpty()){
                 problem.isVisible = false
                 problemLbl.isVisible = false
             }else{
-                problem.isVisible = false
-                problemLbl.isVisible = false
+                problem.isVisible = true
+                problemLbl.isVisible = true
                 problem.text = data.problem
             }
 
             setPrescriptionStatusView(data)
             setPaymentStatusView(data)
-
 
         }
     }
@@ -253,7 +286,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
     private fun setPaymentStatusView(data: AppointmentData) {
         if (data.payment_id != null) {
             binding.totalAmt.text = "₹${data.payment_id.amount}"
-            binding.paymentMode.text = "₹${data.mode_of_payment}"
+            binding.paymentMode.text = data.mode_of_payment
         } else {
             binding.totalAmt.text = "₹${data.consultation_fee}"
             binding.paymentMode.text = "Cash"
@@ -267,6 +300,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             addPrescription.setOnClickListener(this@DoctorAppointmentDetailsFragment)
             completeAppointment.setOnClickListener(this@DoctorAppointmentDetailsFragment)
             cancelAppointment.setOnClickListener(this@DoctorAppointmentDetailsFragment)
+            videoCallIcon.setOnClickListener(this@DoctorAppointmentDetailsFragment)
         }
     }
 
@@ -300,7 +334,66 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             R.id.completeAppointment -> {
                 showPopUp("done")
             }
+
+            R.id.videoCallIcon -> {
+                val currentDate = Date()
+                val bookingDate = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.createdAt)
+
+
+                val stf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val parsedStartTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.start_time)
+                val parsedEndTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.end_time)
+
+                val currentTime = Date().time
+                val ctf = stf.format(currentTime)
+
+                if(currentDate.before(bookingDate)){
+                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+                    return
+                }
+
+                if(currentDate.after(bookingDate)){
+                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
+                    return
+                }
+
+                if(parsedStartTime.before(stf.parse(ctf))){
+                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+                    return
+                }
+
+                if(parsedEndTime.after(stf.parse(ctf))){
+                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
+                    return
+                }
+
+           
+
+                val jsonObject =JsonObject().apply {
+                    addProperty("id",appointmentId)
+                    addProperty("type", "doctor")
+                }
+                doctorAppointmentViewModel.generateVideoToken(jsonObject)
+            }
         }
+    }
+
+
+    private fun showVideoCallAlertPopUp(status: String) {
+        val message = if (status == "done") {
+            "Are you sure you want to Complete this Appointment?"
+        } else {
+            "Are you sure you want to Cancel Appointment?"
+        }
+        AlertDialog.Builder(context)
+            .setMessage(message)
+            .setPositiveButton(
+                "yes"
+            ) { _, _ ->
+                updateAppointmentStatus(status)
+            }
+            .setNegativeButton("no", null)
+            .show()
     }
 
     private fun showViewPrescriptionPopup() {

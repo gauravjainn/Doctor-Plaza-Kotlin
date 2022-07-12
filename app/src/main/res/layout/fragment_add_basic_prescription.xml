@@ -276,16 +276,24 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_7sdp"
         android:backgroundTint="@color/colorPrimary"
         android:fontFamily="@font/poppins_medium"
-        android:paddingVertical="@dimen/_10sdp"
+
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:focusable="true"
+
         android:text="@string/save_lbl"
         android:textAllCaps="false"
         app:cornerRadius="@dimen/_5sdp"

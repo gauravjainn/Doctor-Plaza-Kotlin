@@ -105,11 +105,14 @@
         android:elevation="@dimen/_5sdp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
-        android:background="@drawable/gree_corner_radius"
         android:paddingVertical="@dimen/_8sdp"
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@id/haveAccount" />
 
     <TextView

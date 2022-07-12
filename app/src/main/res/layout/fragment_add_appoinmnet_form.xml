@@ -670,15 +670,22 @@
                 app:layout_constraintStart_toStartOf="@id/applyCouponLbl"
                 app:layout_constraintTop_toBottomOf="@id/applyCouponLbl" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/applyCouponBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-                android:backgroundTint="@color/colorPrimary"
                 android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_5sdp"
                 android:text="Apply"
                 app:cornerRadius="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@id/couponEdt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/couponEdt" />
@@ -793,24 +800,29 @@
                 app:layout_constraintStart_toEndOf="@+id/selectPaymentModeIcon"
                 app:layout_constraintTop_toTopOf="@+id/selectPaymentModeSpinnerBg" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/bookAppointmentBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:backgroundTint="@color/colorPrimary"
-                android:fontFamily="@font/poppins_medium"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Book Appointment"
                 android:textAllCaps="false"
                 app:cornerRadius="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintTop_toBottomOf="@+id/total" />
 
             <TextView
                 android:id="@+id/cancelBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -819,6 +831,10 @@
                 android:fontFamily="@font/poppins_medium"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Cancel"
+                android:gravity="center"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 android:textAllCaps="false"
                 android:textColor="@color/red"
                 android:textSize="@dimen/_12sdp"

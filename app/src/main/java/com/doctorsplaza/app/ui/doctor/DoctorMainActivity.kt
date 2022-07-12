@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
+import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.databinding.ActivityDoctorMainBinding
 import com.doctorsplaza.app.ui.doctor.fragment.profile.DoctorProfileViewModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.ProfileViewModel
@@ -22,8 +23,13 @@ import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNav
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNavBuilder
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.JsonObject
+import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.AndroidEntryPoint
 import hilt_aggregated_deps._dagger_hilt_android_internal_lifecycle_HiltWrapper_HiltViewModelFactory_ActivityCreatorEntryPoint
+import org.json.JSONObject
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -54,16 +60,34 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var drawerName: TextView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        addFcmToken()
         setObserver()
         setOnClickListener()
         setBottomNavigation()
         setNavigationDrawer(savedInstanceState)
+    }
+
+    private fun addFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+
+            val token = task.result.toString()
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("token", token)
+            jsonObject.addProperty("type", session.loginType)
+            jsonObject.addProperty("phone", session.mobile)
+            jsonObject.addProperty("doctorid", session.loginId)
+            jsonObject.addProperty("device_type", "android")
+            profileViewModel.refreshToken(jsonObject)
+
+        })
     }
 
 
@@ -78,6 +102,8 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
                 profileViewModel.getDoctorProfile()
             }
         }
+
+        profileViewModel.refreshToken.observe(this){ }
 
         profileViewModel.doctorProfile.observe(this) { response ->
             when (response) {
@@ -215,15 +241,13 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.drawerCustomerSupport -> {
                 slidingRootNav.closeMenu()
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:+919910415720")
-                startActivity(intent)
+                val number = Uri.parse("tel:+911149424130")
+                val callIntent = Intent(Intent.ACTION_DIAL, number)
+                startActivity(callIntent)
             }
             R.id.drawerLogout -> {
-                session.isLogin = false
-                slidingRootNav.closeMenu()
-                startActivity(Intent(this, PatientLoginSignup::class.java))
-                finish()
+                setLogout()
+
             }
 
             R.id.navIcon -> {
@@ -231,6 +255,18 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+    }
+
+    private fun setLogout() {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("id", session.loginId)
+        jsonObject.addProperty("type", session.loginType)
+        profileViewModel.logout(jsonObject = jsonObject)
+
+        session.isLogin = false
+        slidingRootNav.closeMenu()
+        startActivity(Intent(this, PatientLoginSignup::class.java))
+        finish()
     }
 
     override fun onResume() {

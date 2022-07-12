@@ -99,19 +99,16 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data!!.code == 200) {
+                    if (response.data!!.status == 200) {
                         requireContext().showToast(response.data.message)
                         if(from == "appointment"){
                             findNavController().popBackStack()
                         }else{
-                            findNavController().popBackStack()
-                            findNavController().navigate(R.id.profileFragment)
-                        }
 
-                        session.loginName = response.data.data.patient_name
-                        session.loginGender = response.data.data.gender
-                        session.address = response.data.data.address
+                            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+                        }
                         profileDetailsUpdated.postValue(response.data.data)
+                        session.loginName = binding.name.text.toString()
                     } else {
                         requireContext().showToast(response.data.message)
                     }

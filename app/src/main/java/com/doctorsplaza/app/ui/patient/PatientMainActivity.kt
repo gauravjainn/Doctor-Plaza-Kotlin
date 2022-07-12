@@ -1,6 +1,7 @@
 package com.doctorsplaza.app.ui.patient
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -78,7 +79,7 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
             jsonObject.addProperty("type", session.loginType)
             jsonObject.addProperty("phone", session.loginPhone)
             jsonObject.addProperty("patientid", session.patientId)
-
+            jsonObject.addProperty("device_type", "android")
             profileViewModel.refreshToken(jsonObject)
 
         })
@@ -93,10 +94,7 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
             Glide.with(this).applyDefaultRequestOptions(patientRequestOption()).load(it).into(drawerProfileImage)
         }
         profileDetailsUpdated.observe(this){
-            drawerName.text = it.patient_name
-            if(it.dob!=null){
-            session.loginDOB = it.dob
-            }
+            drawerName.text = session.loginName
         }
 
         profileViewModel.profile.observe(this) { response ->
@@ -109,12 +107,8 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
                         drawerName.text = response.data.data.patient_name
                     }
                 }
-                is Resource.Loading -> {
-
-                }
-                is Resource.Error -> {
-
-                }
+                is Resource.Loading -> { }
+                is Resource.Error -> { }
 
             }
         }
@@ -232,13 +226,13 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.drawerCustomerSupport -> {
                 slidingRootNav.closeMenu()
-                showToast("Under Construction")
+                val number = Uri.parse("tel:+911149424130")
+                val callIntent = Intent(Intent.ACTION_DIAL, number)
+                startActivity(callIntent)
             }
             R.id.drawerLogout -> {
-                session.isLogin = false
-                slidingRootNav.closeMenu()
-                startActivity(Intent(this, PatientLoginSignup::class.java))
-                finish()
+                setLogout()
+
             }
 
             R.id.navIcon -> {
@@ -246,4 +240,17 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    private fun setLogout() {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("type", session.loginType)
+        jsonObject.addProperty("id", session.loginId)
+        profileViewModel.logout(jsonObject = jsonObject)
+
+        session.isLogin = false
+        slidingRootNav.closeMenu()
+        startActivity(Intent(this, PatientLoginSignup::class.java))
+        finish()
+    }
+
 }

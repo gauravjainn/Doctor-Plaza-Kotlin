@@ -87,6 +87,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
         android:text="2 years"
+
         android:layout_marginTop="@dimen/_2sdp"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_8sdp"

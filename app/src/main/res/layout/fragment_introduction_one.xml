@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_30sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Lorem Ipsum is a dummy text"
+        android:text="Welcome to Doctors Plaza"
         android:textColor="@color/black"
         android:textSize="@dimen/_11sdp"
         app:layout_constraintVertical_chainStyle="packed"
@@ -49,10 +49,11 @@
         android:id="@+id/introLbl2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_65sdp"
+        android:layout_marginHorizontal="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/poppins"
         android:gravity="center"
-        android:text="It is a long established fact that a reader will be distracted"
+        android:text="Follow simple steps to Sign in Doctors Plaza. Choose your Doctor, Book an Appointment, Digital Prescription and many more."
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
         app:layout_constraintBottom_toTopOf="@id/nextBtn"
@@ -60,19 +61,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/introLbl" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:backgroundTint="@color/colorPrimary"
-        android:paddingVertical="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_7sdp"
         android:text="@string/next_lbl"
         android:textAllCaps="false"
         app:cornerRadius="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/ripple_effect"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:focusable="true"
+        android:clickable="true"
         android:layout_marginBottom="@dimen/_35sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/introLbl2" />
+        app:layout_constraintTop_toBottomOf="@+id/introLbl2"
+        tools:targetApi="m" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

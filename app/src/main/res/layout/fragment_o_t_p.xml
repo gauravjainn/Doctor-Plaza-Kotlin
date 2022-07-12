@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="@dimen/_10sdp"
     android:fitsSystemWindows="true"
+    android:padding="@dimen/_10sdp"
     tools:context=".ui.patient.loginSignUp.fragments.OTPFragment">
 
     <ImageView
@@ -39,7 +39,7 @@
                 android:text="Enter OTP"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_18sdp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/otpSentData"
@@ -79,18 +79,49 @@
                 app:otp_text_size="24dp"
                 app:width="60dp" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
+                android:id="@+id/resendOtpLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="If you didn't receive code!"
+                android:textColor="@color/colorPrimaryLight"
+                app:layout_constraintEnd_toStartOf="@id/resendOtp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/otpView"
+                app:layout_constraintTop_toBottomOf="@id/otpView" />
+
+            <TextView
+                android:id="@+id/resendOtp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="Resend"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="@id/otpView"
+                app:layout_constraintStart_toEndOf="@id/resendOtpLbl"
+                app:layout_constraintTop_toBottomOf="@id/otpView" />
+
+            <TextView
                 android:id="@+id/verifyOTP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorPrimary"
                 android:fontFamily="@font/poppins_medium"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/verify_lbl"
                 android:textAllCaps="false"
+                android:textColor="@color/white"
                 app:cornerRadius="@dimen/_5sdp"
-                app:layout_constraintTop_toBottomOf="@id/otpView" />
+                app:layout_constraintTop_toBottomOf="@id/resendOtp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,21 +3,17 @@ package com.doctorsplaza.app.ui.patient.fragments.profile
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
-import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,7 +24,6 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.transaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,16 +39,20 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.RequestBody
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-private const val LAST_OPENED_URI_KEY = "com.example.android.actionopendocument.pref.LAST_OPENED_URI_KEY"
+
+private const val LAST_OPENED_URI_KEY =
+    "com.example.android.actionopendocument.pref.LAST_OPENED_URI_KEY"
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListener {
 
-    private var reportImage: File? = null
+    private var reportFile: File? = null
 
     private lateinit var binding: FragmentProfileBinding
 
@@ -74,7 +73,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
 
     private lateinit var profileData: ProfileData
 
-    private lateinit var pdfPicker:ActivityResultLauncher<String>
+    private lateinit var pdfPicker: ActivityResultLauncher<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,20 +91,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     }
 
 
-
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
         binding.loader.isVisible = true
         profileViewModel.getProfile()
         profileViewModel.getPatientReport()
 
-        requireActivity().getSharedPreferences("Profile", Context.MODE_PRIVATE).let { sharedPreferences ->
-            if (sharedPreferences.contains(LAST_OPENED_URI_KEY)) {
-                val documentUri =
-                    sharedPreferences.getString(LAST_OPENED_URI_KEY, null)?.toUri() ?: return@let
-                openDocument(documentUri)
+        requireActivity().getSharedPreferences("Profile", Context.MODE_PRIVATE)
+            .let { sharedPreferences ->
+                if (sharedPreferences.contains(LAST_OPENED_URI_KEY)) {
+                    val documentUri =
+                        sharedPreferences.getString(LAST_OPENED_URI_KEY, null)?.toUri()
+                            ?: return@let
+                    openDocument(documentUri)
+                }
             }
-        }
     }
 
 
@@ -119,7 +119,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     if (response.data!!.status == 200) {
                         profileData = response.data.data
                         setUserData(profileData)
-                    } else{
+                    } else {
                         setUserData(profileData)
                     }
                 }
@@ -197,7 +197,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         val dobFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         var userDob = ""
 
-        if (session.loginDOB.isNotEmpty()&&session.loginDOB!="null") {
+        session.loginDOB = data.dob
+        
+        if (session.loginDOB.isNotEmpty() && session.loginDOB != "null") {
             val stringDate: Date = dobParse.parse(session.loginDOB)
             userDob = dobFormat.format(stringDate)
         }
@@ -210,8 +212,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                 email.text = data.email
                 phone.text = data.contact_number.toString()
                 address.text = data.address
-                if(data.age!=null){
-                session.loginAge = data.age
+                if (data.age != null) {
+                    session.loginAge = data.age
                 }
                 if (data.profile_picture != null) {
                     session.loginImage = data.profile_picture
@@ -253,9 +255,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         when (v?.id) {
             R.id.profileEdit -> {
                 val bundle = Bundle().apply {
-                    putString("dob",profileData.dob)
+                    putString("dob", profileData.dob)
                 }
-                findNavController().navigate(R.id.editProfileFragment,bundle)
+                findNavController().navigate(R.id.editProfileFragment, bundle)
             }
             R.id.addReport -> {
                 showPickerDialog()
@@ -270,7 +272,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
 
                 val uri: Uri = data?.data!!
 
-                reportImage = File(uri.path)
+                reportFile = File(uri.path)
                 addReport()
             }
             ImagePicker.RESULT_ERROR -> {
@@ -286,8 +288,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     private fun addReport() {
         val params: MutableMap<String, RequestBody> = HashMap()
         params["patient_id"] = getRequestBodyFromString(session.patientId) as RequestBody
-        val imageFile = if (reportImage != null) {
-            reportImage
+        val imageFile = if (reportFile != null) {
+            reportFile
         } else {
             File("")
         }
@@ -383,28 +385,50 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-                val uriString: String = uri.toString()
-                var pdfName: String? = null
-                requireActivity().contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                println("rsdasdadad ${RealPathUtil.getRealPath(requireContext(), uri)} $uri")
-                if (uriString.startsWith("content://")) {
-                    var myCursor: Cursor? = null
-                    try {
-                        // Setting the PDF to the TextView
-                        myCursor = requireContext().contentResolver.query(uri, null, null, null, null)
-                        if (myCursor != null && myCursor.moveToFirst()) {
-                            val pdfFile = File(uri.path)
-                            val name = FileProvider.getUriForFile(requireContext(), uri.authority!!,pdfFile)
-                            pdfName = myCursor.getString(myCursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
-                            println("kkkkkk $pdfName  $name")
-                        }
-                    } finally {
-                        myCursor?.close()
-                    }
-                }
-//                reportImage = File(RealPathUtil.getRealPath(requireContext(), uri))
-//                addReport()
-//
+                val filePath = copyFileToInternalStorage(uri, "reports")
+                reportFile = File(filePath)
+                addReport()
             }
-         }
+        }
+
+
+    private fun copyFileToInternalStorage(uri: Uri, newDirName: String): String? {
+        val returnCursor: Cursor? = requireActivity().contentResolver.query(
+            uri, arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE), null, null, null
+        )
+
+        val nameIndex = returnCursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        val sizeIndex = returnCursor?.getColumnIndex(OpenableColumns.SIZE)
+        returnCursor?.moveToFirst()
+        val name = nameIndex?.let { returnCursor.getString(it) }
+        val size = sizeIndex?.let { returnCursor.getLong(it).toString() }
+        val output: File = if (newDirName != "") {
+            val dir = File(requireContext().filesDir.toString() + "/" + newDirName)
+            if (!dir.exists()) {
+                dir.mkdir()
+            }
+            File(requireContext().filesDir.toString() + "/" + newDirName + "/" + name)
+        } else {
+            File(requireContext().filesDir.toString() + "/" + name)
+        }
+        try {
+            val inputStream: InputStream? = requireActivity().contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(output)
+            var read = 0
+            val bufferSize = 1024
+            val buffers = ByteArray(bufferSize)
+            while (inputStream?.read(buffers).also {
+                    if (it != null) {
+                        read = it
+                    }
+                } != -1) {
+                outputStream.write(buffers, 0, read)
+            }
+            inputStream?.close()
+            outputStream.close()
+        } catch (e: Exception) {
+            Log.e("Exception", e.message!!)
+        }
+        return output.path
+    }
 }

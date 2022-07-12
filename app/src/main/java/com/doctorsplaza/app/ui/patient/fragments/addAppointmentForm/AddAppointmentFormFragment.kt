@@ -49,7 +49,7 @@ import kotlin.collections.ArrayList
 class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_form),
     View.OnClickListener {
 
-    private var consultationFees: String = ""
+
     private var consultationDate: String? = ""
 
     private var selectedConsultationDate: String? = ""
@@ -95,6 +95,8 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
     private var timeSlotsList: MutableList<RoomTimeSlotsData> = ArrayList()
 
     private var timeSlotsListPosition = 0
+
+    private var consultationFee = 0
 
     private var jsonObjectOnline: JsonObject = JsonObject()
 
@@ -319,6 +321,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
             consultationFees.text = "₹${data.original_price}"
             total.text = "₹${data.final_price}"
+            consultationFee = data.final_price
         }
     }
 
@@ -352,8 +355,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
         binding.specializationSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
 
                 override fun onItemSelected(
                     p0: AdapterView<*>?,
@@ -380,7 +382,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                 doctorData = binding.doctorSpinner.selectedItem as DoctorsData
                 binding.consultationFees.text = "₹${doctorData!!.consultationfee}"
                 selectedDoctorId = doctorData!!._id
-                consultationFees = doctorData!!.consultationfee
+                consultationFee = doctorData!!.consultationfee.toInt()
 
             }
         }
@@ -443,6 +445,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
         timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
             binding.consultationTime.text = ""
+            timeSlotsDialog.show()
         }
 
         val timeSlotsRv = timeSlotsDialog.findViewById<RecyclerView>(R.id.timeSlotsRv)
@@ -509,6 +512,8 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
             bookAppointmentBtn.setOnClickListener(this@AddAppointmentFormFragment)
             applyCouponBtn.setOnClickListener(this@AddAppointmentFormFragment)
+
+            consultationTime.setOnClickListener(this@AddAppointmentFormFragment)
         }
     }
 
@@ -594,6 +599,9 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             R.id.applyCouponBtn -> {
                 applyCoupon()
             }
+            R.id.consultationTime -> {
+                showTimeSlotsDialog()
+            }
         }
     }
 
@@ -637,12 +645,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             jsonObject.addProperty("appointment_type", selectedAppointmentType)
             jsonObject.addProperty("booked_as", selectedBookType)
             jsonObject.addProperty("clinicname", clinicData!!.clinicName)
-
-            if (binding.total.text.toString().isNotBlank()) {
-                jsonObject.addProperty("consultation_fee", binding.total.text.toString())
-            } else {
-                jsonObject.addProperty("consultation_fee", consultationFees)
-            }
+            jsonObject.addProperty("consultation_fee", consultationFee)
 
             jsonObject.addProperty("date", selectedConsultationDate)
             jsonObject.addProperty("departmentname", specializationData)
@@ -681,7 +684,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                     appLoader.dismiss()
                     if (response.data?.order_id!!.isNotEmpty()) {
                         val intent = Intent(requireContext(), PaymentActivity::class.java)
-                        intent.putExtra("consultationFee", consultationFees)
+                        intent.putExtra("consultationFee", consultationFee.toString())
                         intent.putExtra("orderId", response.data.order_id)
                         launchPaymentActivity.launch(intent)
                     } else {
@@ -740,7 +743,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
     private fun savePaymentInfo(order_id: String, razorpay_payment_id: String) {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("amount", consultationFees)
+        jsonObject.addProperty("amount", consultationFee)
         jsonObject.addProperty("doctor_id", doctorData?._id)
         jsonObject.addProperty("order_id", order_id)
         jsonObject.addProperty("payment_id", razorpay_payment_id)

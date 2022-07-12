@@ -39,6 +39,7 @@ class SessionManager(var mcxt: Context) {
 
         const val KEY_PATIENT_ID = "patientId"
         const val KEY_DOCTOR_ID = "dotorId"
+        const val KEY_CALL_STATUS = "callStatus"
 
     }
 
@@ -167,6 +168,13 @@ class SessionManager(var mcxt: Context) {
         get() = generalPref.getString(KEY_DOCTOR_ID, "").toString()
         set(doctorID) {
             generalEditor.putString(KEY_DOCTOR_ID, doctorID)
+            generalEditor.commit()
+        }
+
+    var callStatus: String
+        get() = generalPref.getString(KEY_CALL_STATUS, "").toString()
+        set(status) {
+            generalEditor.putString(KEY_CALL_STATUS, status)
             generalEditor.commit()
         }
 }

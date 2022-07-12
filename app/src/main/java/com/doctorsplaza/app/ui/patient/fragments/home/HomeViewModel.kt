@@ -1,6 +1,5 @@
 package com.doctorsplaza.app.ui.patient.fragments.home
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
@@ -8,6 +7,7 @@ import com.doctorsplaza.app.data.commonModel.AppointmentsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurSpecialistsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.PatientBannerModel
+import com.doctorsplaza.app.ui.patient.fragments.home.model.VideosModel
 import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchModel
 import com.doctorsplaza.app.utils.Resource
 import com.google.gson.JsonObject
@@ -19,7 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: Repository,private val session: SessionManager) : ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: Repository, private val session: SessionManager) : ViewModel() {
 
     val patientBanner = SingleLiveEvent<Resource<PatientBannerModel>>()
     val ourSpecialists = SingleLiveEvent<Resource<OurSpecialistsModel>>()
@@ -27,16 +27,8 @@ class HomeViewModel @Inject constructor(private val repository: Repository,priva
     val appointments = SingleLiveEvent<Resource<AppointmentsModel>>()
     val search = SingleLiveEvent<Resource<SearchModel>>()
 
-    var patientBannerLoaded = false
-    var ourSpecialistsLoaded = false
-    var ourDoctorsLoaded = false
-    val allDataLoaded = MutableLiveData<Boolean>()
+    val videos = SingleLiveEvent<Resource<VideosModel>>()
 
-
-    fun  getAllDataLoaded(){
-
-        allDataLoaded.postValue(patientBannerLoaded&&ourDoctorsLoaded&&ourSpecialistsLoaded)
-    }
 
     fun getPatientBanners() = viewModelScope.launch {
         val json = JsonObject()
@@ -106,7 +98,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository,priva
     private suspend fun safeCallOurDoctors() {
         ourDoctors.postValue(Resource.Loading())
         try {
-            val response = repository.getOurDoctors("1","10")
+            val response = repository.getOurDoctors("1", "10")
             if (response.isSuccessful) {
                 response.body()?.let { trendingResponse ->
                     ourDoctors.postValue(Resource.Success(trendingResponse))
@@ -135,7 +127,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository,priva
     private suspend fun safeAppointmentsCall() {
         appointments.postValue(Resource.Loading())
         try {
-            val response = repository.getAppointments(session.patientId,"1","10","new")
+            val response = repository.getAppointments(session.patientId, "1", "10", "new")
             if (response.isSuccessful) {
                 response.body()?.let { appointmentsResponse ->
                     appointments.postValue(Resource.Success(appointmentsResponse))
@@ -157,7 +149,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository,priva
         }
     }
 
-    fun search(searchKey:String) = viewModelScope.launch {
+    fun search(searchKey: String) = viewModelScope.launch {
         safeSearchCall(searchKey)
     }
 
@@ -177,6 +169,35 @@ class HomeViewModel @Inject constructor(private val repository: Repository,priva
             when (t) {
                 is IOException -> search.postValue(Resource.Error("Network Failure", null))
                 else -> search.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun videos(limit: String, page: String) = viewModelScope.launch {
+        safeVideosCall(limit,page)
+    }
+
+    private suspend fun safeVideosCall(limit: String,page: String) {
+        videos.postValue(Resource.Loading())
+        try {
+            val response = repository.videos(limit,page)
+            if (response.isSuccessful) {
+                response.body()?.let { appointmentsResponse ->
+                    videos.postValue(Resource.Success(appointmentsResponse))
+                }
+            } else {
+                search.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> videos.postValue(Resource.Error("Network Failure", null))
+                else -> videos.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null

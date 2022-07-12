@@ -40,10 +40,14 @@ class CheckOutBookingAppointmentFragment :
     private var selectedBookType: String = "user"
     private var selectedGender: String = ""
     private var showDateParsed: Date? = null
-    private var consultationFees: String = ""
     private var selectedPaymentType: String = "Cash"
 
     private var doctorId: String = ""
+    private var clinicAddress: String = ""
+    private var clinicName: String = ""
+    private var clinicContact: String = ""
+    private var clinicId: String = ""
+
     private var consultationDate: String = ""
     private var consultationDay: String = ""
     private var consultationTimeId: String = ""
@@ -76,6 +80,8 @@ class CheckOutBookingAppointmentFragment :
 
     private var bookType = MutableLiveData<String>()
 
+    var consultationFee = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,7 +101,13 @@ class CheckOutBookingAppointmentFragment :
 
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
+
+
         doctorId = arguments?.getString("doctorId").toString()
+        clinicId = arguments?.getString("clinicId").toString()
+        clinicName = arguments?.getString("clinicName").toString()
+        clinicAddress = arguments?.getString("clinicAddress").toString()
+        clinicContact = arguments?.getString("clinicContact").toString()
         consultationDate = arguments?.getString("consultationDate").toString()
         consultationDay = arguments?.getString("consultationDay").toString()
         consultationTimeId = arguments?.getString("consultationTimeId").toString()
@@ -124,20 +136,22 @@ class CheckOutBookingAppointmentFragment :
             if (from == "user") {
                 patientName.setText(session.loginName)
                 ageDetails.setText(session.loginAge)
+                patientName.isEnabled = false
+                ageDetails.isEnabled = false
             } else {
                 patientName.setText("")
                 ageDetails.setText("")
             }
-            clinicDetails.text = doctorDetails.clinicData.clinicAddress
-            contactDetails.text = doctorDetails.clinicData.clinicContact.toString()
+            clinicDetails.text = clinicAddress
+            contactDetails.text = clinicContact
+
             gender.text = session.loginGender
             selectedGender = session.loginGender.toString()
             showDateParsed = selectedDateFormat.parse(consultationDate)
             val showDate = dateFormat.format(showDateParsed)
             appointmentDateTime.text =
                 "$consultationDay, $showDate ($consultationStartTime - $consultationEndTime)"
-            patientName.isEnabled = false
-            ageDetails.isEnabled = false
+
         }
     }
 
@@ -256,6 +270,7 @@ class CheckOutBookingAppointmentFragment :
             consultationFees.text = "₹${data.original_price}"
             couponAmt.text = "-₹${data.discounted_price}"
             totalAmt.text = "₹${data.final_price}"
+            consultationFee = data.final_price
         }
     }
 
@@ -266,14 +281,15 @@ class CheckOutBookingAppointmentFragment :
             Glide.with(requireContext()).load(doctorDetails.profile_picture).into(doctorImage)
             doctorName.text = doctorDetails.doctorName
             doctorSpecialistIn.text = doctorDetails.specialization
-            doctorLocation.text = doctorDetails.city
+            doctorLocation.text = doctorDetails.address
             doctorDegree.text = doctorDetails.qualification
             verifiedIcon.isVisible = doctorDetails.is_approved
             consultationFees.text = "₹${doctorDetails.consultationfee}"
             totalAmt.text = "₹${doctorDetails.consultationfee}"
+            consultationFee = doctorDetails.consultationfee.toInt()
         }
 
-        consultationFees = doctorDetails.consultationfee
+
     }
 
     private fun setOnClickListener() {
@@ -410,8 +426,8 @@ class CheckOutBookingAppointmentFragment :
         jsonObject.addProperty("patientname", patientName)
         jsonObject.addProperty("age", patientAge)
         jsonObject.addProperty("gender", selectedGender)
-        jsonObject.addProperty("clinicname", doctorDetails.clinicData.clinicName)
-        jsonObject.addProperty("consultation_fee", consultationFees)
+        jsonObject.addProperty("clinicname", clinicName)
+        jsonObject.addProperty("consultation_fee", consultationFee)
         jsonObject.addProperty("appointment_type", appointmentType)
         jsonObject.addProperty("date", consultationDate)
         jsonObject.addProperty("departmentname", doctorDetails.specialization)
@@ -436,7 +452,7 @@ class CheckOutBookingAppointmentFragment :
 
     private fun createOrderId() {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("amount", "1")
+        jsonObject.addProperty("amount", consultationFee)
         appointmentViewModel.createOrderId(jsonObject)
         appointmentViewModel.createOrderId.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -447,7 +463,7 @@ class CheckOutBookingAppointmentFragment :
                     appLoader.dismiss()
                     if (response.data?.order_id!!.isNotEmpty()) {
                         val intent = Intent(requireContext(), PaymentActivity::class.java)
-                        intent.putExtra("consultationFee", consultationFees)
+                        intent.putExtra("consultationFee", consultationFee.toString())
                         intent.putExtra("orderId", response.data.order_id)
                         launchPaymentActivity.launch(intent)
                     } else {
@@ -506,7 +522,7 @@ class CheckOutBookingAppointmentFragment :
 
     private fun savePaymentInfo(order_id: String, razorpay_payment_id: String) {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("amount", consultationFees)
+        jsonObject.addProperty("amount", consultationFee)
         jsonObject.addProperty("doctor_id", doctorId)
         jsonObject.addProperty("order_id", order_id)
         jsonObject.addProperty("payment_id", razorpay_payment_id)

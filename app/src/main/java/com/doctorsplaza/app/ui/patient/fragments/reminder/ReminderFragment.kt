@@ -119,7 +119,9 @@ class ReminderFragment : Fragment(R.layout.fragment_reminder), View.OnClickListe
                     appLoader.show()
                 }
                 is Resource.Error -> {
+                    binding.noData.isVisible = false
                     binding.errorMessage.isVisible = true
+                    println("Reminder Error: ${response.message}")
                     appLoader.dismiss()
                 }
             }

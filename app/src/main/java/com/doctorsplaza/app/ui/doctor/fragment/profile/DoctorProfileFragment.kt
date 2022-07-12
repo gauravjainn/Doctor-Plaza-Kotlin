@@ -139,6 +139,7 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
             email.text = data.email
             phone.text = data.contactNumber.toString()
             address.text = data.address
+            dayOffSwitch.isChecked = !data.turndayoff
         }
     }
 

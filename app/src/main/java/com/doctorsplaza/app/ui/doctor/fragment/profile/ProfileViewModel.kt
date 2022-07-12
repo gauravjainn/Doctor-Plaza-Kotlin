@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +31,9 @@ class DoctorProfileViewModel @Inject constructor(
     val uploadDoctorImage = SingleLiveEvent<Resource<ProfileImageUploadModel>>()
     val doctorTurnDayOn = SingleLiveEvent<Resource<CommonModel>>()
     val doctorTurnDayOff = SingleLiveEvent<Resource<CommonModel>>()
+    val refreshToken = SingleLiveEvent<Resource<CommonModel>>()
+
+    val logout = SingleLiveEvent<Resource<CommonModel>>()
 
     fun getDoctorProfile() = viewModelScope.launch { safeDoctorProfileCall() }
 
@@ -45,6 +49,38 @@ class DoctorProfileViewModel @Inject constructor(
             doctorProfile.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
+
+
+
+    fun refreshToken(json:  JsonObject) = viewModelScope.launch {
+        safeRefreshTokenCall(json)
+    }
+
+    private suspend fun safeRefreshTokenCall(json: JsonObject) {
+        refreshToken.postValue(Resource.Loading())
+        try {
+            val response = repository.refreshToken(json)
+            if (response.isSuccessful) {
+                response.body()?.let { doctorResponse ->
+                    refreshToken.postValue(Resource.Success(doctorResponse))
+                }
+            } else {
+                refreshToken.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> refreshToken.postValue(Resource.Error("Network Failure", null))
+                else -> refreshToken.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
 
 
     fun editDoctorProfile(jsonObject: JsonObject) =
@@ -138,6 +174,24 @@ class DoctorProfileViewModel @Inject constructor(
 
         } catch (t: Throwable) {
             doctorTurnDayOn.postValue(Resource.Error(checkThrowable(t), null))
+        }
+    }
+
+    fun logout(jsonObject: JsonObject) = viewModelScope.launch {
+        safeLogOutCall(jsonObject)
+    }
+
+    private suspend fun safeLogOutCall(jsonObject: JsonObject) {
+        logout.postValue(Resource.Loading())
+        try {
+            val response = repository.doctorTurnDayOff(jsonObject)
+            if (response.isSuccessful)
+                logout.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
+            else
+                logout.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            logout.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
 

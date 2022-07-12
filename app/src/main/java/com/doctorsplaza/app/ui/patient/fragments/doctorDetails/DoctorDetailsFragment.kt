@@ -5,12 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentDoctorDetailsBinding
+import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.ClinicsData
+import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.Clinics
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
@@ -22,6 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.OnClickListener {
 
+    private lateinit var clinicData: Clinics
     private var clinicAddress: String = ""
     private var clinicName: String = ""
 
@@ -67,6 +72,7 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
         clinicAddress = arguments?.getString("clinicAddress").toString()
         clinicContact = arguments?.getString("clinicContact").toString()
         doctorDetailsViewModel.getDoctor(doctorId)
+
     }
 
 
@@ -79,6 +85,7 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
                         binding.noData.isVisible = false
                         binding.loader.isVisible = false
                         setDoctorData(response.data.data[0])
+
                     } else {
                         binding.noData.isVisible = true
                         binding.loader.isVisible = true
@@ -104,11 +111,24 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
             Glide.with(requireContext()).load(data.profile_picture).into(doctorImage)
             doctorName.text = data.doctorName
             doctorSpecialistIn.text = data.specialization
-            doctorLocation.text = data.city
+            doctorLocation.text = data.address
             doctorDegree.text = data.qualification
             verifiedIcon.isVisible = data.is_approved
             verifiedViewGrp.isVisible = data.is_approved
             about.text = data.about
+            setClinicsSpinner(data.clinics)
+        }
+    }
+
+    private fun setClinicsSpinner(data: List<Clinics>) {
+        val clinicAdapter = ArrayAdapter(requireContext(), R.layout.spinner_text, data)
+        clinicAdapter.setDropDownViewResource(R.layout.spinner_text)
+        binding.clinicSpinner.adapter = clinicAdapter
+        binding.clinicSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                clinicData = binding.clinicSpinner.selectedItem as Clinics
+            }
         }
     }
 
@@ -132,10 +152,10 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
             R.id.bookAppointment -> {
                 val bundle = Bundle()
                 bundle.putString("doctorId", doctorId)
-                bundle.putString("clinicId", clinicId)
-                bundle.putString("clinicName", clinicName)
-                bundle.putString("clinicContact", clinicContact)
-                bundle.putString("clinicAddress", clinicAddress)
+                bundle.putString("clinicId", clinicData._id)
+                bundle.putString("clinicName", clinicData.clinicName)
+                bundle.putString("clinicContact", clinicData.clinicContactNumber)
+                bundle.putString("clinicAddress", clinicData.location)
                 bundle.putString("appointmentType", appointmentType)
                 findNavController().navigate(R.id.bookAppointmentFragment, bundle)
             }

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,12 +26,10 @@ import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTi
 import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.DoctorData
-import com.doctorsplaza.app.ui.patient.fragments.home.adapter.BannerAdapter
-import com.doctorsplaza.app.ui.patient.fragments.home.adapter.OurDoctorsAdapter
-import com.doctorsplaza.app.ui.patient.fragments.home.adapter.OurSpecialistAdapter
-import com.doctorsplaza.app.ui.patient.fragments.home.adapter.UpcomingAppointmentsAdapter
+import com.doctorsplaza.app.ui.patient.fragments.home.adapter.*
 import com.doctorsplaza.app.ui.patient.fragments.home.model.BannerData
 import com.doctorsplaza.app.ui.patient.fragments.home.model.SpecialistData
+import com.doctorsplaza.app.ui.patient.fragments.home.model.VideoData
 import com.doctorsplaza.app.utils.*
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -81,6 +80,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
     @Inject
     lateinit var upcomingAppointmentsAdapter: UpcomingAppointmentsAdapter
 
+    @Inject
+    lateinit var videosAdapter: HomeVideosAdapter
+
     private lateinit var specialistData: List<SpecialistData>
 
     private var timeSlotsList: MutableList<RoomTimeSlotsData> = ArrayList()
@@ -109,6 +111,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
     private fun init() {
         doctorPlazaLoader = DoctorPlazaLoader(requireContext())
         homeViewModel.getPatientBanners()
+        homeViewModel.videos("10", "1")
         homeViewModel.getOurSpecialists()
         homeViewModel.getOurDoctors()
         homeViewModel.getAppointments()
@@ -121,6 +124,28 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                 is Resource.Success -> {
                     if (response.data?.status == 200) {
                         setBannerView(response.data.data)
+                    }
+                }
+                is Resource.Loading -> {
+                    showLoading()
+                }
+                is Resource.Error -> {
+                }
+            }
+        }
+
+        homeViewModel.videos.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    if (response.data?.status == 200) {
+                        if(response.data.data.isNotEmpty()){
+                            binding.noVideosFound.isVisible = false
+                            binding.doctorVideosRv.isVisible = true
+                            setVideos(response.data.data)
+                        }else{
+                            binding.noVideosFound.isVisible = true
+                            binding.doctorVideosRv.isVisible = false
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -224,10 +249,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     doctorPlazaLoader.dismiss()
-                    if(response.data?.success!!){
+                    if (response.data?.success!!) {
                         showToast(response.data.message)
                         homeViewModel.getAppointments()
-                    }else{
+                    } else {
                         showToast(response.data.message)
                     }
                 }
@@ -244,7 +269,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     doctorPlazaLoader.dismiss()
-                    if (response.data?.code==200) {
+                    if (response.data?.code == 200) {
                         showToast(response.data.message)
                         rescheduleDialog.dismiss()
                         homeViewModel.getAppointments()
@@ -264,11 +289,22 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         }
     }
 
+    private fun setVideos(data: List<VideoData>) {
+        videosAdapter.differ.submitList(data)
+        binding.doctorVideosRv.apply {
+            setHasFixedSize(true)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = videosAdapter
+        }
+    }
+
     private fun setAppointmentRv(data: List<AppointmentData>) {
         upcomingAppointmentsAdapter.differ.submitList(data)
         binding.appointmentRv.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = upcomingAppointmentsAdapter
         }
     }
@@ -329,8 +365,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             bookBloodCallNow.setOnClickListener(this@HomeFragment)
             orderMedicineCallNow.setOnClickListener(this@HomeFragment)
             physioCallNow.setOnClickListener(this@HomeFragment)
+            bookBloodTestBg1.setOnClickListener(this@HomeFragment)
+            physioTherapyBg1.setOnClickListener(this@HomeFragment)
             searchBar.setOnClickListener(this@HomeFragment)
-
         }
     }
 
@@ -344,14 +381,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
 
         upcomingAppointmentsAdapter.setOnAppointmentClickListener {
             val bundle = Bundle().apply {
-                putString("from","upcoming")
-                putString("appointmentId",it._id)
+                putString("from", "upcoming")
+                putString("appointmentId", it._id)
             }
-            findNavController().navigate(R.id.appointmentDetailsFragment,bundle)
+            findNavController().navigate(R.id.appointmentDetailsFragment, bundle)
         }
 
         upcomingAppointmentsAdapter.setOnRescheduleClickListener {
-            showRescheduleDialog(it._id,it)
+            showRescheduleDialog(it._id, it)
         }
 
         upcomingAppointmentsAdapter.setOnCancelClickListener {
@@ -364,8 +401,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             }
             timeSlotsList[position].timeSlotData.isSelected = true
             timeSlotsListPosition = position
-            consultationTimeView.text =
-                "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
+            consultationTimeView.text = "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
             bookTimeAdapter.differ.submitList(timeSlotsList)
             timeSlotSelected = true
             bookTimeAdapter.notifyDataSetChanged()
@@ -373,29 +409,39 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
 
         specialistAdapter.setOnViewDoctors {
             val bundle = Bundle().apply {
-                putString("searchKey",it.name)
+                putString("searchKey", it.name.trim())
             }
-            findNavController().navigate(R.id.searchFragment,bundle)
+            findNavController().navigate(R.id.searchFragment, bundle)
         }
 
-    }
+        videosAdapter.setOnVideoClickListener { it ->
+            val bundle = Bundle().apply {
+                putString("videoLink", it.video_id)
+                putString("videoTitle", it.title)
+                putString("videoSlug", it.slug)
+            }
 
+
+            findNavController().navigate(R.id.videosFragment, bundle)
+        }
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
 
             R.id.specialistsViewAll -> {
                 val bundle = Bundle().apply {
-                    putString("searchKey","")
+                    putString("searchKey", "")
                 }
-                findNavController().navigate(R.id.searchFragment,bundle)
+                findNavController().navigate(R.id.searchFragment, bundle)
             }
 
             R.id.searchBar -> {
                 val bundle = Bundle().apply {
-                    putString("searchKey","")
+                    putString("searchKey", "")
+
                 }
-                findNavController().navigate(R.id.searchFragment,bundle)
+                findNavController().navigate(R.id.searchFragment, bundle)
             }
 
             R.id.ourDoctorsViewAll -> {
@@ -409,17 +455,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             }
 
             R.id.bookBloodCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+919910295721")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.physioCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+919910295721")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.orderMedicineCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+911149424130 ")
+                val callIntent = Intent(Intent.ACTION_DIAL, number)
+                requireActivity().startActivity(callIntent)
+            }
+            R.id.physioTherapyBg1 -> {
+                    val number = Uri.parse("tel:+919910295721")
+                val callIntent = Intent(Intent.ACTION_DIAL, number)
+                requireActivity().startActivity(callIntent)
+            }
+            R.id.bookBloodTestBg1 -> {
+                val number = Uri.parse("tel:+911149424130")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
@@ -483,10 +539,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
 
 
         consultationTimeView.setOnClickListener {
-            if(consultationDateView.text.toString().isNotEmpty()){
-                if(timeSlotsList.isEmpty()){
+            if (consultationDateView.text.toString().isNotEmpty()) {
+                if (timeSlotsList.isEmpty()) {
                     showToast("there are no slots available for selected date")
-                }else{
+                } else {
                     showTimeSlotsDialog()
 
                 }
@@ -637,7 +693,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         jsonObject.addProperty("by", "patient")
         appointmentViewModel.cancelAppointment(appointmentId = appointmentId, jsonObject)
     }
-
 
 
     override fun onResume() {

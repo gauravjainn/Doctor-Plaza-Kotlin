@@ -20,10 +20,7 @@ import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookDat
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
 import com.doctorsplaza.app.ui.patient.fragments.reminder.model.DateModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -71,7 +68,8 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
 
     var dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-    private val selectedDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    private val selectedDateFormat =
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
 
     private var timeSlotsData: MutableList<RoomTimeSlotsData> = ArrayList()
 
@@ -184,10 +182,11 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
 
     private fun setDoctorData() {
         with(binding) {
-            Glide.with(requireContext()).load(doctorDetails.profile_picture).into(doctorImage)
+            Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
+                .load(doctorDetails.profile_picture).into(doctorImage)
             doctorName.text = doctorDetails.doctorName
             doctorSpecialistIn.text = doctorDetails.specialization
-            doctorLocation.text = doctorDetails.city
+            doctorLocation.text = doctorDetails.address
             doctorDegree.text = doctorDetails.qualification
             verifiedIcon.isVisible = doctorDetails.is_approved
         }
@@ -222,7 +221,7 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
         jsonObject.addProperty("doctorId", doctorDetails._id)
         jsonObject.addProperty("date", selectedBookDate)
         jsonObject.addProperty("day", consultationDay)
-        appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(appointmentType,jsonObject)
+        appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(appointmentType, jsonObject)
 
     }
 
@@ -270,7 +269,7 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
             jsonObject.addProperty("doctorId", doctorDetails._id)
             jsonObject.addProperty("date", selectedBookDate)
             jsonObject.addProperty("day", consultationDay)
-            appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(appointmentType,jsonObject)
+            appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(appointmentType, jsonObject)
         }
 
         bookTimeAdapter.setOnTimeSelectedListener { _, position ->
@@ -291,18 +290,36 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
                 findNavController().popBackStack()
             }
             R.id.saveBtn -> {
-                if(timeSlotSelected){
-                    val bundle = Bundle()
-                    bundle.putString("doctorId",doctorId)
-                    bundle.putString("consultationDate",selectedBookDate)
-                    bundle.putString("consultationDay",timeSlotsData[timeSlotsListPosition].day)
-                    bundle.putString("consultationTimeId",timeSlotsData[timeSlotsListPosition]._id)
-                    bundle.putString("consultationStartTime",timeSlotsData[timeSlotsListPosition].timeSlotData.start_time)
-                    bundle.putString("consultationEndTime",timeSlotsData[timeSlotsListPosition].timeSlotData.end_time)
-                    bundle.putString("consultationEndTime",timeSlotsData[timeSlotsListPosition].timeSlotData.end_time)
-                    bundle.putString("appointmentType",appointmentType)
-                    findNavController().navigate(R.id.checkOutBookingAppointmentFragment,bundle)
-                }else{
+                if (timeSlotSelected) {
+                    val bundle = Bundle().apply {
+                        putString("doctorId", doctorId)
+                        putString("consultationDate", selectedBookDate)
+                        putString("consultationDay", timeSlotsData[timeSlotsListPosition].day)
+                        putString("consultationTimeId", timeSlotsData[timeSlotsListPosition]._id)
+                        putString(
+                            "consultationStartTime",
+                            timeSlotsData[timeSlotsListPosition].timeSlotData.start_time
+                        )
+                        putString(
+                            "consultationEndTime",
+                            timeSlotsData[timeSlotsListPosition].timeSlotData.end_time
+                        )
+                        putString(
+                            "consultationEndTime",
+                            timeSlotsData[timeSlotsListPosition].timeSlotData.end_time
+                        )
+                        putString("appointmentType", appointmentType)
+                        putString("doctorId", doctorId)
+                        putString("clinicId", clinicId)
+                        putString("clinicName", clinicName)
+                        putString("clinicContact", clinicContact)
+                        putString("clinicAddress", clinicAddress)
+                        putString("appointmentType", appointmentType)
+                    }
+
+
+                    findNavController().navigate(R.id.checkOutBookingAppointmentFragment, bundle)
+                } else {
                     showToast("please any one time slot")
                 }
 

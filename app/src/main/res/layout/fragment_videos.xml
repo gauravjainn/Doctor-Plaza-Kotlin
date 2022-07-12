@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.patient.fragments.videos.VideosFragment">
+
+    <View
+        android:id="@+id/appBarBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:background="@color/white"
+        android:elevation="@dimen/_4sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:elevation="@dimen/_4sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:src="@drawable/ic_back_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/appBarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_4sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Videos"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintEnd_toEndOf="@id/appBarBg"
+        app:layout_constraintStart_toStartOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtubePlayer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_170sdp"
+        app:autoPlay="false"
+        app:handleNetworkEvents="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg"
+        android:transitionName="videoTransition" />
+
+    <TextView
+        android:id="@+id/videoSlug"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Piles"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/_9sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/youtubePlayer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/purple_lite_200"
+        />
+
+    <TextView
+        android:id="@+id/videoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Do not delay piles"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/videoSlug"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/purple_lite_200"
+        />
+
+    <TextView
+        android:id="@+id/recommendedLbl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Recommended Videos"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/black"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/videoTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/doctorVideosRv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_videos_main"
+        app:layout_constraintBottom_toTopOf="@id/moreLoader"
+        app:layout_constraintTop_toBottomOf="@id/recommendedLbl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/moreLoader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/doctorVideosRv"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/loaderView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/appBarBg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

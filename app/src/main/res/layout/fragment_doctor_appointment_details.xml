@@ -45,6 +45,7 @@
         app:layout_constraintTop_toTopOf="@id/appBarBg" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/videoCallIcon"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="0dp"
@@ -52,7 +53,6 @@
         android:elevation="@dimen/_4sdp"
         android:paddingHorizontal="@dimen/_6sdp"
         android:src="@drawable/video_camera"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/appBarBg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/appBarBg" />
@@ -493,18 +493,24 @@
                 android:background="@color/devider"
                 app:layout_constraintTop_toBottomOf="@id/paymentMode" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
+                android:visibility="gone"
                 android:id="@+id/addPrescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:backgroundTint="@color/colorPrimary"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Add Prescription"
-                android:visibility="gone"
                 app:cornerRadius="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
@@ -529,7 +535,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/completeAppointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -539,6 +545,13 @@
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="Complete"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
                 app:cornerRadius="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cancelAppointment"

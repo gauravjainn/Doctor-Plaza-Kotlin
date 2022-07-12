@@ -16,7 +16,6 @@ import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.SessionManager
 import javax.inject.Inject
 
-
 class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnClickListener {
     private lateinit var binding: FragmentPrescriptionBinding
 
@@ -43,17 +42,10 @@ class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnC
         return currentView!!
     }
 
-
-
     @SuppressLint("SetJavaScriptEnabled")
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
         val prescriptionUrl = arguments?.getString("prescription").toString()
-        /*val prescriptionUrl = arguments?.getString("prescription").toString()
-        binding.pdfWebView.webViewClient = WebViewClient()
-        binding.pdfWebView.settings.supportZoom()
-        binding.pdfWebView.settings.javaScriptEnabled  = true
-        binding.pdfWebView.loadUrl("https://docs.google.com/gview?embedded=true&url=$prescriptionUrl")*/
         showPdfFile(prescriptionUrl)
     }
 
@@ -63,7 +55,7 @@ class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnC
         binding.pdfWebView.invalidate()
         binding.pdfWebView.settings.javaScriptEnabled = true
         binding.pdfWebView.settings.setSupportZoom(true)
-        binding.pdfWebView.loadUrl("http://docs.google.com/gview?embedded=true&url=$imageString")
+            binding.pdfWebView.loadUrl("http://docs.google.com/gview?embedded=true&url=$imageString")
         binding.pdfWebView.webViewClient = object : WebViewClient() {
             var checkOnPageStartedCalled = false
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {

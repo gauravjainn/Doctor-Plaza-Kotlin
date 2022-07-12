@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/muteActionFab"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.twilio.video.VideoView
+            android:id="@+id/thumbnailVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tviMirror="true"
+            app:tviOverlaySurface="true" />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.twilio.video.VideoView
+        android:id="@+id/primaryVideoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:tviMirror="false"
+        app:tviScaleType="fill" />
+
+    <ProgressBar
+        android:id="@+id/reconnectingProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/videoStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/status_lbl"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/oppositeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/status_lbl"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/endCall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/oppositeName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/muteActionFab"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:background="@color/black_200"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_mic_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/endCall"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:roundPercent="1" />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/endCall"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:background="@color/red"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_end_call"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/muteActionFab"
+        app:layout_constraintEnd_toStartOf="@id/switchCameraActionFab"
+        app:layout_constraintStart_toEndOf="@id/muteActionFab"
+        app:layout_constraintTop_toTopOf="@id/muteActionFab"
+        app:roundPercent="1" />
+
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/switchCameraActionFab"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="center"
+        android:background="@color/black_200"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_camera_flip"
+        app:layout_constraintBottom_toBottomOf="@id/muteActionFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/endCall"
+        app:layout_constraintTop_toTopOf="@id/muteActionFab"
+        app:roundPercent="1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

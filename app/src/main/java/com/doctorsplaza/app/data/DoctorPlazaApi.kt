@@ -23,6 +23,7 @@ import com.doctorsplaza.app.ui.patient.fragments.home.model.OurSpecialistsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.PatientBannerModel
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.ClinicDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsModel
+import com.doctorsplaza.app.ui.patient.fragments.home.model.VideosModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.*
 import com.doctorsplaza.app.ui.patient.fragments.reminder.model.AddReminderModel
 import com.doctorsplaza.app.ui.patient.fragments.reminder.model.GetReminderModel
@@ -32,6 +33,7 @@ import com.doctorsplaza.app.ui.patient.fragments.slugs.model.SlugsModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.LoginModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.PatientRegisterModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.model.VerificationModel
+import com.doctorsplaza.app.ui.videoCall.model.VideoTokenModel
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
@@ -102,6 +104,17 @@ interface DoctorPlazaApi {
     @GET("patient/{id}")
     suspend fun getProfile(@Path("id") id: String): Response<GetProfileModel>
 
+
+    @POST("signInPatientPhone")
+    suspend fun resendLoginPatientOtp(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("signInDoctorMobile")
+    suspend fun resendLoginDoctorOtp(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("resendsignupDoctorMobile")
+    suspend fun resendSignupDoctorMobile(@Body jsonBody: JsonObject): Response<CommonModel>
+
+
     @Multipart
     @POST("patientreportupload")
     suspend fun addReport(
@@ -144,6 +157,7 @@ interface DoctorPlazaApi {
         @Path("patientId") patientId: String,
         @Body jsonBody: JsonObject
     ): Response<CommonModel>*/
+
 
     @DELETE("deletepatient/{patientId}")
     suspend fun deletePatientAccount(
@@ -214,6 +228,12 @@ interface DoctorPlazaApi {
 
     @POST("applycoupon")
     suspend fun applyCoupon(@Body jsonBody: JsonObject): Response<CouponModel>
+
+    @GET("doctorsprescribedVideos")
+    suspend fun videos(
+        @Query("limit") limit: String,
+        @Query("page") page: String
+    ): Response<VideosModel>
 
     /**
      *  Doctor Api
@@ -290,7 +310,7 @@ interface DoctorPlazaApi {
     suspend fun getDoctorAppointmentDetails(@Body jsonBody: JsonObject): Response<AppointmentModel>
 
     @DELETE("removedoctor/{id}")
-    suspend fun deleteDoctorAccount(id: String): Response<CommonModel>
+    suspend fun deleteDoctorAccount(@Path("id") id: String): Response<CommonModel>
 
     @POST("addPrescription")
     suspend fun addPrescription(@Body jsonBody: JsonObject): Response<AddPrescriptionModel>
@@ -311,5 +331,13 @@ interface DoctorPlazaApi {
         @Part file: MultipartBody.Part?
     ): Response<CommonModel>
 
+    @POST("joinCall")
+    suspend fun generateVideoToken(@Body jsonBody: JsonObject): Response<VideoTokenModel>
+
+    @POST("callnotify")
+    suspend fun notifyCallStatus(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @POST("logout")
+    suspend fun logout(@Body jsonBody: String): Response<CommonModel>
 }
 

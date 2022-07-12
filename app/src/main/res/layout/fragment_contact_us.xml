@@ -238,15 +238,22 @@
         app:layout_constraintStart_toEndOf="@+id/contentIcon"
         app:layout_constraintTop_toBottomOf="@id/contentLbl" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_30sdp"
         android:backgroundTint="@color/colorPrimary"
-        android:paddingVertical="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_7sdp"
         android:text="Save"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:focusable="true"
         android:textAllCaps="false"
         app:cornerRadius="@dimen/_5sdp"
         app:layout_constraintTop_toBottomOf="@+id/content" />

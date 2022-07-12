@@ -17,13 +17,13 @@
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/doctorImage"
             android:layout_width="@dimen/_70sdp"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
             android:src="@drawable/ic_user_image"
             android:scaleType="fitXY"
             app:roundPercent="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/starIcon"
             />
 
         <TextView
@@ -92,7 +92,7 @@
             android:text="4.9"
             android:textColor="@color/black"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_9sdp"
             android:gravity="center_vertical"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_4sdp"

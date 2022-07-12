@@ -20,6 +20,7 @@
     <color name="blue">#007AFF</color>
     <color name="dark_blue">#2a3dea</color>
     <color name="icon_tint">#4F000000</color>
+        <color name="black_200">#46000000</color>
 
     <color name="shimmerColor">#BCBCBC</color>
     <color name="light_black">#80000000</color>

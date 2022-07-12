@@ -189,18 +189,67 @@
         android:id="@+id/verifiedViewGrp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:constraint_referenced_ids="verifiedView,verifiedBanner,verifiedLbl" />
+
+    <TextView
+        android:id="@+id/selectClinicLbl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Select Clinic"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/doctorImage"
+        app:layout_constraintTop_toBottomOf="@id/verifiedView"/>
+    <View
+        android:id="@+id/clinicSpinnerBg"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/edt_bg"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/selectClinicLbl"
+        app:layout_constraintEnd_toEndOf="@id/selectClinicLbl"
+        app:layout_constraintTop_toBottomOf="@+id/selectClinicLbl" />
+
+    <ImageView
+        android:id="@+id/clinicIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:src="@drawable/ic_hospital"
+        app:layout_constraintBottom_toBottomOf="@id/clinicSpinnerBg"
+        app:layout_constraintStart_toStartOf="@+id/clinicSpinnerBg"
+        app:layout_constraintTop_toTopOf="@id/clinicSpinnerBg" />
+
+    <Spinner
+        android:id="@+id/clinicSpinner"
+        style="@style/SpinnerTheme"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:elevation="@dimen/_5sdp"
+        android:entries="@array/medicine_frequency"
+        android:fontFamily="@font/poppins_medium"
+        android:popupBackground="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/clinicSpinnerBg"
+        app:layout_constraintEnd_toEndOf="@+id/clinicSpinnerBg"
+        app:layout_constraintStart_toEndOf="@+id/clinicIcon"
+        app:layout_constraintTop_toTopOf="@+id/clinicSpinnerBg" />
 
     <View
         android:id="@+id/clinicConsultView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_55sdp"
+        android:layout_height="@dimen/_45sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/edt_bg"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/clinicSpinnerBg"
         app:layout_constraintStart_toStartOf="@id/doctorImage"
-        app:layout_constraintTop_toBottomOf="@id/verifiedView" />
+        app:layout_constraintTop_toBottomOf="@id/clinicSpinnerBg" />
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
         android:id="@+id/inClinicIcon"
@@ -270,10 +319,10 @@
     <View
         android:id="@+id/videoConsultView"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_55sdp"
+        android:layout_height="@dimen/_45sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/edt_bg"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/clinicSpinnerBg"
         app:layout_constraintStart_toStartOf="@id/doctorImage"
         app:layout_constraintTop_toBottomOf="@id/clinicConsultView" />
 
@@ -380,16 +429,23 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/bookAppointment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_25sdp"
         android:backgroundTint="@color/colorPrimary"
-        android:paddingVertical="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_7sdp"
         android:text="@string/book_appointment_lbl"
         app:cornerRadius="@dimen/_5sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <View

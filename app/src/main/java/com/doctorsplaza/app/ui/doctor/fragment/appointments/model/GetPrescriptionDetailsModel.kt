@@ -22,7 +22,7 @@ data class PrescriptionData(
     val instructions: String,
     val is_active: Boolean,
     val medicine: List<Medicine>,
-    val patientId: String,
+    val patientId: PatientId,
     val patient_note: String,
     val patientname: String,
     val suggestion: String,
@@ -30,7 +30,13 @@ data class PrescriptionData(
     val updatedAt: String
 )
 
-
+data class PatientId(
+    val _id: String,
+    val email: String,
+    val gender: String,
+    val patient_name: String,
+    val profile_picture: String
+)
 data class Time(
     val afterBreakfast: Int,
     val afterDinner: Int,

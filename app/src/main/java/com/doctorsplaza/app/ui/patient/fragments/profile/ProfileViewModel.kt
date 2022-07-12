@@ -5,10 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
 import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.*
-import com.doctorsplaza.app.utils.Resource
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.getRequestBodyFromFile
 import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,6 +25,7 @@ class ProfileViewModel @Inject constructor(private val repository: Repository,pr
     val deleteReport = SingleLiveEvent<Resource<DeleteReportModel>>()
     val uploadPatientImage = SingleLiveEvent<Resource<ProfileImageUploadModel>>()
     val refreshToken = SingleLiveEvent<Resource<CommonModel>>()
+    val logout = SingleLiveEvent<Resource<CommonModel>>()
 
 
 
@@ -252,6 +251,24 @@ class ProfileViewModel @Inject constructor(private val repository: Repository,pr
                     )
                 )
             }
+        }
+    }
+
+    fun logout(jsonObject: JsonObject) = viewModelScope.launch {
+        safeLogOutCall(jsonObject)
+    }
+
+    private suspend fun safeLogOutCall(jsonObject: JsonObject) {
+        logout.postValue(Resource.Loading())
+        try {
+            val response = repository.doctorTurnDayOff(jsonObject)
+            if (response.isSuccessful)
+                logout.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
+            else
+                logout.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            logout.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
 }

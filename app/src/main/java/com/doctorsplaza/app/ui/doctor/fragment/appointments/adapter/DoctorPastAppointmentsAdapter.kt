@@ -39,7 +39,7 @@ class DoctorPastAppointmentsAdapter @Inject constructor() :
 
                 consultationFees.text = "₹${appointmentData.consultation_fee}"
                 val parsedDate =
-                    inputFormat.parse(appointmentData.room_time_slot_id.createdAt)
+                    inputFormat.parse(appointmentData.date)
                 val formattedDate = outputFormat.format(parsedDate)
 
                 appointmentTimings.text =

@@ -6,6 +6,8 @@ import com.doctorsplaza.app.data.Repository
 import com.doctorsplaza.app.ui.doctor.loginSignUp.model.*
 import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.utils.Resource
+import com.doctorsplaza.app.utils.checkResponseBody
+import com.doctorsplaza.app.utils.checkThrowable
 import com.google.gson.JsonObject
 import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +28,9 @@ class DoctorLoginSignUpViewModel @Inject constructor(private val repository: Rep
     val specializations = SingleLiveEvent<Resource<SpecialistsModel>>()
     val city = SingleLiveEvent<Resource<CityModel>>()
     val state = SingleLiveEvent<Resource<StateModel>>()
+
+    val resendLoginOtp = SingleLiveEvent<Resource<CommonModel>>()
+    val resendSignUpOtp = SingleLiveEvent<Resource<CommonModel>>()
 
      fun checkEmail(jsonObject: JsonObject) = viewModelScope.launch {
         safeCheckEmailCall(jsonObject)
@@ -220,6 +225,45 @@ class DoctorLoginSignUpViewModel @Inject constructor(private val repository: Rep
                 is IOException -> city.postValue(Resource.Error("Network Failure", null))
                 else -> city.postValue(Resource.Error("Conversion Error ${t.message}", null))
             }
+        }
+    }
+
+
+
+
+    fun resendLoginOtp(jsonObject: JsonObject) = viewModelScope.launch {
+        safeResendLoginOtpCall(jsonObject)
+    }
+
+    private suspend fun safeResendLoginOtpCall(jsonObject: JsonObject) {
+        resendLoginOtp.postValue(Resource.Loading())
+        try {
+            val response = repository.resendDoctorLoginOtp(jsonObject)
+            if (response.isSuccessful)
+                resendLoginOtp.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
+            else
+                resendLoginOtp.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            resendLoginOtp.postValue(Resource.Error(checkThrowable(t), null))
+        }
+    }
+
+    fun resendSignUpOtp(jsonObject: JsonObject) = viewModelScope.launch {
+        safeResendSignUpOtpCall(jsonObject)
+    }
+
+    private suspend fun safeResendSignUpOtpCall(jsonObject: JsonObject) {
+        resendSignUpOtp.postValue(Resource.Loading())
+        try {
+            val response = repository.resendDoctorSignUpOtp(jsonObject)
+            if (response.isSuccessful)
+                resendSignUpOtp.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
+            else
+                resendSignUpOtp.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            resendSignUpOtp.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
 }

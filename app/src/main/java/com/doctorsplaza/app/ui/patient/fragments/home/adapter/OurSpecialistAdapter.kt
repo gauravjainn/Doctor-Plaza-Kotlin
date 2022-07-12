@@ -71,7 +71,9 @@ class OurSpecialistAdapter @Inject constructor() :
         if (differ.currentList.size > 9) 9 else differ.currentList.size
     }
 
-    fun getAdapterSize(from: String) {
+
+
+    fun setAdapterSize(from: String) {
         this.from = from
     }
 

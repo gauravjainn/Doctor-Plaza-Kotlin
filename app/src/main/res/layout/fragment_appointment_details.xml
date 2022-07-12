@@ -14,6 +14,7 @@
         android:background="@color/white"
         android:elevation="@dimen/_4sdp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -424,14 +425,21 @@
                 app:layout_constraintStart_toStartOf="@id/applyCouponLbl"
                 app:layout_constraintTop_toBottomOf="@id/applyCouponLbl" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/applyCouponBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
+                android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:text="Apply"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 app:cornerRadius="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="@id/couponEdt"
@@ -467,9 +475,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/green_corner_radius"
                 android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:text="Successful"
-                android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8sdp"
                 android:visibility="gone"
@@ -541,11 +549,11 @@
                 android:id="@+id/viewPrescription"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
-                android:src="@drawable/ic_view_prescription"
-                android:scaleType="fitXY"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/divider4"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_view_prescription"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/divider4" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ratingAndRescheduleLayout"
@@ -582,6 +590,7 @@
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginStart="@dimen/_2sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/edt_bg"
                     android:fontFamily="@font/poppins_semibold"
                     android:gravity="start"
@@ -591,7 +600,6 @@
                     android:paddingVertical="@dimen/_8sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ratingExperienceBar" />
@@ -608,29 +616,37 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="@dimen/_12sdp"
                     android:paddingHorizontal="@dimen/_20sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:text="@string/cancel_lbl"
                     android:textColor="@color/red"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/reschedule"
                     app:layout_constraintEnd_toStartOf="@id/reschedule"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/reschedule"
-                    app:layout_constraintBottom_toBottomOf="@id/reschedule"/>
+                    app:layout_constraintTop_toTopOf="@id/reschedule" />
 
-                <com.google.android.material.button.MaterialButton
+                <TextView
                     android:id="@+id/reschedule"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:background="@drawable/ripple_effect"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:paddingHorizontal="@dimen/_20sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:text="Reschedule"
+
                     app:cornerRadius="@dimen/_5sdp"
-                    app:layout_constraintStart_toEndOf="@id/cancelAppointment"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/cancelAppointment"
                     app:layout_constraintTop_toBottomOf="@+id/experienceDesc" />
 
                 <androidx.constraintlayout.widget.Group
@@ -643,16 +659,22 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/saveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-
+                android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="@string/save_lbl"
+                android:textColor="@color/white"
                 app:cornerRadius="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ratingAndRescheduleLayout" />

@@ -99,6 +99,9 @@ class Repository @Inject constructor() {
 
     suspend fun applyCoupon(json: JsonObject) = service.applyCoupon(json)
 
+    suspend fun resendLoginOtp(json: JsonObject) = service.resendLoginPatientOtp(json)
+
+    suspend fun videos(limit:String,page:String) = service.videos(limit,page)
 
     /**
      *  Doctor Api's
@@ -152,10 +155,18 @@ class Repository @Inject constructor() {
 
     suspend fun getAppointmentPrescription(id: String) = service.getAppointmentPrescription(id)
 
+    suspend fun generateVideoToken(json: JsonObject) = service.generateVideoToken(json)
+
+    suspend fun callNotify(json: JsonObject) = service.notifyCallStatus(json)
+
     suspend fun updateAppointmentStatus(json: JsonObject) = service.updateAppointmentStatus(json)
 
     suspend fun uploadPrescription(appointmentId: RequestBody, file: MultipartBody.Part?) = service.uploadPrescription(appointmentId,file)
 
     suspend fun getPrescriptionUrl(prescriptionId: String) = service.getPrescriptionUrl(prescriptionId =prescriptionId)
+
+    suspend fun resendDoctorLoginOtp(json: JsonObject) = service.resendLoginDoctorOtp(json)
+
+    suspend fun resendDoctorSignUpOtp(json: JsonObject) = service.resendSignupDoctorMobile(json)
 
 }

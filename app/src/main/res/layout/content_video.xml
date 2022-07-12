@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/videoContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:showIn="@layout/activity_video">
+
+    <com.twilio.video.VideoView
+        android:id="@+id/thumbnailVideoView"
+        app:tviOverlaySurface="true"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="@dimen/_100sdp"
+        android:layout_gravity="bottom|start"/>
+
+    <com.twilio.video.VideoView
+        android:id="@+id/primaryVideoView"
+        app:tviMirror="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/reconnectingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/status"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:id="@+id/videoStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:text="@string/status_lbl"/>
+
+    </LinearLayout>
+
+</merge>

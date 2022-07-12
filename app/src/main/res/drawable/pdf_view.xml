@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <color android:color="@color/purple_lite_200"/>
+
+    </item>
+
+    <item
+        android:height="@dimen/_20sdp"
+        android:width="@dimen/_20sdp"
+        android:gravity="center"
+        android:top="@dimen/_20sdp"
+        android:end="@dimen/_20sdp"
+        android:start="@dimen/_20sdp"
+        android:bottom="@dimen/_20sdp"
+        >
+        <bitmap android:src="@drawable/pdf_icon"/>
+    </item>
+
+</layer-list>

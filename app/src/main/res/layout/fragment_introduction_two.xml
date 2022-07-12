@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.patient.loginSignUp.introduction.IntroductionTwoFragment">
-
 
 
     <ImageView
@@ -14,13 +13,13 @@
         android:layout_width="@dimen/_160sdp"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="@dimen/_25sdp"
-        app:layout_constraintVertical_bias="0"
         android:src="@drawable/ic_dr_plaza_icon"
-        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toTopOf="@id/introLogo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageView
         android:id="@+id/introLogo"
@@ -39,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Lorem Ipsum is a dummy text"
+        android:text="Welcome to Doctors Plaza"
         android:textColor="@color/black"
         android:textSize="@dimen/_11sdp"
         app:layout_constraintBottom_toTopOf="@id/introLbl2"
@@ -51,28 +50,34 @@
         android:id="@+id/introLbl2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_65sdp"
+        android:layout_marginHorizontal="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/poppins"
         android:gravity="center"
-        android:text="It is a long established fact that a reader will be distracted"
+        android:text="Follow simple steps to Sign in Doctors Plaza. Choose your Doctor, Book an Appointment, Digital Prescription and many more."
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/nextBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/introLbl" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:backgroundTint="@color/colorPrimary"
-        android:paddingVertical="@dimen/_10sdp"
+        android:background="@drawable/ripple_effect"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:paddingVertical="@dimen/_7sdp"
         android:text="@string/get_started_lbl"
-        android:textAllCaps="false"
         app:cornerRadius="@dimen/_5sdp"
         app:layout_constraintBottom_toTopOf="@+id/loginAsDoctor"
         app:layout_constraintTop_toBottomOf="@+id/introLbl2" />
@@ -84,15 +89,15 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_65sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:text="Login as Doctor"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_12sdp"
-        android:layout_marginBottom="@dimen/_25sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nextBtn"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/nextBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

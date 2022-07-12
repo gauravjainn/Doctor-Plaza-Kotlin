@@ -2,6 +2,7 @@ package com.doctorsplaza.app.ui.patient.fragments.appointments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -18,16 +19,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentAppointmentDetailsBinding
+import com.doctorsplaza.app.service.callNotification.HeadsUpNotificationService
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionData
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
+import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.*
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.notify
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -72,6 +76,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
     private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     private val showDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    private val showDayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -304,6 +309,42 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         }
 
 
+        appointmentViewModel.generateVieoToken.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                        if (response.data?.code!=null && response.data.code == 200) {
+                            response.data.message.let { showToast(it) }
+                            appLoader.dismiss()
+                            session.callStatus = ""
+
+
+                            val jsonObject = JsonObject().apply {
+                                addProperty("type","patient")
+                                addProperty("name",appointmentData.doctorname)
+                                addProperty("status","calling")
+                                addProperty("appointmentId",appointmentId)
+                            }
+                            appointmentViewModel.callNotify(jsonObject)
+
+                            startActivity(Intent(requireActivity(),VideoActivity::class.java)
+                                .putExtra("videoToken",response.data.data.patients_token)
+                                .putExtra("name",appointmentData.doctorname)
+                                .putExtra("appointId",appointmentData._id)
+                            )
+                        } else {
+                            response.data?.message?.let { showToast(it) }
+                        }
+                }
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        appointmentViewModel.callNotify.observe(viewLifecycleOwner) {  }
+        }
+
     }
 
     private fun showTimeSlotsDialog() {
@@ -350,13 +391,13 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             doctorName.text = data.doctor_id.doctorName
             doctorSpecialistIn.text = data.doctor_id.specialization
             doctorDegree.text = data.doctor_id.qualification
-            Glide.with(requireContext()).load(data.doctor_id.profile_picture).into(doctorImage)
+            Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption()).load(data.doctor_id.profile_picture).into(doctorImage)
 
             patientName.text = data.patientname
             appointmentDateTime.text = data.patientname
             clinicDetails.text = data.clinic_id.location
             contactDetails.text = data.clinic_id.clinicContactNumber.toString()
-            ageDetails.text = data.patientname
+            ageDetails.text = data.age.toString()
             gender.text = data.gender
 
             consultationFees.text = "₹${data.doctor_id.consultationfee}"
@@ -365,10 +406,11 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             } else {
                 totalAmt.text = "₹${data.payment_id.amount}"
             }
-            val parsedDate = isoFormat.parse(data.room_time_slot_id.timeSlotData.createdAt)
+            val parsedDate = isoFormat.parse(data.date)
             val formattedDate = showDateFormat.format(parsedDate)
+            val formattedDay = showDayFormat.format(parsedDate)
             appointmentDateTime.text =
-                "${data.room_time_slot_id.timeSlotData.day}  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
+                "$formattedDay  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
 
 //            totalAmt.text = "₹${data.doctor_id.consultationfee}"
             binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
@@ -387,7 +429,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             }
         }
 
-        binding.viewPrescription.isVisible = data.prescription.isNotEmpty()
+        binding.viewPrescription.isVisible = data.prescription!="false"
     }
 
     private fun setOnAdapterClickListener() {
@@ -411,6 +453,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         binding.reschedule.setOnClickListener(this@AppointmentDetailsFragment)
         binding.cancelAppointment.setOnClickListener(this@AppointmentDetailsFragment)
         binding.viewPrescription.setOnClickListener(this@AppointmentDetailsFragment)
+        binding.videoCallIcon.setOnClickListener(this@AppointmentDetailsFragment)
     }
 
 
@@ -432,7 +475,54 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             R.id.cancelAppointment -> {
                 showCancelWarning()
             }
+            R.id.videoCallIcon -> {
+                val currentDate = Date()
+                val bookingDate = isoFormat.parse(appointmentData.date)
+
+
+                val stf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val parsedStartTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.start_time)
+                val parsedEndTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.end_time)
+
+                val currentTime = Date().time
+                val ctf = stf.format(currentTime)
+
+                if(currentDate.before(bookingDate)){
+                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+                    return
+                }
+
+                if(currentDate.after(bookingDate)){
+                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
+                    return
+                }
+
+                if(parsedStartTime.before(stf.parse(ctf))){
+                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+                    return
+                }
+
+                if(parsedEndTime.after(stf.parse(ctf))){
+                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
+                    return
+                }
+
+                val jsonObject =JsonObject().apply {
+                    addProperty("id",appointmentId)
+                    addProperty("type", "patient")
+                }
+                appointmentViewModel.generateVideoToken(jsonObject)
+            }
         }
+    }
+
+
+    private fun showVideoCallAlertPopUp(msg: String) {
+        AlertDialog.Builder(context)
+            .setMessage(msg)
+            .setPositiveButton("yes",null)
+            .setNegativeButton("no", null)
+            .show()
     }
 
     private fun saveReviewRating() {
@@ -610,5 +700,10 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         val jsonObject = JsonObject()
         jsonObject.addProperty("by", "patient")
         appointmentViewModel.cancelAppointment(appointmentId = appointmentId, jsonObject)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setObserver()
     }
 }

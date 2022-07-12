@@ -66,7 +66,7 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
                 is Resource.Success -> {
                     appLoader.dismiss()
                     dialog.dismiss()
-                    if (response.data!!.success) {
+                    if (response.data!!.code.toInt() == 200) {
                         requireContext().showToast(response.data.message)
                         session.isLogin = false
                         startActivity(Intent(requireActivity(), PatientLoginSignup::class.java))
@@ -122,7 +122,7 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
     }
 
     private fun showWarning() {
-        AlertDialog.Builder(context)
+        dialog = AlertDialog.Builder(context)
             .setTitle("Delete Account")
             .setMessage("Are you sure you want to Delete Your Account")
             .setPositiveButton(

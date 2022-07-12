@@ -410,8 +410,8 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
                     selectedCity.isEmpty() -> {
                         showToast("please select your City")
                     }
-                    pincode.isEmpty() -> {
-                        showToast("please enter your Pin Code")
+                    pincode.isEmpty() || pincode.length < 6 -> {
+                        showToast("please enter a valid Pin Code")
                     }
                     else -> {
                         pageCount.postValue(4)
@@ -430,7 +430,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
                         showToast("please enter a valid email")
                     }
 
-                    phone.isEmpty() -> {
+                    phone.isEmpty() && phone.length<10 -> {
                         showToast("please enter a valid phone number")
                     }
                     else -> {

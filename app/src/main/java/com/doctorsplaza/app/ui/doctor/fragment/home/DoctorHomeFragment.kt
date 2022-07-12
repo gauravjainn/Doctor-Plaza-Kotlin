@@ -111,14 +111,15 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
                     binding.loader.isVisible = false
                     if (response.data?.success!!) {
                         if (response.data.data.isEmpty()) {
+                            binding.appointmentRv.isVisible = false
                             binding.noAppointments.isVisible = true
                             binding.appointmentViewAll.isVisible = false
                         } else {
+                            binding.appointmentRv.isVisible = true
                             binding.noAppointments.isVisible = false
                             binding.appointmentViewAll.isVisible = true
                             setAppointmentsData(response.data.data)
                         }
-
                     }
                 }
                 is Resource.Loading -> {

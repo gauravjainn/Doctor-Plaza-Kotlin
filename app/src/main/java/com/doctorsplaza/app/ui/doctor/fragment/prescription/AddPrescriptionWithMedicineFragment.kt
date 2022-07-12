@@ -212,9 +212,9 @@ class AddPrescriptionWithMedicineFragment :
                     Glide.with(requireContext()).applyDefaultRequestOptions(patientRequestOption())
                         .load("")
 
-                    prescriptionId = "Patient ID:${it._id}"
+                    prescriptionId = it._id
                     patientName.text = it.patientname
-                    patientId.text = it.patientId
+                    patientId.text = "Patient ID: ${it.patientId._id}"
                     appointmentTime.text = appointmentDateTime
                     consultationAmt.text = "₹ $consultationFee"
                     disease.setText(it.disease)

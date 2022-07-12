@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.doctorDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
+import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.GetAppointmentsClinicsModel
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsModel
 import com.doctorsplaza.app.utils.Resource
 import com.gym.gymapp.utils.SingleLiveEvent
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class DoctorDetailsViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     val doctor = SingleLiveEvent<Resource<DoctorDetailsModel>>()
+
 
     fun getDoctor(doctorId: String) = viewModelScope.launch {
         safeCallOurDoctors(doctorId)
@@ -43,4 +45,8 @@ class DoctorDetailsViewModel @Inject constructor(private val repository: Reposit
             }
         }
     }
+
+
+
+
 }

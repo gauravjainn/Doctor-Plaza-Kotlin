@@ -10,6 +10,7 @@ import com.doctorsplaza.app.ui.patient.fragments.home.model.OurDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.OurSpecialistsModel
 import com.doctorsplaza.app.ui.patient.fragments.home.model.PatientBannerModel
 import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchModel
+import com.doctorsplaza.app.ui.videoCall.model.VideoTokenModel
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
 import com.google.gson.JsonObject
@@ -37,6 +38,7 @@ class DoctorHomeViewModel @Inject constructor(
     var ourSpecialistsLoaded = false
     var ourDoctorsLoaded = false
     val allDataLoaded = MutableLiveData<Boolean>()
+    val generateVideoToken = SingleLiveEvent<Resource<VideoTokenModel>>()
 
 
     fun getAllDataLoaded() {
@@ -249,4 +251,8 @@ class DoctorHomeViewModel @Inject constructor(
             }
         }
     }
+
+
+
+
 }

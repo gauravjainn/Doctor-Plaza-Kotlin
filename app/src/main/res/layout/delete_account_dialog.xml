@@ -42,6 +42,8 @@
         android:backgroundTint="@color/colorPrimaryLight"
         android:text="@string/cancel_lbl"
         app:cornerRadius="@dimen/_5sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+
         app:layout_constraintEnd_toStartOf="@id/submitBtn"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +58,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/submit_lbl"
         app:cornerRadius="@dimen/_5sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancelBtn"
         app:layout_constraintTop_toBottomOf="@+id/reasonEdt" />

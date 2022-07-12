@@ -218,7 +218,7 @@
                 app:layout_constraintTop_toBottomOf="@id/genderSpinner" />
 
 
-            <EditText
+            <TextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/email" />
 
-            <EditText
+            <TextView
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,6 +261,7 @@
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="9865543145"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 app:drawableStartCompat="@drawable/ic_calling"
@@ -298,19 +299,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressLbl" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/saveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_25sdp"
-                android:backgroundTint="@color/colorPrimary"
                 android:paddingVertical="@dimen/_10sdp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="Save"
                 android:textAllCaps="false"
                 app:cornerRadius="@dimen/_5sdp"
-
-                app:layout_constraintTop_toBottomOf="@+id/address" />
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintTop_toBottomOf="@+id/address"
+                tools:targetApi="m" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -2,11 +2,14 @@ package com.doctorsplaza.app.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -259,9 +262,34 @@ fun hideKeyboard(activity: Activity) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
+fun Activity.turnScreenOnAndKeyguardOff() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+        setShowWhenLocked(true)
+        setTurnScreenOn(true)
+    } else {
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+        )
+    }
+
+    with(getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requestDismissKeyguard(this@turnScreenOnAndKeyguardOff, null)
+        }
+    }
+}
+
+
+val CALL_RESPONSE_ACTION_KEY = "CALL_RESPONSE_ACTION_KEY"
+val CALL_RECEIVE_ACTION = "CALL_RECEIVE_ACTION"
+val FCM_DATA_KEY = "FCM_DATA_KEY"
+val CALL_CANCEL_ACTION = "CALL_CANCEL_ACTION"
 
 
 val doctorProfileUpdated = SingleLiveEvent<Boolean>()
 val profileImageUpdated = MutableLiveData<String>()
 val profileDetailsUpdated = MutableLiveData<UpdatedProfileData>()
 val addMedicine = SingleLiveEvent<Medicine>()
+val callEnded = SingleLiveEvent<String>()
+

@@ -70,7 +70,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
     @Inject
     lateinit var pastAppointmentsAdapter: PastAppointmentsAdapter
 
-    private var appointmentDataList :List<AppointmentData> = ArrayList()
+    private var appointmentDataList: List<AppointmentData> = ArrayList()
 
     private var pageNo = 1
 
@@ -217,10 +217,10 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code==200) {
+                    if (response.data?.code == 200) {
                         showToast(response.data.message)
                         rescheduleDialog.dismiss()
-                        appointmentViewModel.getAppointments(pageNo = pageNo.toString(),"new")
+                        appointmentViewModel.getAppointments(pageNo = pageNo.toString(), "new")
                     } else {
                         showToast(response.data?.message.toString())
                     }
@@ -239,10 +239,10 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
     }
 
     private fun showServiceView() {
-        if(appointmentDataList.isEmpty()){
-            binding.noPastAppointmentsDataLbl.text = "There is no appointments but we provide following service."
-        }else{
-            binding.noPastAppointmentsDataLbl.text = "There is no past appointments but we provide following service."
+        binding.noPastAppointmentsDataLbl.text = if (appointmentDataList.isEmpty()) {
+            "There is no appointments but we provide following service."
+        } else {
+            "There is no past appointments but we provide following service."
         }
 
         binding.servicesGroup.isVisible = true
@@ -252,20 +252,20 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
 
         upcomingAppointmentsAdapter.setOnAppointmentClickListener {
             val bundle = Bundle().apply {
-                putString("from","upcoming")
-                putString("appointmentId",it._id)
+                putString("from", "upcoming")
+                putString("appointmentId", it._id)
             }
 
-            findNavController().navigate(R.id.appointmentDetailsFragment,bundle)
+            findNavController().navigate(R.id.appointmentDetailsFragment, bundle)
         }
 
         upcomingAppointmentsAdapter.setOnRescheduleClickListener {
-            showRescheduleDialog(it._id,it)
+            showRescheduleDialog(it._id, it)
 
         }
 
         upcomingAppointmentsAdapter.setOnCancelClickListener {
-           showCancelWarning(appointmentId = it._id)
+            showCancelWarning(appointmentId = it._id)
 
         }
 
@@ -341,10 +341,10 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
 
 
         consultationTimeView.setOnClickListener {
-            if(consultationDateView.text.toString().isNotEmpty()){
-                if(timeSlotsList.isEmpty()){
+            if (consultationDateView.text.toString().isNotEmpty()) {
+                if (timeSlotsList.isEmpty()) {
                     showToast("there are no slots available for selected date")
-                }else{
+                } else {
                     showTimeSlotsDialog()
 
                 }

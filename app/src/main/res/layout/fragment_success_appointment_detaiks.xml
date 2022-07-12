@@ -292,7 +292,7 @@
                 app:layout_constraintTop_toBottomOf="@id/medicinesLbl"
                 />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/downloadBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -300,11 +300,18 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:backgroundTint="@color/colorPrimary"
-                android:fontFamily="@font/poppins_medium"
                 android:paddingVertical="@dimen/_10sdp"
                 android:text="View PDF"
                 android:textAllCaps="false"
                 app:cornerRadius="@dimen/_5sdp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="@drawable/ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
+
                 app:layout_constraintTop_toBottomOf="@id/medicineRv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

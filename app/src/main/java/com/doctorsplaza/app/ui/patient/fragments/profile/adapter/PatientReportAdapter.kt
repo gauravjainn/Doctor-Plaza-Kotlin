@@ -7,22 +7,32 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ItemPatientReportBinding
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.PatientReportData
 import javax.inject.Inject
 
+
 class PatientReportAdapter @Inject constructor(): RecyclerView.Adapter<PatientReportAdapter.ViewHolder>() {
     private lateinit var  context: Context
-    private var doctorQualification = ""
     inner class  ViewHolder(private val binding: ItemPatientReportBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(data: PatientReportData) {
             with(binding){
-               Glide.with(context).load(data.image).into(reportImage)
+                val extension: String = data.file_name.substring(data.file_name.lastIndexOf("."))
+
+                if(extension.lowercase()==".pdf"){
+                    Glide.with(context).load(R.drawable.pdf_view).centerCrop().into(reportImage)
+                }else{
+                    Glide.with(context).load(data.image).into(reportImage)
+                }
+
                 deleteReport.setOnClickListener {
                     reportDeleteClickListener?.let {
+
                         it(data._id)
                     }
                 }
+
             }
         }
     }

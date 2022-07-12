@@ -13,6 +13,7 @@ import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponMod
 
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.ClinicDoctorsModel
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsModel
+import com.doctorsplaza.app.ui.videoCall.model.VideoTokenModel
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
 import com.google.gson.JsonArray
@@ -52,6 +53,8 @@ class AppointmentViewModel @Inject constructor(
 
     val getPrescriptionPdfUrl = SingleLiveEvent<Resource<PrescriptionPDFModel>>()
     val doctorAppointmentPrescription = SingleLiveEvent<Resource<GetPrescriptionDetailsModel>>()
+    val generateVieoToken = SingleLiveEvent<Resource<VideoTokenModel>>()
+    val callNotify = SingleLiveEvent<Resource<CommonModel>>()
 
 
     fun getDoctor(doctorId: String) = viewModelScope.launch {
@@ -673,6 +676,74 @@ class AppointmentViewModel @Inject constructor(
                     )
                 )
                 else -> doctorAppointmentPrescription.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun generateVideoToken(jsonObject: JsonObject) = viewModelScope.launch {
+        safeGenerateVideoTokenCall(jsonObject)
+    }
+
+    private suspend fun safeGenerateVideoTokenCall(jsonObject: JsonObject) {
+        generateVieoToken.postValue(Resource.Loading())
+        try {
+            val response = repository.generateVideoToken(jsonObject)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    generateVieoToken.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                generateVieoToken.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> generateVieoToken.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> generateVieoToken.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun callNotify(jsonObject: JsonObject) = viewModelScope.launch {
+        safeCallNotifyCall(jsonObject)
+    }
+
+    private suspend fun safeCallNotifyCall(jsonObject: JsonObject) {
+        callNotify.postValue(Resource.Loading())
+        try {
+            val response = repository.callNotify(jsonObject)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    callNotify.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                callNotify.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> callNotify.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> callNotify.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null

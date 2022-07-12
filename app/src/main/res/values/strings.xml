@@ -3,6 +3,9 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="room_screen_select_device">Select Device</string>
+    <string name="permissions_needed">Camera and Microphone permissions needed. Please allow in App Settings for additional functionality.</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_all_lbl">View all</string>
     <string name="next_lbl">Next</string>
@@ -73,6 +76,8 @@
     <string name="save_lbl">Save</string>
     <string name="prescribe_medicine_lbl">Prescribe Medicine</string>
     <string name="add_lbl">Add</string>
+    <string name="status_lbl">Status</string>
+    <string name="sign_in">Sign In</string>
 
 
 </resources>

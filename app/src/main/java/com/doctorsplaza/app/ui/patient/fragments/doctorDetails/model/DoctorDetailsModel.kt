@@ -11,6 +11,7 @@ data class DoctorDetailsData(
     val address: String,
     val city: String,
     val clinicData: ClinicData,
+    val clinics: List<Clinics>,
     val consultationfee: String,
     val contactNumber: Long,
     val createdAt: String,
@@ -24,7 +25,7 @@ data class DoctorDetailsData(
     val pincode: String,
     val profile_picture: String,
     val promoted: Boolean,
-    val qualification:String,
+    val qualification: String,
     val rating: Double,
     val ratings_count: Int,
     val searchtype: String,
@@ -34,6 +35,20 @@ data class DoctorDetailsData(
     val turndayoff: Boolean,
     val updatedAt: String
 )
+
+data class Clinics(
+    val _id: String,
+    val clinicName: String,
+    val location: String,
+    val clinicContactNumber: String,
+    val image: String,
+    val end_time: String,
+    val start_time: String,
+){
+    override fun toString(): String {
+        return clinicName
+    }
+}
 
 data class ClinicData(
     val clinicAddress: String,

@@ -38,11 +38,12 @@
         app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintBottom_toTopOf="@id/loginBg"/>
 
-    <View
+    <LinearLayout
         android:id="@+id/loginBg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_250sdp"
         android:background="@drawable/top_corner_radius"
+        android:orientation="vertical"
         android:elevation="@dimen/_5sdp"
         app:layout_constraintTop_toBottomOf="@id/introLogo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,6 +58,8 @@
         android:elevation="@dimen/_5sdp"
         android:fontFamily="@font/poppins"
         android:text="Email"
+
+
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
         app:layout_constraintStart_toStartOf="@id/loginBg"
@@ -160,24 +163,24 @@
         android:background="@drawable/edt_bg"
         android:drawableStart="@drawable/ic_calling"
         android:drawablePadding="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
         android:fontFamily="@font/poppins"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingVertical="@dimen/_10sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         android:inputType="number"
+        android:elevation="@dimen/_5sdp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/loginBg"
         app:layout_constraintTop_toBottomOf="@+id/phoneNumberLbl" />
 
-    <View
-        android:id="@+id/loginSubmitView"
+    <ImageButton
+        android:id="@+id/loginSubmitBtn"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/gree_corner_radius"
         android:elevation="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:foreground="@drawable/ripple_effect"
         app:layout_constraintBottom_toBottomOf="@id/loginSubmit"
         app:layout_constraintEnd_toEndOf="@id/loginSubmit"
         app:layout_constraintStart_toStartOf="@id/loginSubmit"
@@ -189,14 +192,17 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:elevation="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_7sdp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
-        android:paddingVertical="@dimen/_8sdp"
-        android:text="Sign In"
+        android:clickable="true"
+        android:text="@string/sign_in"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
-        app:layout_constraintBottom_toTopOf="@id/notHaveAccount"/>
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toTopOf="@id/notHaveAccount"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/notHaveAccount"

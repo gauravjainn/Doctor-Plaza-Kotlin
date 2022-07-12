@@ -13,15 +13,14 @@ import javax.inject.Inject
 
 class OurDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<OurDoctorsAdapter.ViewHolder>() {
     private lateinit var  context: Context
-    private var doctorQualification = ""
     inner class  ViewHolder(private val itemOurDoctorBinding: ItemOurDoctorBinding):RecyclerView.ViewHolder(itemOurDoctorBinding.root){
         fun bind(data: DoctorData) {
             with(itemOurDoctorBinding){
                 doctorName.text = data.doctorName
                 doctorSpecialistIn.text = data.specialization
                 doctorRating.text = data.rating.toString()
-                doctorRatingCount.text = data.qualification
-                doctorDegree.text = doctorQualification
+                doctorDegree.text = data.qualification
+                doctorRatingCount.text = "${data.ratings_count}"
                 Glide.with(context).load(data.profile_picture).into(doctorImage)
                 root.setOnClickListener {
                     doctorClickListener?.let {

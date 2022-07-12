@@ -77,6 +77,7 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
             dobEdt.setOnClickListener(this@PatientSignUpFragment)
             saveAndNext.setOnClickListener(this@PatientSignUpFragment)
             haveAccountSignIn.setOnClickListener(this@PatientSignUpFragment)
+            loginSubmit.setOnClickListener(this@PatientSignUpFragment)
         }
 
         binding.genderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -93,9 +94,8 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
     override fun onClick(v: View?) {
 
         when (v?.id) {
-            R.id.saveAndNext -> {
+            R.id.loginSubmit -> {
                 setViews()
-
             }
 
             R.id.backArrow -> {
@@ -189,10 +189,10 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
             }
 
         } else if (userNameGrp) {
-            binding.alreadyHaveAccount.visibility = View.INVISIBLE
             when {
                 patientName.isEmpty() -> {
                     requireContext().showToast("Please Enter Your Name")
+
                 }
 
                 patientGender == "Select Gender" -> {
@@ -200,6 +200,7 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
                 }
 
                 else -> {
+                    binding.alreadyHaveAccount.visibility = View.INVISIBLE
                     dobEmailGrp = true
                     binding.userNameGenderGrp.isVisible = false
                     binding.userPhoneGrp.isVisible = false

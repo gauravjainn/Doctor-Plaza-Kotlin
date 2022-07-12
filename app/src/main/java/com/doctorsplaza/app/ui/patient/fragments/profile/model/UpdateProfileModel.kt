@@ -2,6 +2,7 @@ package com.doctorsplaza.app.ui.patient.fragments.profile.model
 
 data class UpdateProfileModel(
     val code: Int,
+    val status: Int,
     val `data`: UpdatedProfileData,
     val message: String,
     val result: Result

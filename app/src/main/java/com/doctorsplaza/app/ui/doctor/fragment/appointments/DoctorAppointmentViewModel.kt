@@ -7,6 +7,7 @@ import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.GetPrescriptionDetailsModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionPDFModel
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentModel
+import com.doctorsplaza.app.ui.videoCall.model.VideoTokenModel
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
 import com.doctorsplaza.app.utils.getRequestBodyFromFile
@@ -34,6 +35,8 @@ class DoctorAppointmentViewModel @Inject constructor(
     val uploadPrescription = SingleLiveEvent<Resource<CommonModel>>()
 
     val getPrescriptionPdfUrl = SingleLiveEvent<Resource<PrescriptionPDFModel>>()
+    val generateVideoToken = SingleLiveEvent<Resource<VideoTokenModel>>()
+    val callNotify = SingleLiveEvent<Resource<CommonModel>>()
 
     fun getAppointmentDetails(jsonObject: JsonObject) = viewModelScope.launch {
         safeGetAppointmentDetailsCall(jsonObject)
@@ -215,6 +218,74 @@ class DoctorAppointmentViewModel @Inject constructor(
                     )
                 )
                 else -> getPrescriptionPdfUrl.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun generateVideoToken(jsonObject: JsonObject) = viewModelScope.launch {
+        safeGenerateVideoTokenCall(jsonObject)
+    }
+
+    private suspend fun safeGenerateVideoTokenCall(jsonObject: JsonObject) {
+        generateVideoToken.postValue(Resource.Loading())
+        try {
+            val response = repository.generateVideoToken(jsonObject)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    generateVideoToken.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                generateVideoToken.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> generateVideoToken.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> generateVideoToken.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+    fun callNotify(jsonObject: JsonObject) = viewModelScope.launch {
+        safeCallNotifyCall(jsonObject)
+    }
+
+    private suspend fun safeCallNotifyCall(jsonObject: JsonObject) {
+        callNotify.postValue(Resource.Loading())
+        try {
+            val response = repository.callNotify(jsonObject)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    callNotify.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                callNotify.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> callNotify.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> callNotify.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null

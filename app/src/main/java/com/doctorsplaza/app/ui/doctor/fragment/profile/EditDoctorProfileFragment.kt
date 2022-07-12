@@ -121,7 +121,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code=="200") {
+                    if (response.data?.status=="200") {
                         doctorProfileUpdated.postValue(true)
                         findNavController().navigate(R.id.action_editDoctorProfileFragment_to_doctorProfileFragment)
 
@@ -140,7 +140,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code == 200) {
+                    if (response.data?.status == 200) {
                         session.loginImage = response.data.profile_picture
                         doctorProfileUpdated.postValue(true)
                     } else {
@@ -274,7 +274,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
         val jsonObject = JsonObject()
         jsonObject.addProperty("id", profileData._id)
         jsonObject.addProperty("contactNumber", phone)
-        jsonObject.addProperty("departmentName", selectedDepartment)
+        jsonObject.addProperty("specialization", selectedDepartment)
         jsonObject.addProperty("consultationfee", consultationFee)
         jsonObject.addProperty("doctorName", name)
         jsonObject.addProperty("email", email)
