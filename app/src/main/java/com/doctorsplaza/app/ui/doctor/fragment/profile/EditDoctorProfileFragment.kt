@@ -85,7 +85,10 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
         doctorProfileViewModel.doctorProfile.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.status == 200) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else if (response.data?.status == 200) {
                         profileData = response.data.data[0]
                         profileLoaded = true
                         allLoaded.postValue(profileLoaded && specializationLoaded)
@@ -102,11 +105,16 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             doctorProfileViewModel.specializations.observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is Resource.Success -> {
+
                         appLoader.dismiss()
+                        if (response.data?.status == 401) {
+                            session.isLogin = false
+                            logOutUnAuthorized(requireActivity(),response.data.message)
+                        } else {
                         specialists = response.data?.data!!
                         specializationLoaded = true
                         allLoaded.postValue(profileLoaded && specializationLoaded)
-                    }
+                    }}
                     is Resource.Loading -> {
                         appLoader.show()
                     }
@@ -121,6 +129,10 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else
                     if (response.data?.status=="200") {
                         doctorProfileUpdated.postValue(true)
                         findNavController().navigate(R.id.action_editDoctorProfileFragment_to_doctorProfileFragment)
@@ -140,11 +152,18 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        session.loginImage = response.data.profile_picture
-                        doctorProfileUpdated.postValue(true)
-                    } else {
-                        binding.userImage.setImageResource(R.drawable.doctor_placeholder)
+                    when (response.data?.status) {
+                        401 -> {
+                            session.isLogin = false
+                            logOutUnAuthorized(requireActivity(),response.data.message)
+                        }
+                        200 -> {
+                            session.loginImage = response.data.profile_picture
+                            doctorProfileUpdated.postValue(true)
+                        }
+                        else -> {
+                            binding.userImage.setImageResource(R.drawable.doctor_placeholder)
+                        }
                     }
                 }
 
@@ -235,9 +254,10 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                 .load(data.profile_picture).into(userImage)
             name.setText(data.doctorName)
             consultationFees.setText(data.consultationfee)
-            email.setText(data.email)
-            phone.setText(data.contactNumber.toString())
+            email.text = data.email
+            phone.text = data.contactNumber.toString()
             address.setText(data.address)
+            experienceEdt.setText(data.experience)
         }
     }
 
@@ -256,6 +276,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
         val email = binding.email.text.toString()
         val phone = binding.phone.text.toString()
         val address = binding.address.text.toString()
+        val experience = binding.experienceEdt.text.toString()
 
         if (phone.length < 10) {
             showToast("Please enter a valid phone number")
@@ -269,6 +290,9 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
         } else if (address.isEmpty()) {
             showToast("Please enter a valid address")
             return
+        } else if (experience.isEmpty()) {
+            showToast("Please enter your experience")
+            return
         }
 
         val jsonObject = JsonObject()
@@ -280,6 +304,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
         jsonObject.addProperty("email", email)
         jsonObject.addProperty("address", address)
         jsonObject.addProperty("gender", selectedGender)
+        jsonObject.addProperty("experience", experience)
         doctorProfileViewModel.editDoctorProfile(jsonObject)
     }
 

@@ -1,5 +1,6 @@
 package com.doctorsplaza.app.ui.patient.fragments.bookAppointment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookDat
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
 import com.doctorsplaza.app.ui.patient.fragments.reminder.model.DateModel
+import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,17 +112,21 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
         appointmentViewModel.doctor.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        binding.noData.isVisible = false
-                        binding.loader.isVisible = false
-                        doctorDetails = response.data.data[0]
-                        setDoctorData()
-                        setDateList()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        binding.noData.isVisible = true
-                        binding.loader.isVisible = true
+                        if (response.data?.status == 200) {
+                            binding.noData.isVisible = false
+                            binding.loader.isVisible = false
+                            doctorDetails = response.data.data[0]
+                            setDoctorData()
+                            setDateList()
+                        } else {
+                            binding.noData.isVisible = true
+                            binding.loader.isVisible = true
+                        }
                     }
                 }
 
@@ -141,23 +147,27 @@ class BookAppointmentFragment : Fragment(R.layout.fragment_book_appointment), Vi
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code == 200) {
-                        if (response.data.data.isEmpty()) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
+                        if (response.data?.code == 200) {
+                            if (response.data.data.isEmpty()) {
+                                binding.noTimeSlots.isVisible = true
+                                binding.bookingTimeSlotRv.isVisible = false
+                            } else {
+                                binding.noTimeSlots.isVisible = false
+                                binding.bookingTimeSlotRv.isVisible = true
+                                timeSlotsData.clear()
+                                timeSlotsData.addAll(response.data.data)
+                                setTimeSlots()
+                            }
+                        } else {
                             binding.noTimeSlots.isVisible = true
                             binding.bookingTimeSlotRv.isVisible = false
-                        } else {
-                            binding.noTimeSlots.isVisible = false
-                            binding.bookingTimeSlotRv.isVisible = true
-                            timeSlotsData.clear()
-                            timeSlotsData.addAll(response.data.data)
-                            setTimeSlots()
                         }
-                    } else {
-                        binding.noTimeSlots.isVisible = true
-                        binding.bookingTimeSlotRv.isVisible = false
                     }
                 }
-
                 is Resource.Loading -> {
                     appLoader.show()
                 }

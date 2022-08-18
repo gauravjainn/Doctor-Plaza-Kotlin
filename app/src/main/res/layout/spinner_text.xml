@@ -7,4 +7,4 @@
     android:padding="10dp"
     android:textSize="@dimen/_10sdp"
     android:text="sad"
-    android:fontFamily="@font/poppins_semibold" />
+    android:fontFamily="@font/poppins_semi_bold" />

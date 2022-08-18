@@ -2,6 +2,9 @@ package com.doctorsplaza.app.ui.doctor.fragment.reports.model
 
 data class AppointmentsCountModel(
 
+    val status:Int? = 0,
+    val message:String = "",
+
     val weekrescount: Int,
     val monthrescount: Int,
     val yearrescount: Int,

@@ -45,7 +45,12 @@ class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnC
     @SuppressLint("SetJavaScriptEnabled")
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
+
         val prescriptionUrl = arguments?.getString("prescription").toString()
+        val from = arguments?.getString("from").toString()
+        if(from == "appointmentDetails"){
+            binding.appBarTitle.text = "Reports"
+        }
         showPdfFile(prescriptionUrl)
     }
 

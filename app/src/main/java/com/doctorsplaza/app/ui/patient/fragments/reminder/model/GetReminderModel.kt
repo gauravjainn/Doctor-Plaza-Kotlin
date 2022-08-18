@@ -3,7 +3,8 @@ package com.doctorsplaza.app.ui.patient.fragments.reminder.model
 data class GetReminderModel(
     val count: Int,
     val `data`: List<ReminderData>,
-    val status: Int
+    val status: Int,
+    val message: String
 )
 
 data class ReminderData(

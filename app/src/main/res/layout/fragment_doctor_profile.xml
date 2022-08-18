@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -110,7 +110,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -142,7 +142,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -173,7 +173,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -184,6 +184,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/departmentLbl" />
 
+            <TextView
+                android:id="@+id/experienceLbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/experience_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/department" />
+
+            <TextView
+                android:id="@+id/experienceEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/edt_bg"
+                android:drawableStart="@drawable/ic_department"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/experienceLbl" />
 
             <!--    <View
                     android:id="@+id/departmentSpinnerBg"
@@ -233,7 +263,7 @@
                 android:textSize="@dimen/_9sdp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/department" />
+                app:layout_constraintTop_toBottomOf="@id/experienceEdt" />
 
 
             <TextView
@@ -243,7 +273,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -276,7 +306,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -309,7 +339,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -341,7 +371,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -373,7 +403,7 @@
                 android:layout_marginTop="@dimen/_1sdp"
                 android:background="@drawable/edt_bg"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="top"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"

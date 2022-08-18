@@ -184,7 +184,7 @@ class DoctorProfileViewModel @Inject constructor(
     private suspend fun safeLogOutCall(jsonObject: JsonObject) {
         logout.postValue(Resource.Loading())
         try {
-            val response = repository.doctorTurnDayOff(jsonObject)
+            val response = repository.logout(jsonObject)
             if (response.isSuccessful)
                 logout.postValue(Resource.Success(checkResponseBody(response.body()) as CommonModel))
             else

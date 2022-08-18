@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model
 data class CouponModel(
     val code: Int,
     val message: String,
+    val status: Int,
     val data: CouponData
 )
 

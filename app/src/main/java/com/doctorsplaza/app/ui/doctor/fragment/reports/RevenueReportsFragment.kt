@@ -9,8 +9,7 @@ import com.doctorsplaza.app.databinding.FragmentRevenueReportsBinding
 import com.doctorsplaza.app.ui.doctor.fragment.reports.adapter.RevenueFragmentAdapter
 import com.google.android.material.tabs.TabLayout
 
-
-class RevenueReportsFragment : Fragment(R.layout.fragment_revenue_reports), View.OnClickListener {
+class RevenueReportsFragment : Fragment(R.layout.fragment_revenue_reports){
     private lateinit var binding: FragmentRevenueReportsBinding
 
     private lateinit var currentView: View
@@ -23,7 +22,6 @@ class RevenueReportsFragment : Fragment(R.layout.fragment_revenue_reports), View
         if (!this::currentView.isInitialized) {
             currentView = inflater.inflate(R.layout.fragment_revenue_reports, container, false)
             binding = FragmentRevenueReportsBinding.bind(currentView)
-            setOnClickListener()
             setTabLayoutAndViewPager()
         }
         return currentView
@@ -45,9 +43,7 @@ class RevenueReportsFragment : Fragment(R.layout.fragment_revenue_reports), View
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
 
@@ -58,19 +54,5 @@ class RevenueReportsFragment : Fragment(R.layout.fragment_revenue_reports), View
                 binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
             }
         })
-
     }
-
-    private fun setOnClickListener() {
-        with(binding) {
-
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
-        }
-    }
-
 }

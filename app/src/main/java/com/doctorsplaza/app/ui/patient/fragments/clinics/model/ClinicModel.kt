@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.clinics.model
 data class ClinicModel(
     val count: Int,
     val `data`: List<ClinicData>,
+    val message: String,
     val status: Int
 )
 

@@ -5,6 +5,7 @@ import java.io.Serializable
 data class OurSpecialistsModel(
     val count: Int,
     val data: List<SpecialistData>,
+    val message: String,
     val status: Int
 ):Serializable
 

@@ -586,7 +586,7 @@ class VideoActivity : AppCompatActivity() {
             when (response) {
                 is Resource.Success -> {
                     if (response.data?.code != null && response.data.code == 200) {
-                        response.data.message.let { showToast(it) }
+                        response.data.message.let { /*showToast(it)*/ }
                         accessToken = if (session.loginType == "doctor") {
                             response.data.data.doctor_token
                         } else {

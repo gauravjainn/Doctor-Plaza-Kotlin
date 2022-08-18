@@ -13,15 +13,12 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentClinicBinding
 import com.doctorsplaza.app.ui.patient.fragments.clinics.adapter.ClinicsAdapter
 import com.doctorsplaza.app.ui.patient.fragments.clinics.model.ClinicData
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.showToast
-import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClinicFragment : Fragment(R.layout.fragment_clinic) , View.OnClickListener {
+class ClinicFragment : Fragment(R.layout.fragment_clinic), View.OnClickListener {
 
     private lateinit var binding: FragmentClinicBinding
 
@@ -60,29 +57,34 @@ class ClinicFragment : Fragment(R.layout.fragment_clinic) , View.OnClickListener
 
 
     private fun setObserver() {
-        clinicViewModel.clinics.observe(viewLifecycleOwner){response->
-            when(response){
-            is Resource.Success->{
-                appLoader.dismiss()
-                binding.loading.isVisible = false
-                if(response.data!!.status==200){
-                    if(response.data.data.isNotEmpty()){
-                        setClinicsData(response.data.data)
-                    }else{
-                        binding.noData.isVisible = true
+        clinicViewModel.clinics.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    appLoader.dismiss()
+                    binding.loading.isVisible = false
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data!!.status == 200) {
+                            if (response.data.data.isNotEmpty()) {
+                                setClinicsData(response.data.data)
+                            } else {
+                                binding.noData.isVisible = true
+                            }
+                        }
                     }
                 }
-            }
-            is Resource.Loading->{
-                binding.loading.isVisible = true
-                appLoader.show()
+                is Resource.Loading -> {
+                    binding.loading.isVisible = true
+                    appLoader.show()
 
-            }
-            is Resource.Error->{
-                appLoader.dismiss()
-                binding.errorMessage.isVisible = true
-                requireContext().showToast(response.message.toString())
-            }
+                }
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                    binding.errorMessage.isVisible = true
+                    requireContext().showToast(response.message.toString())
+                }
 
             }
         }
@@ -103,12 +105,12 @@ class ClinicFragment : Fragment(R.layout.fragment_clinic) , View.OnClickListener
 
         clinicsAdapter.setOnViewDoctors {
             val bundle = Bundle().apply {
-                putString("clinicId",it._id)
-                putString("clinicName",it.clinicName)
-                putString("clinicAddress",it.location)
-                putString("clinicContact",it.clinicContactNumber.toString())
+                putString("clinicId", it._id)
+                putString("clinicName", it.clinicName)
+                putString("clinicAddress", it.location)
+                putString("clinicContact", it.clinicContactNumber.toString())
             }
-            findNavController().navigate(R.id.ourDoctorsFragment,bundle)
+            findNavController().navigate(R.id.ourDoctorsFragment, bundle)
         }
     }
 

@@ -23,10 +23,7 @@ import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewMod
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.model.CouponData
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
 import com.doctorsplaza.app.ui.patient.payment.PaymentActivity
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -57,7 +54,7 @@ class CheckOutBookingAppointmentFragment :
 
     private lateinit var binding: FragmentCheckOutBookingAppointmentBinding
 
-    var dateFormat: SimpleDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
 
     private val selectedDateFormat =
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -80,7 +77,8 @@ class CheckOutBookingAppointmentFragment :
 
     private var bookType = MutableLiveData<String>()
 
-    var consultationFee = 0
+    private var consultationFee = 0
+    private var showReports = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -159,17 +157,21 @@ class CheckOutBookingAppointmentFragment :
         appointmentViewModel.doctor.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        binding.noData.isVisible = false
-                        binding.loader.isVisible = false
-                        doctorDetails = response.data.data[0]
-                        setPatientData("user")
-                        setDoctorData()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        binding.noData.isVisible = true
-                        binding.loader.isVisible = true
+                        if (response.data?.status == 200) {
+                            binding.noData.isVisible = false
+                            binding.loader.isVisible = false
+                            doctorDetails = response.data.data[0]
+                            setPatientData("user")
+                            setDoctorData()
+                        } else {
+                            binding.noData.isVisible = true
+                            binding.loader.isVisible = true
+                        }
                     }
                 }
 
@@ -190,11 +192,16 @@ class CheckOutBookingAppointmentFragment :
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.success!!) {
-                        showToast(response.data.message)
-                        showConfirmDialog()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            showToast(response.data.message)
+                            showConfirmDialog()
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -245,7 +252,10 @@ class CheckOutBookingAppointmentFragment :
                 is Resource.Success -> {
                     appLoader.dismiss()
                     showToast(response.data?.message.toString())
-                    if (response.data?.code == 200) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else if (response.data?.code == 200) {
                         setCouponApplied(response.data.data)
                     }
                 }
@@ -418,6 +428,8 @@ class CheckOutBookingAppointmentFragment :
         val patientName = binding.patientName.text.toString()
         val patientAge = binding.ageDetails.text.toString()
         val consultationDate = selectConsultationDateFormat.format(showDateParsed)
+        showReports = binding.showReports.isChecked
+
 
         val jsonObject = JsonObject()
         jsonObject.addProperty("booked_as", selectedBookType)
@@ -438,6 +450,8 @@ class CheckOutBookingAppointmentFragment :
         jsonObject.addProperty("problem", "")
         jsonObject.addProperty("slotIdArray", consultationTimeId)
         jsonObject.addProperty("status", "pending")
+        jsonObject.addProperty("is_report", showReports)
+
 
         if (selectedPaymentType == "Online") {
             jsonObjectOnline = jsonObject
@@ -592,8 +606,8 @@ class CheckOutBookingAppointmentFragment :
         val showDateParsed = selectedDateFormat.parse(consultationDate)
         val showDate = dateFormat.format(showDateParsed)
 
-        confirmDialog.findViewById<TextView>(R.id.time).text =
-            "($consultationStartTime - $consultationEndTime)"
+        confirmDialog.findViewById<TextView>(R.id.doctorName).text = doctorDetails.doctorName
+        confirmDialog.findViewById<TextView>(R.id.time).text = "($consultationStartTime - $consultationEndTime)"
         confirmDialog.findViewById<TextView>(R.id.date).text = showDate
         confirmDialog.findViewById<TextView>(R.id.patientId).text = session.loginName
 

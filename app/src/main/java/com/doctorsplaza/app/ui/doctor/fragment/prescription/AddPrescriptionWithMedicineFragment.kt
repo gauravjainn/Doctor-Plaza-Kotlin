@@ -1,5 +1,6 @@
 package com.doctorsplaza.app.ui.doctor.fragment.prescription
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,19 +18,18 @@ import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionDa
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.adapter.MedicineAdapter
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
-import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.utils.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.processor.internal.definecomponent.codegen._dagger_hilt_android_internal_builders_FragmentComponentBuilder
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 
+@SuppressLint("SetTextI18n")
 @AndroidEntryPoint
 class AddPrescriptionWithMedicineFragment :
     Fragment(R.layout.fragment_add_prescription_with_medicine), View.OnClickListener {
@@ -48,7 +48,6 @@ class AddPrescriptionWithMedicineFragment :
     private var currentView: View? = null
 
     private lateinit var appLoader: DoctorPlazaLoader
-
 
     @Inject
     lateinit var medicineAdapter: MedicineAdapter
@@ -123,12 +122,16 @@ class AddPrescriptionWithMedicineFragment :
                 is Resource.Success -> {
                     binding.loader.isVisible = false
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.code == 200) {
                         setPrescriptionData(response.data.data)
                     } else {
                         showToast(response.data?.message.toString())
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -143,13 +146,17 @@ class AddPrescriptionWithMedicineFragment :
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.success!!) {
                         val bundle = Bundle().apply {
                             putString("appointId",appointmentId)
                         }
                         findNavController().navigate(R.id.action_addPrescriptionWithMedicineFragment_to_doctorAppointmentDetailsFragment,bundle)
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -164,6 +171,10 @@ class AddPrescriptionWithMedicineFragment :
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.code == 200) {
                         if (response.data.perscription.isNotEmpty()) {
                             val bundle = Bundle().apply {
@@ -178,7 +189,7 @@ class AddPrescriptionWithMedicineFragment :
                         } else {
                             showToast("There is no pdf available")
                         }
-                    }
+                    }}
                 }
                 is Resource.Loading -> {
                     appLoader.show()
@@ -194,6 +205,7 @@ class AddPrescriptionWithMedicineFragment :
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setMedicineRv() {
         medicineAdapter.differ.submitList(medicines)
         binding.medicineRv.apply {
@@ -205,6 +217,7 @@ class AddPrescriptionWithMedicineFragment :
         medicineAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("CheckResult")
     private fun setPrescriptionData(data: List<PrescriptionData>) {
         with(binding) {
             data.forEach {

@@ -16,10 +16,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentSettingsBinding
 import com.doctorsplaza.app.data.commonModel.CommonViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,6 +67,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                 is Resource.Success -> {
                     appProgress.dismiss()
                     dialog.dismiss()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.code.toInt() == 200) {
                         requireContext().showToast(response.data.message)
                         session.isLogin = false
@@ -78,7 +79,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                     } else {
                         requireContext().showToast(response.data.message)
                     }
-                }
+                }}
 
                 is Resource.Loading -> {
                     appProgress.show()

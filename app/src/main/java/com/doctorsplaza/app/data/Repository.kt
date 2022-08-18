@@ -101,6 +101,8 @@ class Repository @Inject constructor() {
 
     suspend fun resendLoginOtp(json: JsonObject) = service.resendLoginPatientOtp(json)
 
+    suspend fun oneTapSignUpPatient(json: JsonObject) = service.oneTapSignUpPatient(json)
+
     suspend fun videos(limit:String,page:String) = service.videos(limit,page)
 
     /**
@@ -168,5 +170,7 @@ class Repository @Inject constructor() {
     suspend fun resendDoctorLoginOtp(json: JsonObject) = service.resendLoginDoctorOtp(json)
 
     suspend fun resendDoctorSignUpOtp(json: JsonObject) = service.resendSignupDoctorMobile(json)
+
+    suspend fun logout(json: JsonObject) = service.logout(json)
 
 }

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.AbsListView
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -26,7 +27,9 @@ import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTi
 import com.doctorsplaza.app.ui.patient.fragments.appointments.adapter.PastAppointmentsAdapter
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.patient.fragments.home.adapter.UpcomingAppointmentsAdapter
+import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -118,17 +121,21 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
                     appLoader.dismiss()
                     binding.loader.isVisible = false
                     binding.errorMsg.isVisible = false
-                    if (response.data?.status == 200) {
-                        if (response.data.data.isEmpty()) {
-                            binding.appointmentRv.isVisible = false
-                            binding.noAppointments.isVisible = true
-                        } else {
-                            binding.appointmentRv.isVisible = true
-                            binding.noAppointments.isVisible = false
-                            appointmentDataList = response.data.data
-                            setAppointmentRv(appointmentDataList)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else
+                        if (response.data?.status == 200) {
+                            if (response.data.data.isEmpty()) {
+                                binding.appointmentRv.isVisible = false
+                                binding.noAppointments.isVisible = true
+                            } else {
+                                binding.appointmentRv.isVisible = true
+                                binding.noAppointments.isVisible = false
+                                appointmentDataList = response.data.data
+                                setAppointmentRv(appointmentDataList)
+                            }
                         }
-                    }
                 }
 
                 is Resource.Loading -> {
@@ -149,7 +156,10 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else if (response.data?.status == 200) {
                         if (response.data.data.isEmpty()) {
                             showServiceView()
                         } else {
@@ -174,11 +184,16 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.success!!) {
-                        showToast(response.data.message)
-                        appointmentViewModel.getAppointments("1", "new")
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            showToast(response.data.message)
+                            appointmentViewModel.getAppointments("1", "new")
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -195,13 +210,18 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.data?.isEmpty()!!) {
-                        showToast("No Slots Available for Selected Date")
-                        consultationTimeView.text = ""
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        timeSlotsList.clear()
-                        timeSlotsList.addAll(response.data.data)
-                        showTimeSlotsDialog()
+                        if (response.data?.data?.isEmpty()!!) {
+                            showToast("No Slots Available for Selected Date")
+                            consultationTimeView.text = ""
+                        } else {
+                            timeSlotsList.clear()
+                            timeSlotsList.addAll(response.data.data)
+                            showTimeSlotsDialog()
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -217,12 +237,17 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code == 200) {
-                        showToast(response.data.message)
-                        rescheduleDialog.dismiss()
-                        appointmentViewModel.getAppointments(pageNo = pageNo.toString(), "new")
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data?.message.toString())
+                        if (response.data?.code == 200) {
+                            showToast(response.data.message)
+                            rescheduleDialog.dismiss()
+                            appointmentViewModel.getAppointments(pageNo = pageNo.toString(), "new")
+                        } else {
+                            showToast(response.data?.message.toString())
+                        }
                     }
                 }
 
@@ -244,7 +269,6 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
         } else {
             "There is no past appointments but we provide following service."
         }
-
         binding.servicesGroup.isVisible = true
     }
 
@@ -560,7 +584,12 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.addAppointment -> {
-                findNavController().navigate(R.id.addAppointmentFormFragment)
+
+                if (session.loginName.isEmpty() || session.loginDOB.isEmpty()) {
+                    showAddRequiredFieldsPopUp()
+                } else {
+                    findNavController().navigate(R.id.addAppointmentFormFragment)
+                }
             }
 
             R.id.bookBloodCallNow -> {
@@ -579,5 +608,34 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
                 requireActivity().startActivity(callIntent)
             }
         }
+    }
+
+    private fun showAddRequiredFieldsPopUp() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.update_profile_details)
+        val updateBtn = dialog.findViewById<View>(R.id.updateBtn) as MaterialButton
+        val cancelBtn = dialog.findViewById<View>(R.id.cancelBtn) as MaterialButton
+        updateBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_appointmentFragment_to_editProfileFragment)
+            dialog.dismiss()
+        }
+        cancelBtn.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayWidth = displayMetrics.widthPixels
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window!!.attributes)
+        val dialogWindowWidth = (displayWidth * 0.9f).toInt()
+        layoutParams.width = dialogWindowWidth
+        dialog.window!!.attributes = layoutParams
+    }
+
+    override fun onResume() {
+        setObserver()
+        super.onResume()
     }
 }

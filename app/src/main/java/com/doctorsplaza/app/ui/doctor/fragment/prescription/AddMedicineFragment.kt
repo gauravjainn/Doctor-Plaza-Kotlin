@@ -24,7 +24,7 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
     View.OnClickListener {
 
     private lateinit var medicineData: Medicine
-    private var medicinePosition: Int? = null
+
     private var appointmentId: String? = ""
 
     private lateinit var binding: FragmentAddMedicineBinding
@@ -37,15 +37,13 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
     private lateinit var appLoader: DoctorPlazaLoader
 
 
-    private val medicineTime: MutableList<Any> = ArrayList()
+    private var beforeBreakfast = 0
+    private var beforeLunch = 0
+    private var beforeDinner = 0
 
-    var beforeBreakfast = 0
-    var beforeLunch = 0
-    var beforeDinner = 0
-
-    var afterBreakfast = 0
-    var afterLunch = 0
-    var afterDinner = 0
+    private var afterBreakfast = 0
+    private var afterLunch = 0
+    private var afterDinner = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +54,6 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
             currentView = inflater.inflate(R.layout.fragment_add_medicine, container, false)
             binding = FragmentAddMedicineBinding.bind(currentView!!)
             init()
-            setObserver()
             setOnClickListener()
         }
         return currentView!!
@@ -132,10 +129,6 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
             afterDinner = 0
             setMedicineTimeSelectionViews(binding.afterDinner, 0)
         }
-
-    }
-
-    private fun setObserver() {
 
     }
 

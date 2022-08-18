@@ -1,6 +1,9 @@
 package com.doctorsplaza.app.ui.doctor.fragment.reports.model
 
 data class FinancialModel(
+    val status:Int? = 0,
+    val message:String? = "",
+
     val cashpayment: Int,
     val monthcancelcount: Int,
     val monthdonecount: Int,

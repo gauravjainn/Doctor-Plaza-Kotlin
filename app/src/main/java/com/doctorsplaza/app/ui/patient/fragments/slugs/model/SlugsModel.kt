@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.slugs.model
 data class SlugsModel(
     val `data`: List<SlugsData>,
     val message: String,
+    val status: Int,
     val success: Boolean
 )
 

@@ -39,7 +39,7 @@
         android:textColor="@color/black"
         android:elevation="@dimen/_4sdp"
         android:textSize="@dimen/_14sdp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_semi_bold"
         app:layout_constraintTop_toTopOf="@id/appBarBg"
         app:layout_constraintBottom_toBottomOf="@id/appBarBg"
         app:layout_constraintStart_toStartOf="@id/appBarBg"

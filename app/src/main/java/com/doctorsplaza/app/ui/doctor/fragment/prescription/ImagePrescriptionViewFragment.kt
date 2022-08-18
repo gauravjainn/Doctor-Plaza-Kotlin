@@ -47,6 +47,11 @@ class ImagePrescriptionViewFragment : Fragment(R.layout.fragment_image_prescript
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
         val prescriptionImage = arguments?.getString("prescriptionImage")
+        val from = arguments?.getString("from").toString()
+        if(from == "appointmentDetails"){
+            binding.appBarTitle.text = "Reports"
+        }
+
         Glide.with(requireContext()).applyDefaultRequestOptions(prescriptionRequestOption()).load(prescriptionImage).into(binding.prescriptionImageView)
     }
 

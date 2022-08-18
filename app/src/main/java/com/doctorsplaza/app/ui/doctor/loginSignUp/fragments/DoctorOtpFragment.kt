@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.DisplayMetrics
 import android.view.*
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,9 +17,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentOTPBinding
 import com.doctorsplaza.app.ui.doctor.DoctorMainActivity
 import com.doctorsplaza.app.ui.doctor.loginSignUp.DoctorLoginSignUpViewModel
-import com.doctorsplaza.app.ui.patient.PatientMainActivity
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
-import com.doctorsplaza.app.ui.patient.loginSignUp.introduction.IntroductionOneFragment
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
@@ -30,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@SuppressLint("SetTextI18n")
 @AndroidEntryPoint
 class DoctorOtpFragment : Fragment(), View.OnClickListener {
 
@@ -90,8 +88,7 @@ class DoctorOtpFragment : Fragment(), View.OnClickListener {
                                                 TimeUnit.MILLISECONDS.toMinutes(
                                                     millisUntilFinished
                                                 )
-                                            )
-                                );
+                                            ))
 
                             }
 
@@ -136,7 +133,7 @@ class DoctorOtpFragment : Fragment(), View.OnClickListener {
                                                     millisUntilFinished
                                                 )
                                             )
-                                );
+                                )
 
                             }
 
@@ -194,7 +191,7 @@ class DoctorOtpFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.backArrow -> {
-                findNavController().popBackStack()
+             requireActivity().onBackPressed()
             }
             R.id.verifyOTP -> {
                 verifyOTP()
@@ -210,7 +207,7 @@ class DoctorOtpFragment : Fragment(), View.OnClickListener {
     private fun resendOtp() {
         val jsonObject = JsonObject().apply {
             addProperty("mobilenumber", arguments?.getString("phone").toString())
-            addProperty("token", "abcdef")
+            addProperty("token", "")
         }
 
         if (from == "signUp") {
@@ -247,7 +244,7 @@ class DoctorOtpFragment : Fragment(), View.OnClickListener {
                                 session.doctorId = response.data.data.doctor_id
                                 session.loginName = response.data.data.doctorName
                                 session.mobile = response.data.data.contactNumber.toString()
-
+                                session.token = response.data.data.auth_token
                             }
                             startActivity(Intent(requireActivity(), DoctorMainActivity::class.java))
                             PatientLoginSignup().finish()

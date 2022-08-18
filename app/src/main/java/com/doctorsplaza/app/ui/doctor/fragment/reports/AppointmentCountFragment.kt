@@ -1,11 +1,11 @@
 package com.doctorsplaza.app.ui.doctor.fragment.reports
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -13,10 +13,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentAppointmentCountBinding
 import com.doctorsplaza.app.ui.doctor.fragment.reports.model.AppointmentsCountModel
 import com.doctorsplaza.app.ui.doctor.fragment.reports.viewModel.RevenueViewModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -25,9 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+@SuppressLint("SetTextI18n")
 @AndroidEntryPoint
-class AppointmentCountFragment : Fragment(R.layout.fragment_appointment_count),
-    View.OnClickListener {
+class AppointmentCountFragment : Fragment(R.layout.fragment_appointment_count) {
     private lateinit var binding: FragmentAppointmentCountBinding
 
     private val revenueViewModel: RevenueViewModel by viewModels()
@@ -49,7 +46,6 @@ class AppointmentCountFragment : Fragment(R.layout.fragment_appointment_count),
             binding = FragmentAppointmentCountBinding.bind(currentView!!)
             init()
             setObserver()
-            setOnClickListener()
         }
         return currentView!!
     }
@@ -201,7 +197,13 @@ class AppointmentCountFragment : Fragment(R.layout.fragment_appointment_count),
                 is Resource.Success -> {
                     appLoader.dismiss()
                     binding.loader.isVisible = false
-                    setChartData(response.data!!)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        setChartData(response.data!!)
+                    }
+
                 }
                 is Resource.Loading -> {
                     appLoader.show()
@@ -211,19 +213,6 @@ class AppointmentCountFragment : Fragment(R.layout.fragment_appointment_count),
                     appLoader.dismiss()
                 }
             }
-        }
-    }
-
-    private fun setOnClickListener() {
-        with(binding) {
-
-        }
-    }
-
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
         }
     }
 }

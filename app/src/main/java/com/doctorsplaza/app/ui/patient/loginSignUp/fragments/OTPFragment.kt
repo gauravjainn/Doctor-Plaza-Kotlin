@@ -49,6 +49,7 @@ class OTPFragment : Fragment(R.layout.fragment_o_t_p), View.OnClickListener {
     private var enteredOtp = ""
 
     private var enableResend = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,6 +84,7 @@ class OTPFragment : Fragment(R.layout.fragment_o_t_p), View.OnClickListener {
                             loginDOB = response.data.data.dob.toString()
                             loginAge = response.data.data.age.toString()
                             loginType = "patient"
+                            token = response.data.data.auth_token
                         }
 
                     } else {

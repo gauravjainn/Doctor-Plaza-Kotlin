@@ -78,6 +78,7 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
             saveAndNext.setOnClickListener(this@PatientSignUpFragment)
             haveAccountSignIn.setOnClickListener(this@PatientSignUpFragment)
             loginSubmit.setOnClickListener(this@PatientSignUpFragment)
+            oneTapSignUp.setOnClickListener(this@PatientSignUpFragment)
         }
 
         binding.genderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -125,31 +126,41 @@ class PatientSignUpFragment : Fragment(R.layout.fragment_patient_sign_up), View.
             }
 
             R.id.dobEdt -> {
-                val datePicker: MaterialDatePicker<Long> = MaterialDatePicker
-                    .Builder
-                    .datePicker()
+                dobPicker()
+            }
 
-                    .setTheme(R.style.MaterialCalendarTheme)
-                    .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
-                    .setTitleText("Select date of birth")
-                    .build()
+            R.id.oneTapSignUp -> {
+                findNavController().navigate(R.id.oneTapSignupFragment)
+            }
+        }
 
-                datePicker.show(childFragmentManager, "DATE_PICKER")
 
-                datePicker.addOnPositiveButtonClickListener {
-                    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                    val date = sdf.format(it)
-                    val stringDate: Date = sdf.parse(date)
-                    val sdf1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.getDefault())
-                    var consultationDate = sdf1.format(stringDate)
+    }
 
-                    if(stringDate>Date()){
-                        showToast("Date of Birth Cannot be Future Date.")
-                    }else{
-                        binding.dobEdt.text = date
-                        patientDOB = consultationDate.toString()
-                    }
-                }
+    private fun dobPicker() {
+        val datePicker: MaterialDatePicker<Long> = MaterialDatePicker
+            .Builder
+            .datePicker()
+
+            .setTheme(R.style.MaterialCalendarTheme)
+            .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
+            .setTitleText("Select date of birth")
+            .build()
+
+        datePicker.show(childFragmentManager, "DATE_PICKER")
+
+        datePicker.addOnPositiveButtonClickListener {
+            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val date = sdf.format(it)
+            val stringDate: Date = sdf.parse(date)
+            val sdf1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.getDefault())
+            var consultationDate = sdf1.format(stringDate)
+
+            if(stringDate>Date()){
+                showToast("Date of Birth Cannot be Future Date.")
+            }else{
+                binding.dobEdt.text = date
+                patientDOB = consultationDate.toString()
             }
         }
     }

@@ -2,12 +2,15 @@ package com.doctorsplaza.app.data.commonModel
 
 data class AppointmentsModel(
     val data: List<AppointmentData>,
-    val status: Int
+    val status: Int,
+    val message: String,
+    val total: Int
+
 )
 
 data class AppointmentData(
     val _id: String,
-    val age: Int,
+    val age: String,
     val appointment_type: String,
     val booked_as: String,
     val cancelledBy: String,
@@ -31,18 +34,6 @@ data class AppointmentData(
     val status: String,
     val updatedAt: String,
     val user_id: String
-)
-
-data class PaymentData(
-   val _id:String,
-   val order_id:String,
-   val payment_id:String,
-   val amount:String,
-   val payment_status:String,
-   val user_id:String,
-   val doctor_id:String,
-   val createdAt:String,
-   val updatedAt:String
 )
 
 data class ClinicId(
@@ -110,6 +101,7 @@ data class TimeSlotData(
     val clinicData: String,
     val createdAt: String,
     val day: String,
+    val doctorData: String,
     val end_time: String,
     val is_active: Boolean,
     val session_id: String,

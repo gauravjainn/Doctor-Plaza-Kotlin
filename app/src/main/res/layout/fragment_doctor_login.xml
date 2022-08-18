@@ -14,6 +14,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:padding="@dimen/_10sdp"
         android:src="@drawable/ic_back_arrow"
+        android:contentDescription="@string/image_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black" />
@@ -24,6 +25,7 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:src="@drawable/ic_dr_plaza_icon"
+        android:contentDescription="@string/image_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +36,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_30sdp"
         android:src="@drawable/ic_login_image"
+        android:contentDescription="@string/image_desc"
         app:layout_constraintBottom_toTopOf="@+id/loginBg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +91,8 @@
             android:maxLength="10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneLbl" />
+            app:layout_constraintTop_toBottomOf="@+id/phoneLbl"
+            tools:ignore="Autofill,LabelFor,TextFields" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,33 +110,33 @@
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:paddingVertical="@dimen/_8sdp"
-        android:text="Login"
+        android:text="@string/login_lbl"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
         android:foreground="?selectableItemBackgroundBorderless"
         android:background="@drawable/ripple_effect"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toTopOf="@id/haveAccount" />
+        app:layout_constraintBottom_toTopOf="@id/haveAccount"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/haveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:elevation="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:paddingVertical="@dimen/_8sdp"
-        android:text="New to Doctor Plaza? "
+        android:text="@string/new_to_doctor_plaza_lbl"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/haveAccountSignIn"
         app:layout_constraintEnd_toStartOf="@id/haveAccountSignIn"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
+        app:layout_constraintTop_toTopOf="@id/haveAccountSignIn"
+        />
 
     <TextView
         android:id="@+id/haveAccountSignIn"
@@ -140,24 +144,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         android:elevation="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_semi_bold"
         android:gravity="center"
         android:paddingVertical="@dimen/_8sdp"
-        android:text=" SignUp"
+        android:text="@string/signup_lbl"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/haveAccount"
-        app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
+        app:layout_constraintTop_toBottomOf="@+id/loginSubmit" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/alreadyHaveAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/loginSubmit"
         app:constraint_referenced_ids="haveAccount,haveAccountSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
+        />
 
 
 

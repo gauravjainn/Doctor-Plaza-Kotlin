@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.search.model
 data class SearchModel(
     val code: Int,
     val data: List<SearchData>,
+    val status: Int,
     val message: String,
     val total: Int
 )

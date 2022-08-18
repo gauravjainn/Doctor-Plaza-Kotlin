@@ -2,6 +2,7 @@ package com.doctorsplaza.app.ui.patient.fragments.profile.model
 
 data class GetPatientReportsModel(
     val code: Int,
+    val status: Int,
     val data: List<PatientReportData>,
     val message: String,
     val success: Boolean,

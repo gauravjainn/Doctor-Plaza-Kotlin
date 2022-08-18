@@ -75,7 +75,7 @@ class DoctorPastAppointmentsAdapter @Inject constructor() :
             oldItem: AppointmentData,
             newItem: AppointmentData
         ): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            return oldItem == newItem
         }
 
     }

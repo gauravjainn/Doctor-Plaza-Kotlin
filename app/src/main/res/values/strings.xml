@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DoctorPlaza</string>
+    <string name="app_name">Doctors Plaza</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -78,6 +78,12 @@
     <string name="add_lbl">Add</string>
     <string name="status_lbl">Status</string>
     <string name="sign_in">Sign In</string>
+    <string name="image_desc">imageDesc</string>
+    <string name="login_lbl">Login</string>
+    <string name="new_to_doctor_plaza_lbl">New to Doctor Plaza?</string>
+    <string name="signup_lbl">SignUp</string>
+    <string name="updateLbl">Update</string>
+    <string name="experience_lbl">Experience (years and month eg: 2.5)</string>
 
 
 </resources>

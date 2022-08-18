@@ -2,9 +2,10 @@ package com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model
 
 data class ConsultationTimeSlotsModel(
     val code: Int,
-    val data: List<RoomTimeSlotsData>,
+    val status: Int,
     val message: String,
     val success: Boolean,
+    val data: List<RoomTimeSlotsData>,
     val total: Int
 )
 

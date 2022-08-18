@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="@dimen/_4sdp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_semi_bold"
         android:text="Appointment Details"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
@@ -335,7 +335,34 @@
                 app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
                 app:layout_constraintTop_toBottomOf="@id/genderLbl" />
 
+            <TextView
+                android:id="@+id/reportsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableStart="@drawable/ic_document"
+                android:drawableTint="@color/colorPrimaryLight"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Reports"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
+                app:layout_constraintTop_toBottomOf="@id/gender" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reportsRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                android:layout_marginTop="@dimen/_5sdp"
+                tools:listitem="@layout/item_patient_report"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/reportsLbl"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
             <View
                 android:id="@+id/divider1"
                 android:layout_width="0dp"
@@ -344,7 +371,7 @@
                 android:background="@color/devider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/patientImage"
-                app:layout_constraintTop_toBottomOf="@id/gender" />
+                app:layout_constraintTop_toBottomOf="@id/reportsRv" />
 
             <TextView
                 android:id="@+id/problemLbl"

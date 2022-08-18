@@ -6,6 +6,7 @@ data class OurDoctorsModel(
     val count: Int,
     val data: List<DoctorData>,
     val status: Int,
+    val message: String,
     val code: Int,
     val total: Int
 )

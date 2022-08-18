@@ -128,10 +128,15 @@ class AddReminderFragment : Fragment(R.layout.fragment_add_reminder), View.OnCli
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        findNavController().navigate(R.id.action_addReminderFragment_to_reminderFragment)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data!!.message)
+                        if (response.data?.status == 200) {
+                            findNavController().navigate(R.id.action_addReminderFragment_to_reminderFragment)
+                        } else {
+                            showToast(response.data!!.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -146,11 +151,15 @@ class AddReminderFragment : Fragment(R.layout.fragment_add_reminder), View.OnCli
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.success!!) {
                         findNavController().navigate(R.id.action_addReminderFragment_to_reminderFragment)
                     } else {
                         showToast(response.data.message)
-                    }
+                    }}
                 }
                 is Resource.Loading -> {
                     appLoader.show()

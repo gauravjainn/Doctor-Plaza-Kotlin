@@ -24,5 +24,6 @@ data class VerificationData(
     val signup_details: Boolean,
     val signupotp: String,
     val token: String,
-    val updatedAt: String
+    val updatedAt: String,
+    val auth_token: String,
 )

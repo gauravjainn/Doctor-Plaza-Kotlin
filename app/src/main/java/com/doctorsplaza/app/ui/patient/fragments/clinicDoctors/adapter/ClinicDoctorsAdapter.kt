@@ -23,7 +23,7 @@ class ClinicDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<ClinicDoc
                 doctorRating.text = data.rating.toString()
                 doctorRatingCount.text = "(${data.ratings_count})"
 
-
+                doctorExperience.text = "${data.experience} years"
                 doctorDegree.text = data.qualification
 
                 Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.profile_picture).fitCenter().into(doctorImage)

@@ -111,12 +111,21 @@ class FirebaseCloudMessaging : FirebaseMessagingService() {
         }
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        }else{
+            PendingIntent.getActivity(
+                this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        }
         val channelId = getString(R.string.default_notification_channel_id)
         val soundUri =
             Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context!!.packageName + R.raw.notification_audio)

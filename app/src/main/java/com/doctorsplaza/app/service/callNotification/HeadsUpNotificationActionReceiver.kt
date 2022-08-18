@@ -62,6 +62,7 @@ class HeadsUpNotificationActionReceiver : BroadcastReceiver() {
 
                 if (data.getBooleanExtra(LOCK_SCREEN_KEY, true)) {
                     val fullScreenActivity = Intent(context, VideoActivity::class.java)
+                    fullScreenActivity.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     fullScreenActivity.putExtra("videoToken", videoToken)
                     fullScreenActivity.putExtra("appointmentid", appointmentid)
                     fullScreenActivity.putExtra("name", name)

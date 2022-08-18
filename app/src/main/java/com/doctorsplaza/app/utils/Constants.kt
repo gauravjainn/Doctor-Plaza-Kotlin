@@ -5,7 +5,6 @@ const val BASE_URL = "http://65.0.71.39:5000/api/"
 
 
 
-
 const val DATE_FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val DATE_PATTERN = "yyyy-MM-dd"
 const val REMINDER_DATE_MONTH_PATTERN2 = "dd-MM-yyyy hh:mm aaa"
@@ -24,7 +23,6 @@ const val PatientDOB = "dob"
 const val PatientContactNumber = "contactNumber"
 const val PatientToken = "token"
 const val PatientOtp = "otp"
-
 const val DoctorName = "doctorName"
 const val DepartmentName = "departmentName"
 const val DoctorNo = "phoneNo"
@@ -32,3 +30,4 @@ const val DoctorState = "state"
 const val DoctorCity = "city"
 const val DoctorPincode = "pincode"
 const val DoctorFees = "consultationfee"
+const val DoctorExperience = "experience"

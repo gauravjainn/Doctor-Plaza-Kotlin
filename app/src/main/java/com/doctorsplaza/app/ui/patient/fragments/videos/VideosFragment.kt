@@ -40,9 +40,14 @@ class VideosFragment : Fragment(R.layout.fragment_videos), View.OnClickListener 
 
     @Inject
     lateinit var videosAdapter: VideosAdapter
+
+    @Inject
+    lateinit var session:SessionManager
+
     private var videoId: String = ""
 
     private var pageNo = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val animation =
@@ -117,6 +122,10 @@ class VideosFragment : Fragment(R.layout.fragment_videos), View.OnClickListener 
                 is Resource.Success -> {
                     binding.moreLoader.isVisible = false
 //                    appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.status == 200) {
                         if (pageNo == 1) {
                             videosList.addAll(response.data.data)
@@ -127,7 +136,7 @@ class VideosFragment : Fragment(R.layout.fragment_videos), View.OnClickListener 
                             videosAdapter.notifyDataSetChanged()
                         }
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     if(pageNo==1) appLoader.show() else binding.moreLoader.isVisible = true
                 }

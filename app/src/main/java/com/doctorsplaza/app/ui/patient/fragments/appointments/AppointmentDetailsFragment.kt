@@ -24,6 +24,7 @@ import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionDa
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
+import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.*
 import com.google.android.material.datepicker.CalendarConstraints
@@ -125,12 +126,16 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     appLoader.dismiss()
                     binding.loader.isVisible = false
                     binding.errorMessage.isVisible = false
-
-                    if (response.data?.success!!) {
-                        appointmentData = response.data.data
-                        setAppointmentsDetails(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            appointmentData = response.data.data
+                            setAppointmentsDetails(response.data.data)
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
 
@@ -152,11 +157,16 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.success!!) {
-                        showToast(response.data.message)
-                        findNavController().navigate(R.id.action_appointmentDetailsFragment_to_appointmentFragment)
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            showToast(response.data.message)
+                            findNavController().navigate(R.id.action_appointmentDetailsFragment_to_appointmentFragment)
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
 
@@ -174,13 +184,18 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.data?.isEmpty()!!) {
-                        showToast("No Slots Available for Selected Date")
-                        consultationTimeView.text = ""
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        timeSlotsList.clear()
-                        timeSlotsList.addAll(response.data.data)
-                        showTimeSlotsDialog()
+                        if (response.data?.data?.isEmpty()!!) {
+                            showToast("No Slots Available for Selected Date")
+                            consultationTimeView.text = ""
+                        } else {
+                            timeSlotsList.clear()
+                            timeSlotsList.addAll(response.data.data)
+                            showTimeSlotsDialog()
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -197,15 +212,18 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 is Resource.Success -> {
                     appLoader.dismiss()
                     rescheduleDialog.dismiss()
-
-                    if (response.data?.code == 200) {
-                        showToast(response.data.message)
-                        findNavController().navigate(R.id.action_appointmentDetailsFragment_to_appointmentFragment)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        showToast(response.data?.message.toString())
+                        if (response.data?.code == 200) {
+                            showToast(response.data.message)
+                            findNavController().navigate(R.id.action_appointmentDetailsFragment_to_appointmentFragment)
+                        } else {
+                            showToast(response.data?.message.toString())
+                        }
                     }
                 }
-
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -220,10 +238,15 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.success!!) {
-                        findNavController().navigate(R.id.action_appointmentDetailsFragment_to_homeFragment)
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            findNavController().navigate(R.id.action_appointmentDetailsFragment_to_homeFragment)
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
 
@@ -239,64 +262,22 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         appointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.code == 200) {
-                        appLoader.dismiss()
-                        binding.loader.isVisible = false
-                        if (response.data.data.isNotEmpty()) {
-                            prescriptionData = response.data.data
-                            var scan = false
-                            var pdf = false
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
+                        if (response.data?.code == 200) {
+                            appLoader.dismiss()
+                            binding.loader.isVisible = false
 
-                            prescriptionData.forEach {
-                                if (it.type == "SCAN") {
-                                    val prescriptionImage = it.image
-                                    val bundle = Bundle().apply {
-                                        putString("prescriptionImage", prescriptionImage)
-                                    }
-                                    if (!pdf) {
-                                        findNavController().navigate(
-                                            R.id.imagePrescriptionViewFragment2,
-                                            bundle
-                                        )
-                                        pdf = true
+                            if (response.data.data.isNotEmpty()) {
+                                prescriptionData = response.data.data
+                                setPrescriptionData(prescriptionData)
 
-                                    }
-                                } else {
-//                                    medicine = it.medicine
-                                    val bundle = Bundle().apply {
-                                        putString("from", "patient")
-                                        putString("prescriptionAdded", "yes")
-                                        putString("appointmentId", appointmentId)
-                                        putString(
-                                            "appointmentTime",
-                                            binding.appointmentDateTime.text.toString()
-                                        )
-                                        putString(
-                                            "consultationFee",
-                                            appointmentData.consultation_fee.toString()
-                                        )
-                                        putString(
-                                            "clinicName",
-                                            appointmentData.clinic_id.clinicName
-                                        )
-                                        putString(
-                                            "clinicLocation",
-                                            appointmentData.clinic_id.location
-                                        )
-                                    }
-                                    if(!scan){
-                                        findNavController().navigate(
-                                            R.id.addPrescriptionWithMedicineFragment2,
-                                            bundle
-                                        )
-                                        scan = true
-                                    }
-                                }
+                            } else {
+                                showToast(response.data?.message.toString())
                             }
                         }
-
-                    } else {
-                        showToast(response.data?.message.toString())
                     }
                 }
                 is Resource.Loading -> {
@@ -312,28 +293,32 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         appointmentViewModel.generateVieoToken.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                        if (response.data?.code!=null && response.data.code == 200) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
+                        if (response.data?.code != null && response.data.code == 200) {
                             response.data.message.let { showToast(it) }
                             appLoader.dismiss()
                             session.callStatus = ""
-
-
                             val jsonObject = JsonObject().apply {
-                                addProperty("type","patient")
-                                addProperty("name",appointmentData.doctorname)
-                                addProperty("status","calling")
-                                addProperty("appointmentId",appointmentId)
+                                addProperty("type", "patient")
+                                addProperty("name", appointmentData.doctorname)
+                                addProperty("status", "calling")
+                                addProperty("appointmentId", appointmentId)
                             }
                             appointmentViewModel.callNotify(jsonObject)
 
-                            startActivity(Intent(requireActivity(),VideoActivity::class.java)
-                                .putExtra("videoToken",response.data.data.patients_token)
-                                .putExtra("name",appointmentData.doctorname)
-                                .putExtra("appointId",appointmentData._id)
+                            startActivity(
+                                Intent(requireActivity(), VideoActivity::class.java)
+                                    .putExtra("videoToken", response.data.data.patients_token)
+                                    .putExtra("name", appointmentData.doctorname)
+                                    .putExtra("appointId", appointmentData._id)
                             )
                         } else {
                             response.data?.message?.let { showToast(it) }
                         }
+                    }
                 }
                 is Resource.Loading -> {
                     appLoader.show()
@@ -342,9 +327,62 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     appLoader.dismiss()
                 }
             }
-        appointmentViewModel.callNotify.observe(viewLifecycleOwner) {  }
+            appointmentViewModel.callNotify.observe(viewLifecycleOwner) { }
         }
 
+    }
+
+    private fun setPrescriptionData(prescriptionData: List<PrescriptionData>) {
+
+        var scan = false
+        var pdf = false
+
+        prescriptionData.forEach {
+            if (it.type == "SCAN") {
+                val prescriptionImage = it.image
+                val bundle = Bundle().apply {
+                    putString("prescriptionImage", prescriptionImage)
+                }
+                if (!pdf) {
+                    findNavController().navigate(
+                        R.id.imagePrescriptionViewFragment2,
+                        bundle
+                    )
+                    pdf = true
+
+                }
+            } else {
+//                                    medicine = it.medicine
+                val bundle = Bundle().apply {
+                    putString("from", "patient")
+                    putString("prescriptionAdded", "yes")
+                    putString("appointmentId", appointmentId)
+                    putString(
+                        "appointmentTime",
+                        binding.appointmentDateTime.text.toString()
+                    )
+                    putString(
+                        "consultationFee",
+                        appointmentData.consultation_fee.toString()
+                    )
+                    putString(
+                        "clinicName",
+                        appointmentData.clinic_id.clinicName
+                    )
+                    putString(
+                        "clinicLocation",
+                        appointmentData.clinic_id.location
+                    )
+                }
+                if (!scan) {
+                    findNavController().navigate(
+                        R.id.addPrescriptionWithMedicineFragment2,
+                        bundle
+                    )
+                    scan = true
+                }
+            }
+        }
     }
 
     private fun showTimeSlotsDialog() {
@@ -391,7 +429,8 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             doctorName.text = data.doctor_id.doctorName
             doctorSpecialistIn.text = data.doctor_id.specialization
             doctorDegree.text = data.doctor_id.qualification
-            Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption()).load(data.doctor_id.profile_picture).into(doctorImage)
+            Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
+                .load(data.doctor_id.profile_picture).into(doctorImage)
 
             patientName.text = data.patientname
             appointmentDateTime.text = data.patientname
@@ -429,7 +468,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             }
         }
 
-        binding.viewPrescription.isVisible = data.prescription!="false"
+        binding.viewPrescription.isVisible = data.prescription != "false"
     }
 
     private fun setOnAdapterClickListener() {
@@ -476,39 +515,26 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 showCancelWarning()
             }
             R.id.videoCallIcon -> {
-                val currentDate = Date()
-                val bookingDate = isoFormat.parse(appointmentData.date)
 
+                val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
+                val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
 
-                val stf = SimpleDateFormat("HH:mm", Locale.getDefault())
-                val parsedStartTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.start_time)
-                val parsedEndTime =stf.parse(appointmentData.room_time_slot_id.timeSlotData.end_time)
 
                 val currentTime = Date().time
-                val ctf = stf.format(currentTime)
+                val ctf = isoFormat.format(currentTime)
 
-                if(currentDate.before(bookingDate)){
-                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+                if (isoFormat.parse(ctf).before(parsedStartTime)) {
+                    showVideoCallNotStartAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
                     return
                 }
 
-                if(currentDate.after(bookingDate)){
+                if (isoFormat.parse(ctf).after(parsedEndTime)) {
                     showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
                     return
                 }
 
-                if(parsedStartTime.before(stf.parse(ctf))){
-                    showVideoCallAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
-                    return
-                }
-
-                if(parsedEndTime.after(stf.parse(ctf))){
-                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
-                    return
-                }
-
-                val jsonObject =JsonObject().apply {
-                    addProperty("id",appointmentId)
+                val jsonObject = JsonObject().apply {
+                    addProperty("id", appointmentId)
                     addProperty("type", "patient")
                 }
                 appointmentViewModel.generateVideoToken(jsonObject)
@@ -520,8 +546,15 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     private fun showVideoCallAlertPopUp(msg: String) {
         AlertDialog.Builder(context)
             .setMessage(msg)
-            .setPositiveButton("yes",null)
+            .setPositiveButton("yes", null)
             .setNegativeButton("no", null)
+            .show()
+    }
+
+    private fun showVideoCallNotStartAlertPopUp(msg: String) {
+        AlertDialog.Builder(context)
+            .setMessage(msg)
+            .setPositiveButton("ok", null)
             .show()
     }
 

@@ -18,12 +18,13 @@ import com.doctorsplaza.app.ui.doctor.fragment.home.model.AppointmentData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment){
+class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment) {
     private lateinit var binding: FragmentDoctorAppointmentBinding
 
     private val doctorHomeViewModel: DoctorHomeViewModel by viewModels()
@@ -51,6 +52,7 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
             binding = FragmentDoctorAppointmentBinding.bind(currentView!!)
             init()
             setObserver()
+            setPullRefresh()
             setOnClickListener()
         }
         return currentView!!
@@ -66,18 +68,33 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
 
     }
 
+    private fun setPullRefresh() {
+        binding.pullToRefresh.setOnRefreshListener {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("id", session.loginId)
+            doctorHomeViewModel.getDoctorUpcomingAppointments(jsonObject)
+            doctorHomeViewModel.getDoctorPastAppointments(jsonObject)
+            binding.pullToRefresh.isRefreshing = false
+        }
+    }
+
     private fun setObserver() {
         doctorHomeViewModel.appointments.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.success!!) {
-                        if (response.data.data.isEmpty()) {
-                            binding.appointmentRv.isVisible = false
-                            binding.noAppointments.isVisible = true
-                        } else {
-                            binding.appointmentRv.isVisible = true
-                            binding.noAppointments.isVisible = false
-                            setUpcomingAppointmentsData(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.success!!) {
+                            if (response.data.data.isEmpty()) {
+                                binding.appointmentRv.isVisible = false
+                                binding.noAppointments.isVisible = true
+                            } else {
+                                binding.appointmentRv.isVisible = true
+                                binding.noAppointments.isVisible = false
+                                setUpcomingAppointmentsData(response.data.data)
+                            }
                         }
                     }
                 }
@@ -93,16 +110,23 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
         doctorHomeViewModel.pastAppointments.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.success!!) {
-                        appLoader.dismiss()
-                        if (response.data.data.isEmpty()) {
-                            binding.noPastAppointmentsDataLbl.isVisible = true
-                            binding.noPastAppointmentsDataLbl.text = "There is no appointments to show."
-                        } else {
-                            binding.servicesGroup.isVisible = false
-                            setPastAppointmentsData(response.data.data)
-                        }
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.success!!) {
+                            appLoader.dismiss()
 
+                            if (response.data.data.isEmpty()) {
+                                binding.noPastAppointmentsDataLbl.isVisible = true
+                                binding.noPastAppointmentsDataLbl.text =
+                                    "There is no appointments to show."
+                            } else {
+                                binding.servicesGroup.isVisible = false
+                                setPastAppointmentsData(response.data.data)
+                            }
+
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -140,15 +164,20 @@ class DoctorAppointmentFragment : Fragment(R.layout.fragment_doctor_appointment)
 
         doctorUpcomingAppointmentsAdapter.setOnAppointmentClickListener {
             val bundle = Bundle().apply {
-                putString("appointId",it._id)
+                putString("appointId", it._id)
             }
-            findNavController().navigate(R.id.doctorAppointmentDetailsFragment,bundle)
+            findNavController().navigate(R.id.doctorAppointmentDetailsFragment, bundle)
         }
         doctorPastAppointmentsAdapter.setOnPastAppointmentClickListener {
             val bundle = Bundle().apply {
-                putString("appointId",it._id)
+                putString("appointId", it._id)
             }
-            findNavController().navigate(R.id.doctorAppointmentDetailsFragment,bundle)
+            findNavController().navigate(R.id.doctorAppointmentDetailsFragment, bundle)
         }
+    }
+
+    override fun onResume() {
+        setObserver()
+        super.onResume()
     }
 }

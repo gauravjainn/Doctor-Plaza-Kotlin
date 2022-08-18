@@ -57,6 +57,10 @@ class ClinicDetailsFragment : Fragment(R.layout.fragment_clinic_details), View.O
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else
                     if (response.data?.status == 200) {
                         setClinicsData(response.data.data)
                     }

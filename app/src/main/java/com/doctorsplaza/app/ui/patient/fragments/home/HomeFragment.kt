@@ -101,6 +101,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             binding = FragmentHomeBinding.bind(currentView!!)
             init()
             setObserver()
+            setPullRefresh()
+
             setOnClickListener()
             setAdapterClickListener()
         }
@@ -117,12 +119,24 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         homeViewModel.getAppointments()
     }
 
+    private fun setPullRefresh() {
+        binding.pullToRefresh.setOnRefreshListener {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("id", session.loginId)
+            homeViewModel.getAppointments()
+            binding.pullToRefresh.isRefreshing = false
+        }
+    }
+
 
     private fun setObserver() {
         homeViewModel.patientBanner.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.status == 200) {
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else if (response.data?.status == 200) {
                         setBannerView(response.data.data)
                     }
                 }
@@ -137,14 +151,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         homeViewModel.videos.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.status == 200) {
-                        if(response.data.data.isNotEmpty()){
-                            binding.noVideosFound.isVisible = false
-                            binding.doctorVideosRv.isVisible = true
-                            setVideos(response.data.data)
-                        }else{
-                            binding.noVideosFound.isVisible = true
-                            binding.doctorVideosRv.isVisible = false
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.status == 200) {
+                            if (response.data.data.isNotEmpty()) {
+                                binding.noVideosFound.isVisible = false
+                                binding.doctorVideosRv.isVisible = true
+                                setVideos(response.data.data)
+                            } else {
+                                binding.noVideosFound.isVisible = true
+                                binding.doctorVideosRv.isVisible = false
+                            }
                         }
                     }
                 }
@@ -159,9 +178,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         homeViewModel.ourSpecialists.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.status == 200) {
-                        specialistData = response.data.data
-                        setSpecialists(specialistData)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.status == 200) {
+                            specialistData = response.data.data
+                            setSpecialists(specialistData)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -176,14 +200,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         homeViewModel.ourDoctors.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.code == 200) {
-                        if (response.data.data.isEmpty()) {
-                            binding.noDoctorsLbl.isVisible = true
-                            binding.ourDoctorsViewAll.isVisible = false
-                        } else {
-                            binding.noDoctorsLbl.isVisible = false
-                            binding.ourDoctorsViewAll.isVisible = true
-                            setOurDoctors(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.code == 200) {
+                            if (response.data.data.isEmpty()) {
+                                binding.noDoctorsLbl.isVisible = true
+                                binding.ourDoctorsViewAll.isVisible = false
+                            } else {
+                                binding.noDoctorsLbl.isVisible = false
+                                binding.ourDoctorsViewAll.isVisible = true
+                                setOurDoctors(response.data.data)
+                            }
                         }
                     }
                 }
@@ -197,19 +226,24 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     hideLoading()
-                    if (response.data?.status == 200) {
-                        if (response.data.data.isEmpty()) {
-                            binding.appointmentRv.isVisible = false
-                            binding.noAppointments.isVisible = true
-                            binding.appointmentViewAll.isVisible = false
-                        } else {
-                            binding.appointmentRv.isVisible = true
-                            binding.noAppointments.isVisible = false
-                            binding.appointmentViewAll.isVisible = true
-                            setAppointmentRv(response.data.data)
-                        }
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showNoData()
+                        if (response.data?.status == 200) {
+                            if (response.data.data.isEmpty()) {
+                                binding.appointmentRv.isVisible = false
+                                binding.noAppointments.isVisible = true
+                                binding.appointmentViewAll.isVisible = false
+                            } else {
+                                binding.appointmentRv.isVisible = true
+                                binding.noAppointments.isVisible = false
+                                binding.appointmentViewAll.isVisible = true
+                                setAppointmentRv(response.data.data)
+                            }
+                        } else {
+                            showNoData()
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -226,13 +260,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     doctorPlazaLoader.dismiss()
-                    if (response.data?.data?.isEmpty()!!) {
-                        showToast("No Slots Available for Selected Date")
-                        consultationTimeView.text = ""
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        timeSlotsList.clear()
-                        timeSlotsList.addAll(response.data.data)
-                        showTimeSlotsDialog()
+                        if (response.data?.data?.isEmpty()!!) {
+                            showToast("No Slots Available for Selected Date")
+                            consultationTimeView.text = ""
+                        } else {
+                            timeSlotsList.clear()
+                            timeSlotsList.addAll(response.data.data)
+                            showTimeSlotsDialog()
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -249,11 +288,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     doctorPlazaLoader.dismiss()
-                    if (response.data?.success!!) {
-                        showToast(response.data.message)
-                        homeViewModel.getAppointments()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data?.success!!) {
+                            showToast(response.data.message)
+                            homeViewModel.getAppointments()
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -269,15 +313,19 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     doctorPlazaLoader.dismiss()
-                    if (response.data?.code == 200) {
-                        showToast(response.data.message)
-                        rescheduleDialog.dismiss()
-                        homeViewModel.getAppointments()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data?.message.toString())
+                        if (response.data?.code == 200) {
+                            showToast(response.data.message)
+                            rescheduleDialog.dismiss()
+                            homeViewModel.getAppointments()
+                        } else {
+                            showToast(response.data?.message.toString())
+                        }
                     }
                 }
-
                 is Resource.Loading -> {
                     doctorPlazaLoader.show()
                 }
@@ -401,7 +449,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             }
             timeSlotsList[position].timeSlotData.isSelected = true
             timeSlotsListPosition = position
-            consultationTimeView.text = "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
+            consultationTimeView.text =
+                "${timeSlotsList[position].timeSlotData.start_time} - ${timeSlotsList[position].timeSlotData.end_time} Am"
             bookTimeAdapter.differ.submitList(timeSlotsList)
             timeSlotSelected = true
             bookTimeAdapter.notifyDataSetChanged()
@@ -470,7 +519,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                 requireActivity().startActivity(callIntent)
             }
             R.id.physioTherapyBg1 -> {
-                    val number = Uri.parse("tel:+919910295721")
+                val number = Uri.parse("tel:+919910295721")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }

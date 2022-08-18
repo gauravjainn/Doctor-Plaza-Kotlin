@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.doctorsplaza.app.databinding.ItemVideosBinding
 import com.doctorsplaza.app.ui.patient.fragments.home.model.VideoData
 import com.doctorsplaza.app.utils.clinicRequestOption
+import com.doctorsplaza.app.utils.videoRequestOption
 import javax.inject.Inject
 
 class HomeVideosAdapter @Inject constructor(): RecyclerView.Adapter<HomeVideosAdapter.ViewHolder>() {
@@ -18,7 +19,7 @@ class HomeVideosAdapter @Inject constructor(): RecyclerView.Adapter<HomeVideosAd
     inner class  ViewHolder(private val binding: ItemVideosBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(data: VideoData) {
             with(binding){
-                Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.thumbnail).into(videoThumbnail)
+                Glide.with(context).load(data.thumbnail).centerCrop().into(videoThumbnail)
                 videoTitle.text = data.title
                 root.setOnClickListener {
                     videoClickListener?.let {

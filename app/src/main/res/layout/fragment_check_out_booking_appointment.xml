@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="@dimen/_4sdp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_semi_bold"
         android:text="Appointment Details"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
@@ -561,7 +561,7 @@
                 android:background="@drawable/edt_bg"
                 android:drawableStart="@drawable/ic_discount"
                 android:drawablePadding="@dimen/_6sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="start"
                 android:hint="ABC234"
                 android:paddingHorizontal="@dimen/_10sdp"
@@ -701,11 +701,36 @@
                 app:layout_constraintStart_toStartOf="@id/doctorImage"
                 app:layout_constraintTop_toBottomOf="@id/totalAmtLbl" />
 
+            <CheckBox
+                android:id="@+id/showReports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimary"
+                android:checked="false"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:text="Show Your Reports to Doctor"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider4"
+                />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+
+                android:background="@color/devider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/doctorImage"
+                app:layout_constraintTop_toBottomOf="@id/showReports" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/checkBoxes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/divider4">
+                app:layout_constraintTop_toBottomOf="@id/divider5">
 
                 <CheckBox
                     android:id="@+id/payAtClinicCheckBox"

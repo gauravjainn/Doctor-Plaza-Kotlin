@@ -62,13 +62,17 @@ class ContactUsFragment : Fragment() , View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.success) {
                         requireContext().showToast(response.data.message)
                         findNavController().popBackStack()
                     } else {
                         requireContext().showToast(response.data.message)
                     }
-                }
+                }}
 
                 is Resource.Loading -> {
                     appLoader.show()

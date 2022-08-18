@@ -51,7 +51,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/loginBg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/loginBg"
@@ -239,6 +239,39 @@
                     app:layout_constraintTop_toBottomOf="@+id/qualificationLbl" />
 
                 <TextView
+                    android:id="@+id/experienceLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/experience_lbl"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/qualificationEdt" />
+
+                <EditText
+                    android:id="@+id/experienceEdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/edt_bg"
+                    android:drawableStart="@drawable/ic_department"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:inputType="numberDecimal"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/experienceLbl" />
+
+                <TextView
                     android:id="@+id/consultationLbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -249,7 +282,7 @@
                     android:textColor="@color/colorPrimaryLight"
                     android:textSize="@dimen/_9sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/qualificationEdt" />
+                    app:layout_constraintTop_toBottomOf="@+id/experienceEdt" />
 
                 <EditText
                     android:id="@+id/consultationFeeEdt"
@@ -262,11 +295,11 @@
                     android:drawableStart="@drawable/ic_rupee_icon"
                     android:drawablePadding="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
+                    android:inputType="number"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
-                    android:inputType="number"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/consultationLbl" />
@@ -276,7 +309,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="specializationIcon,specializationSpinnerBg,specializationLbl,specializationSpinner,consultationFeeEdt,consultationLbl,qualificationEdt,qualificationLbl" />
+                    app:constraint_referenced_ids="specializationIcon,specializationSpinnerBg,specializationLbl,specializationSpinner,consultationFeeEdt,consultationLbl,qualificationEdt,qualificationLbl,experienceEdt,experienceLbl" />
 
 
                 <!-- Address, State, City, PinCode -->
@@ -434,13 +467,13 @@
                     android:background="@drawable/edt_bg"
                     android:drawableStart="@drawable/ic_location_outline"
                     android:drawablePadding="@dimen/_10sdp"
-                    android:maxLength="6"
                     android:fontFamily="@font/poppins_medium"
+                    android:inputType="number"
+                    android:maxLength="6"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
-                    android:inputType="number"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pinCodeLbl" />
@@ -537,16 +570,16 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/ripple_effect"
+                android:clickable="true"
                 android:elevation="@dimen/_5sdp"
+                android:focusable="true"
                 android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
                 android:gravity="center"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/save_next_lbl"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="@id/loginSubmit"
                 app:layout_constraintEnd_toEndOf="@id/loginSubmit"
                 app:layout_constraintStart_toStartOf="@id/loginSubmit"
@@ -578,7 +611,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:elevation="@dimen/_10sdp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_semi_bold"
                 android:gravity="center"
                 android:paddingVertical="@dimen/_8sdp"
                 android:text=" SignIn"

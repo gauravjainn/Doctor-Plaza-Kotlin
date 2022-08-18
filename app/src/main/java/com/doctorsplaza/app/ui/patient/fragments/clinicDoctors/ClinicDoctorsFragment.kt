@@ -18,6 +18,7 @@ import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.DoctorData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class ClinicDoctorsFragment : Fragment(R.layout.fragment_our_doctors), View.OnCl
 
     private var clinicName: String = ""
 
-    private var clinicId: String =""
+    private var clinicId: String = ""
 
     private lateinit var binding: FragmentOurDoctorsBinding
 
@@ -70,10 +71,10 @@ class ClinicDoctorsFragment : Fragment(R.layout.fragment_our_doctors), View.OnCl
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
 
-         clinicId = arguments?.getString("clinicId").toString()
-         clinicName = arguments?.getString("clinicName").toString()
-         clinicAddress = arguments?.getString("clinicAddress").toString()
-         clinicContact = arguments?.getString("clinicContact").toString()
+        clinicId = arguments?.getString("clinicId").toString()
+        clinicName = arguments?.getString("clinicName").toString()
+        clinicAddress = arguments?.getString("clinicAddress").toString()
+        clinicContact = arguments?.getString("clinicContact").toString()
 
         if (arguments?.getString("from").toString() == "home") {
             ourDoctorsViewModel.getAllDoctors(pageNo.toString())
@@ -88,20 +89,25 @@ class ClinicDoctorsFragment : Fragment(R.layout.fragment_our_doctors), View.OnCl
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data!!.success) {
-                        if (response.data.data.isEmpty()) {
-                            binding.loading.isVisible = true
-                            binding.noData.isVisible = true
-                        } else {
-                            response.data.data.forEach {
-                                doctorData.addAll(it.doctorData)
-                            }
-                            binding.loading.isVisible = false
-                            setDoctors(doctorData)
-                        }
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        binding.loading.isVisible = true
-                        binding.errorMessage.isVisible = true
+                        if (response.data!!.success) {
+                            if (response.data.data.isEmpty()) {
+                                binding.loading.isVisible = true
+                                binding.noData.isVisible = true
+                            } else {
+                                response.data.data.forEach {
+                                    doctorData.addAll(it.doctorData)
+                                }
+                                binding.loading.isVisible = false
+                                setDoctors(doctorData)
+                            }
+                        } else {
+                            binding.loading.isVisible = true
+                            binding.errorMessage.isVisible = true
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -120,46 +126,51 @@ class ClinicDoctorsFragment : Fragment(R.layout.fragment_our_doctors), View.OnCl
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data!!.code == 200) {
-                        binding.moreLoader.isVisible = false
-                        if (pageNo<2&&response.data.data.isEmpty()) {
-                            binding.loading.isVisible = true
-                            binding.noData.isVisible = true
-                        } else {
-                            if (doctorData.size == response.data.total) {
-                                isLoading = true
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data!!.code == 200) {
+                            binding.moreLoader.isVisible = false
+                            if (pageNo < 2 && response.data.data.isEmpty()) {
+                                binding.loading.isVisible = true
+                                binding.noData.isVisible = true
                             } else {
-                                isLoading = false
-                                binding.loading.isVisible = false
-                                doctorData.addAll(response.data.data)
-                                if (pageNo > 1) {
-                                    clinicDoctorsAdapter.differ.submitList(doctorData)
-                                    clinicDoctorsAdapter.notifyDataSetChanged()
-
+                                if (doctorData.size == response.data.total) {
+                                    isLoading = true
                                 } else {
-                                    setDoctors(doctorData)
+                                    isLoading = false
+                                    binding.loading.isVisible = false
+                                    doctorData.addAll(response.data.data)
+                                    if (pageNo > 1) {
+                                        clinicDoctorsAdapter.differ.submitList(doctorData)
+                                        clinicDoctorsAdapter.notifyDataSetChanged()
+
+                                    } else {
+                                        setDoctors(doctorData)
+                                    }
                                 }
                             }
+                        } else {
+                            binding.loading.isVisible = true
+                            binding.errorMessage.isVisible = true
                         }
-                    } else {
-                        binding.loading.isVisible = true
-                        binding.errorMessage.isVisible = true
                     }
                 }
                 is Resource.Loading -> {
-                    if(pageNo<2){
+                    if (pageNo < 2) {
                         binding.loading.isVisible = true
                         appLoader.show()
-                    }else{
+                    } else {
                         binding.moreLoader.isVisible = true
                     }
                 }
                 is Resource.Error -> {
-                    if(pageNo<2){
+                    if (pageNo < 2) {
                         binding.loading.isVisible = true
                         binding.errorMessage.isVisible = true
                         appLoader.dismiss()
-                    }else{
+                    } else {
                         binding.moreLoader.isVisible = false
                     }
 
@@ -216,8 +227,8 @@ class ClinicDoctorsFragment : Fragment(R.layout.fragment_our_doctors), View.OnCl
             bundle.putString("doctorId", it._id)
             bundle.putString("clinicId", clinicId)
             bundle.putString("clinicName", clinicName)
-            bundle.putString("clinicAddress",clinicAddress)
-            bundle.putString("clinicContact",clinicContact)
+            bundle.putString("clinicAddress", clinicAddress)
+            bundle.putString("clinicContact", clinicContact)
             findNavController().navigate(R.id.doctorDetailsFragment, bundle)
         }
     }

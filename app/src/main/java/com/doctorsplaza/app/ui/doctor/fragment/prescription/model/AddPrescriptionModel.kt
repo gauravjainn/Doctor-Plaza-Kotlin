@@ -4,6 +4,7 @@ import java.io.Serializable
 
 data class AddPrescriptionModel(
     val data: AddPrescriptionData,
+    val status: Int,
     val message: String,
     val success: Boolean
 )

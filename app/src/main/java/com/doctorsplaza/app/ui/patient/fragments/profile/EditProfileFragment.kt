@@ -65,7 +65,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
 
     private var from = ""
 
-    val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.getDefault())
+    val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -86,11 +86,12 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
         from = arguments?.getString("from").toString()
-        dob = arguments?.getString("dob").toString()
-        if(!dob.isNullOrEmpty()){
+        dob = arguments?.getString("dob") ?: ""
+        if (!dob.isNullOrEmpty()) {
             patientDOB = isoFormat.parse(dob).toString()
         }
-        Glide.with(requireContext()).applyDefaultRequestOptions(patientRequestOption()).load(session.loginImage).into(binding.userImage)
+        Glide.with(requireContext()).applyDefaultRequestOptions(patientRequestOption())
+            .load(session.loginImage).into(binding.userImage)
     }
 
 
@@ -99,18 +100,28 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data!!.status == 200) {
-                        requireContext().showToast(response.data.message)
-                        if(from == "appointment"){
-                            findNavController().popBackStack()
-                        }else{
-
-                            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
-                        }
-                        profileDetailsUpdated.postValue(response.data.data)
-                        session.loginName = binding.name.text.toString()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        requireContext().showToast(response.data.message)
+                        if (response.data!!.status == 200) {
+                            requireContext().showToast(response.data.message)
+                            if (from == "profile") {
+                                findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+                            } else {
+                                findNavController().popBackStack()
+                            }
+                            profileDetailsUpdated.postValue(response.data.data)
+
+                            session.loginName = binding.name.text.toString()
+                            session.loginDOB = binding.dateOfBirth.text.toString()
+                            session.loginGender = patientGender
+                            session.loginEmail = binding.email.text.toString()
+                            session.loginAddress = binding.address.text.toString()
+
+                        } else {
+                            requireContext().showToast(response.data.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -127,13 +138,17 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.code == 200) {
-                        session.loginImage = response.data.profile_picture
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else
+                        if (response.data?.code == 200) {
+                            session.loginImage = response.data.profile_picture
 
-                        profileImageUpdated.postValue(response.data.profile_picture)
-                    } else {
-                        binding.userImage.setImageResource(R.drawable.ic_user_image)
-                    }
+                            profileImageUpdated.postValue(response.data.profile_picture)
+                        } else {
+                            binding.userImage.setImageResource(R.drawable.ic_user_image)
+                        }
                 }
 
                 is Resource.Loading -> {
@@ -158,9 +173,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
 
         val dobParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         val dobFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-
         var userDob = ""
-        if (session.loginDOB.isNotEmpty()&&session.loginDOB!="null") {
+
+        if (session.loginDOB.isNotEmpty() && session.loginDOB != "null") {
             val stringDate: Date = dobParse.parse(session.loginDOB)
             userDob = dobFormat.format(stringDate)
         }
@@ -169,13 +184,17 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
         with(binding) {
             name.setText(session.loginName)
             dateOfBirth.text = userDob
-            if (session.loginGender == "Male") {
+            if (session.loginGender?.lowercase() == "male") {
                 genderSpinner.setSelection(1)
-            } else {
+            } else if (session.loginGender?.lowercase() == "female") {
                 genderSpinner.setSelection(2)
+            } else {
+                genderSpinner.setSelection(0)
             }
+
             email.setText(session.loginEmail)
-            phone.setText(session.loginPhone)
+            email.isEnabled = email.text.isEmpty()
+            phone.text = session.loginPhone
             address.setText(session.loginAddress)
         }
     }
@@ -214,8 +233,6 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
                 showPickerDialog()
 
             }
-
-
         }
     }
 
@@ -268,6 +285,26 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
         val userPhone = binding.phone.text.toString()
         val userAddress = binding.address.text.toString()
 
+        if (userName.isEmpty()) {
+            showToast("please enter a valid name.")
+            return
+        } else if (patientDOB.isEmpty()) {
+            showToast("please enter a valid email.")
+            return
+        }else if (userEmail.isEmpty()) {
+            showToast("please enter a valid email.")
+            return
+        } else if (userPhone.isEmpty()) {
+            showToast("please enter a valid phone number.")
+            return
+        } else if (userAddress.isEmpty()) {
+            showToast("please enter a valid address.")
+            return
+        } else if (patientGender.lowercase() != "male" && patientGender.lowercase() != "female") {
+            showToast("please select your gender.")
+            return
+        }
+
         val json = JsonObject()
         json.addProperty("id", session.patientId)
         json.addProperty("patient_name", userName)
@@ -286,7 +323,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile), View.OnCli
         val constraintsBuilder = CalendarConstraints.Builder()
         val dateValidator: CalendarConstraints.DateValidator =
             DateValidatorPointBackward.now()
-            constraintsBuilder.setValidator(dateValidator)
+        constraintsBuilder.setValidator(dateValidator)
 
         val dobParse = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         var dobDate = Date()

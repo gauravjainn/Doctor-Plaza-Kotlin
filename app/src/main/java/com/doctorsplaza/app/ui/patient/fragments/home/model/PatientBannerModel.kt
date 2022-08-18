@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.home.model
 data class PatientBannerModel(
     val count: Int,
     val data: List<BannerData>,
+    val message: String,
     val status: Int
 )
 

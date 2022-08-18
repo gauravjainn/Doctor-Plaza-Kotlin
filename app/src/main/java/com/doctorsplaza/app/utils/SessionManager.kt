@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-class SessionManager(var mcxt: Context) {
+class SessionManager(mcxt: Context) {
 
     companion object {
         val PREF_NAME = " BINJA"
@@ -71,21 +71,21 @@ class SessionManager(var mcxt: Context) {
             generalEditor.commit()
         }
 
-    var loginName: String?
-        get() = generalPref.getString(KEY_LOGIN_NAME, "")
+    var loginName: String
+        get() = generalPref.getString(KEY_LOGIN_NAME, "").toString()
         set(image) {
-            generalEditor.putString(KEY_LOGIN_NAME, image!!)
+            generalEditor.putString(KEY_LOGIN_NAME, image)
             generalEditor.commit()
         }
 
-    var loginEmail: String?
-        get() = generalPref.getString(KEY_LOGIN_EMAIL, "")
+    var loginEmail: String
+        get() = generalPref.getString(KEY_LOGIN_EMAIL, "").toString()
         set(image) {
-            generalEditor.putString(KEY_LOGIN_EMAIL, image!!)
+            generalEditor.putString(KEY_LOGIN_EMAIL, image)
             generalEditor.commit()
         }
 
-    var loginPhone: String?
+    var loginPhone: String
         get() = generalPref.getString(KEY_LOGIN_PHONE, "").toString()
         set(phone) {
             generalEditor.putString(KEY_LOGIN_PHONE, phone)

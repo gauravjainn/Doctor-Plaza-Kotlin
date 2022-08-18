@@ -20,8 +20,7 @@ class VideosAdapter @Inject constructor() : RecyclerView.Adapter<VideosAdapter.V
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: VideoData) {
             with(binding) {
-                Glide.with(context).applyDefaultRequestOptions(clinicRequestOption())
-                    .load(data.thumbnail).into(videoThumbnail)
+                Glide.with(context).load(data.thumbnail).centerCrop().into(videoThumbnail)
                 videoTitle.text = data.title
                 videoSlug.text = data.slug
                 root.setOnClickListener {

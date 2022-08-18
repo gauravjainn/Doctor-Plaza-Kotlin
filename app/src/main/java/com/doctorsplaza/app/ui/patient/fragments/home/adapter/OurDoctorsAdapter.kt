@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.databinding.ItemOurDoctorBinding
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model.DoctorData
+import com.doctorsplaza.app.utils.doctorRequestOption
 import javax.inject.Inject
 
 class OurDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<OurDoctorsAdapter.ViewHolder>() {
@@ -21,7 +22,7 @@ class OurDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<OurDoctorsAd
                 doctorRating.text = data.rating.toString()
                 doctorDegree.text = data.qualification
                 doctorRatingCount.text = "${data.ratings_count}"
-                Glide.with(context).load(data.profile_picture).into(doctorImage)
+                Glide.with(context).applyDefaultRequestOptions(doctorRequestOption()).load(data.profile_picture).into(doctorImage)
                 root.setOnClickListener {
                     doctorClickListener?.let {
                         it(data)

@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.notifications.model
 data class NotificationModel(
     val count: Int,
     val `data`: List<NotificationData>,
+    val message: String,
     val status: Int
 )
 

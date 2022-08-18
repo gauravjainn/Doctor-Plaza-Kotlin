@@ -9,15 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.doctorsplaza.app.R
-import com.doctorsplaza.app.databinding.FragmentFinancialBinding
 import com.doctorsplaza.app.databinding.FragmentRentStatusBinding
 import com.doctorsplaza.app.ui.doctor.fragment.reports.adapter.RentStatusAdapter
 import com.doctorsplaza.app.ui.doctor.fragment.reports.model.RentData
 import com.doctorsplaza.app.ui.doctor.fragment.reports.viewModel.RevenueViewModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -69,6 +65,10 @@ class RentStatusFragment : Fragment(R.layout.fragment_rent_status) {
                     binding.loader.isVisible = false
                     binding.noDataMsg.isVisible = false
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.success!!) {
                         if (response.data.data.isEmpty()) {
                             binding.noDataMsg.isVisible = true
@@ -79,7 +79,7 @@ class RentStatusFragment : Fragment(R.layout.fragment_rent_status) {
                     } else {
                         showToast(response.data.message)
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }

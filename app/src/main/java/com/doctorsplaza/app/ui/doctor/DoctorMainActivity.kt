@@ -115,8 +115,10 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
 
                     drawerName.text = response.data?.data?.get(0)?.doctorName
                 }
+                else -> {}
             }
         }
+
     }
 
     private fun setBottomNavigation() {

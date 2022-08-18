@@ -108,6 +108,9 @@ interface DoctorPlazaApi {
     @POST("signInPatientPhone")
     suspend fun resendLoginPatientOtp(@Body jsonBody: JsonObject): Response<CommonModel>
 
+    @POST("onetapsinguppatient")
+    suspend fun oneTapSignUpPatient(@Body jsonBody: JsonObject): Response<PatientRegisterModel>
+
     @POST("signInDoctorMobile")
     suspend fun resendLoginDoctorOtp(@Body jsonBody: JsonObject): Response<CommonModel>
 
@@ -338,6 +341,6 @@ interface DoctorPlazaApi {
     suspend fun notifyCallStatus(@Body jsonBody: JsonObject): Response<CommonModel>
 
     @POST("logout")
-    suspend fun logout(@Body jsonBody: String): Response<CommonModel>
+    suspend fun logout(@Body jsonBody: JsonObject): Response<CommonModel>
 }
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.AddPrescriptionModel
-import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
 import com.doctorsplaza.app.utils.checkResponseBody
@@ -13,7 +12,6 @@ import com.google.gson.JsonObject
 import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +19,6 @@ class AddPrescriptionViewModel @Inject constructor(
     private val repository: Repository,
     val session: SessionManager
 ) : ViewModel() {
-
-    val addMedicine = SingleLiveEvent<MedicineModel>()
 
     val addPrescription = SingleLiveEvent<Resource<AddPrescriptionModel>>()
 

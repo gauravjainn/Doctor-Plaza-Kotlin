@@ -5,12 +5,13 @@ data class  DoctorUpcomingAppointmentModel(
     val data: List<AppointmentData>,
     val message: String,
     val success: Boolean,
+    val status: Int,
     val total: Int
 )
 
 data class AppointmentData(
     val _id: String,
-    val age: Int,
+    val age: String,
     val appointment_type: String,
     val booked_as: String,
     val clinic_id: String,

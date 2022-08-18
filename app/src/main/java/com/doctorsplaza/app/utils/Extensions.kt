@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
@@ -20,6 +21,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.UpdatedProfileData
+import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.gym.gymapp.utils.SingleLiveEvent
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -111,6 +113,15 @@ fun clinicRequestOption(): RequestOptions {
     return RequestOptions().apply {
         placeholder(R.drawable.ic_hospital)
         error(R.drawable.ic_hospital).centerInside()
+        diskCacheStrategy(DiskCacheStrategy.ALL)
+    }
+}
+
+@SuppressLint("CheckResult")
+fun videoRequestOption(): RequestOptions {
+    return RequestOptions().apply {
+        placeholder(R.drawable.video_button)
+        error(R.drawable.video_button)
         diskCacheStrategy(DiskCacheStrategy.ALL)
     }
 }
@@ -278,6 +289,12 @@ fun Activity.turnScreenOnAndKeyguardOff() {
             requestDismissKeyguard(this@turnScreenOnAndKeyguardOff, null)
         }
     }
+}
+
+fun logOutUnAuthorized(activity: Activity, message: String) {
+    activity.showToast(message)
+    activity.startActivity(Intent(activity, PatientLoginSignup::class.java))
+    activity.finish()
 }
 
 

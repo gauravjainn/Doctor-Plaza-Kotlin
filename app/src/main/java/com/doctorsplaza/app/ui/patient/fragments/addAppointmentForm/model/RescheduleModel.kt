@@ -2,6 +2,7 @@ package com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model
 
 data class RescheduleModel(
     val code: Int,
+    val status: Int,
     val `data`: Data,
     val message: String,
     val result: Result
@@ -17,7 +18,7 @@ data class Data(
 
 data class Result(
     val _id: String,
-    val age: Int,
+    val age: String,
     val appointment_type: String,
     val booked_as: String,
     val cancelledBy: String,

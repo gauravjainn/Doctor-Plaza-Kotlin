@@ -58,6 +58,7 @@ class IntroductionTwoFragment : Fragment(R.layout.fragment_introduction_two), Vi
         with(binding) {
             nextBtn.setOnClickListener(this@IntroductionTwoFragment)
             loginAsDoctor.setOnClickListener(this@IntroductionTwoFragment)
+
         }
     }
 
@@ -71,8 +72,9 @@ class IntroductionTwoFragment : Fragment(R.layout.fragment_introduction_two), Vi
             }
             R.id.loginAsDoctor -> {
                 startActivity(Intent(requireActivity(),DoctorLoginSignupActivity::class.java))
-
             }
+
+
         }
     }
 }

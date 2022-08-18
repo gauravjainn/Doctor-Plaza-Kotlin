@@ -12,10 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentContactUsBinding
 import com.doctorsplaza.app.data.commonModel.CommonViewModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -80,13 +77,17 @@ class ContactUsFragment : Fragment(R.layout.fragment_contact_us), View.OnClickLi
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.success) {
                         requireContext().showToast(response.data.message)
                         findNavController().popBackStack()
                     } else {
                         requireContext().showToast(response.data.message)
                     }
-                }
+                }}
 
                 is Resource.Loading -> {
                     appLoader.show()

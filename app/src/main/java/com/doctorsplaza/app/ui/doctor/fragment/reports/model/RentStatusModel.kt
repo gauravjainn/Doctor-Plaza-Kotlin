@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.doctor.fragment.reports.model
 data class RentStatusModel(
     val data: List<RentData>,
     val message: String,
+    val status: Int,
     val success: Boolean
 )
 

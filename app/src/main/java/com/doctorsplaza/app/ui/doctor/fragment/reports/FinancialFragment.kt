@@ -1,5 +1,6 @@
 package com.doctorsplaza.app.ui.doctor.fragment.reports
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +13,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentFinancialBinding
 import com.doctorsplaza.app.ui.doctor.fragment.reports.model.FinancialModel
 import com.doctorsplaza.app.ui.doctor.fragment.reports.viewModel.RevenueViewModel
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
+import com.doctorsplaza.app.utils.*
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -60,6 +58,7 @@ class FinancialFragment : Fragment(R.layout.fragment_financial) {
         revenueViewModel.getFinancialReports(jsonObject)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setChartData(data: FinancialModel) {
         val entries = ArrayList<PieEntry>()
         if (
@@ -112,7 +111,13 @@ class FinancialFragment : Fragment(R.layout.fragment_financial) {
                 is Resource.Success -> {
                     binding.loader.isVisible = false
                     appLoader.dismiss()
-                    setChartData(response.data!!)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message.toString())
+                    } else {
+                        setChartData(response.data!!)
+                    }
+
                 }
                 is Resource.Loading -> {
                     appLoader.show()

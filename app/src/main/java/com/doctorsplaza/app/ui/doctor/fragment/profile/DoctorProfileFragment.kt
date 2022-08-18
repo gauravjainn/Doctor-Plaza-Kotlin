@@ -65,10 +65,17 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
                 is Resource.Success -> {
                     appLoader.dismiss()
                     binding.loader.isVisible = false
-                    if (response.data?.status == 200) {
-                        setDoctorProfile(response.data.data[0])
-                    } else {
-                        showToast("something went wrong")
+                    when (response.data?.status) {
+                        401 -> {
+                            session.isLogin = false
+                            logOutUnAuthorized(requireActivity(),response.data.message)
+                        }
+                        200 -> {
+                            setDoctorProfile(response.data.data[0])
+                        }
+                        else -> {
+                            showToast("something went wrong")
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -139,7 +146,8 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
             email.text = data.email
             phone.text = data.contactNumber.toString()
             address.text = data.address
-            dayOffSwitch.isChecked = !data.turndayoff
+            experienceEdt.text = data.experience
+            dayOffSwitch.isChecked = data.turndayoff
         }
     }
 
@@ -151,9 +159,9 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
                 val jsonObject = JsonObject()
                 jsonObject.addProperty("id", session.loginId)
                 if (dayOffSwitch.isChecked) {
-                    doctorProfileViewModel.doctorTurnDayOn(jsonObject)
-                } else {
                     doctorProfileViewModel.doctorTurnDayOff(jsonObject)
+                } else {
+                    doctorProfileViewModel.doctorTurnDayOn(jsonObject)
                 }
             }
         }

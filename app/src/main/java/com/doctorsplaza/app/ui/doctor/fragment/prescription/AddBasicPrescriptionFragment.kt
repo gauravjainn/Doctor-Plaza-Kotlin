@@ -26,8 +26,6 @@ class AddBasicPrescriptionFragment : Fragment(R.layout.fragment_add_basic_prescr
 
     private lateinit var appLoader: DoctorPlazaLoader
 
-    private val addPrescriptionViewModel: AddPrescriptionViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +36,7 @@ class AddBasicPrescriptionFragment : Fragment(R.layout.fragment_add_basic_prescr
                 inflater.inflate(R.layout.fragment_add_basic_prescription, container, false)
             binding = FragmentAddBasicPrescriptionBinding.bind(currentView!!)
             init()
-            setObserver()
+
             setOnClickListener()
         }
         return currentView!!
@@ -50,9 +48,6 @@ class AddBasicPrescriptionFragment : Fragment(R.layout.fragment_add_basic_prescr
 
     }
 
-    private fun setObserver() {
-
-    }
 
 
     private fun setOnClickListener() {

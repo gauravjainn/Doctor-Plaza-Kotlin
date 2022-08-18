@@ -16,6 +16,7 @@ import com.doctorsplaza.app.ui.doctor.fragment.prescription.adapter.MedicineAdap
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -73,19 +74,20 @@ class SuccessAppointmentDetailsFragment : Fragment(R.layout.fragment_success_app
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.code == 200) {
                         binding.loader.isVisible = false
                         if (response.data.data.isNotEmpty()) {
                             prescriptionData = response.data.data[0]
                             setPrescriptionData()
-                        } else {
-
                         }
                     } else {
                         binding.loader.isVisible = true
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }

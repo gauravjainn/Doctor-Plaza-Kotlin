@@ -6,6 +6,7 @@ data class GetPrescriptionDetailsModel(
     val code: Int,
     val data: List<PrescriptionData>,
     val message: String,
+    val status: Int,
     val total: Int
 )
 
@@ -48,7 +49,7 @@ data class Time(
 
 data class AppointmentId(
     val _id: String,
-    val age: Int,
+    val age: String,
     val appointment_type: String,
     val booked_as: String,
     val clinic_id: String,

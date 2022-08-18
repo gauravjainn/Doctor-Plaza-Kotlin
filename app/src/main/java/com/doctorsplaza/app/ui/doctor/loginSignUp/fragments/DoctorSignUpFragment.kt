@@ -28,6 +28,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
     private var selectedGender: String = ""
     private var selectedSpecialization: String = ""
     private var consultationFees: String = ""
+    private var doctorExperience: String = ""
     private var address: String = ""
     private var email: String = ""
     private var phone: String = ""
@@ -241,6 +242,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
         jsonObject.addProperty(DoctorCity, selectedCity)
         jsonObject.addProperty(DoctorPincode, pincode)
         jsonObject.addProperty(DoctorFees, consultationFees)
+        jsonObject.addProperty(DoctorExperience, doctorExperience)
         jsonObject.addProperty(PatientToken, "req.body.token")
         doctorLoginSignUpViewModel.doctorRegister(jsonObject)
     }
@@ -248,12 +250,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
 
     private fun setSpecialistSpinner(data: List<String>) {
 
-        val specialistAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinner_text,
-            data
-        )
-
+        val specialistAdapter = ArrayAdapter(requireContext(), R.layout.spinner_text, data)
         specialistAdapter.setDropDownViewResource(R.layout.spinner_text)
         binding.specializationSpinner.adapter = specialistAdapter
         binding.specializationSpinner.onItemSelectedListener =
@@ -377,6 +374,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
             2 -> {
                 qualification = binding.qualificationEdt.text.toString()
                 consultationFees = binding.consultationFeeEdt.text.toString()
+                doctorExperience = binding.experienceEdt.text.toString()
                 when {
                     selectedSpecialization.isEmpty() -> {
                         showToast("please select Specialization")
@@ -385,6 +383,11 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
                     qualification.isEmpty() -> {
                         showToast("please enter your Qualification")
                     }
+
+                    doctorExperience.isEmpty() -> {
+                        showToast("please enter your experience")
+                    }
+
                     consultationFees.isEmpty() -> {
                         showToast("please enter your consultation fee")
                     }

@@ -116,11 +116,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     appLoader.dismiss()
                     binding.loader.isVisible = false
                     binding.errorMessage.isVisible = false
-                    if (response.data!!.status == 200) {
-                        profileData = response.data.data
-                        setUserData(profileData)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        setUserData(profileData)
+                        if (response.data!!.status == 200) {
+                            profileData = response.data.data
+                            setUserData(profileData)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -142,8 +145,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     appLoader.dismiss()
                     binding.loader.isVisible = false
                     binding.errorMessage.isVisible = false
-                    if (response.data!!.code == 200) {
-                        setReportRv(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data!!.code == 200) {
+                            binding.patientReportsRv.isVisible = true
+                            setReportRv(response.data.data)
+                        }else{
+                            binding.patientReportsRv.isVisible = false
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -163,11 +174,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data!!.code == 200) {
-                        profileViewModel.getPatientReport()
-                        showToast(response.data.message)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        showToast(response.data.message)
+                        if (response.data!!.code == 200) {
+                            profileViewModel.getPatientReport()
+                            showToast(response.data.message)
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -193,12 +209,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
 
     private fun setUserData(data: ProfileData) {
 
-        val dobParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val dobParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.getDefault())
         val dobFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         var userDob = ""
 
-        session.loginDOB = data.dob
-        
+        session.loginDOB = data.dob.toString()
+
         if (session.loginDOB.isNotEmpty() && session.loginDOB != "null") {
             val stringDate: Date = dobParse.parse(session.loginDOB)
             userDob = dobFormat.format(stringDate)
@@ -212,6 +228,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                 email.text = data.email
                 phone.text = data.contact_number.toString()
                 address.text = data.address
+                session.loginAddress = data.address
                 if (data.age != null) {
                     session.loginAge = data.age
                 }
@@ -256,6 +273,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             R.id.profileEdit -> {
                 val bundle = Bundle().apply {
                     putString("dob", profileData.dob)
+                    putString("from", "profile")
                 }
                 findNavController().navigate(R.id.editProfileFragment, bundle)
             }
@@ -300,13 +318,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.code == 200) {
                         showToast(response.data.message)
                         profileViewModel.getPatientReport()
                     } else {
                         showToast(response.data.message)
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }

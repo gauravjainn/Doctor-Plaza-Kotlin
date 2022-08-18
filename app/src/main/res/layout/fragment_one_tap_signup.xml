@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.patient.loginSignUp.fragments.OneTapSignupFragment">
+
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:src="@drawable/ic_dr_plaza_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/introLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:src="@drawable/ic_login_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintBottom_toTopOf="@id/loginBg"/>
+
+    <LinearLayout
+        android:id="@+id/loginBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_160sdp"
+        android:background="@drawable/top_corner_radius"
+        android:orientation="vertical"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/introLogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/phoneNumberLbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:fontFamily="@font/poppins"
+        android:text="Phone Number"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toTopOf="@id/loginBg" />
+
+    <EditText
+        android:id="@+id/phoneNumberEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="@drawable/edt_bg"
+        android:drawableStart="@drawable/ic_calling"
+        android:drawablePadding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        android:inputType="number"
+        android:maxLength="10"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/loginBg"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLbl" />
+
+    <ImageButton
+        android:id="@+id/loginSubmitBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_5sdp"
+        android:foreground="@drawable/ripple_effect"
+        app:layout_constraintBottom_toBottomOf="@id/signUpSubmit"
+        app:layout_constraintEnd_toEndOf="@id/signUpSubmit"
+        app:layout_constraintStart_toStartOf="@id/signUpSubmit"
+        app:layout_constraintTop_toTopOf="@id/signUpSubmit" />
+
+    <TextView
+        android:id="@+id/signUpSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:elevation="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_7sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:clickable="true"
+        android:text="Sign Up"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toTopOf="@id/notHaveAccount"
+        android:focusable="true" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/notHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_8sdp"
+        android:text="New to Doctors Plaza?"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/notHaveAccountSignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/notHaveAccountSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_9sdp"
+        android:text=" SignUp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/notHaveAccount"
+        app:layout_constraintBottom_toBottomOf="@id/notHaveAccount"
+        app:layout_constraintTop_toTopOf="@id/notHaveAccount"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

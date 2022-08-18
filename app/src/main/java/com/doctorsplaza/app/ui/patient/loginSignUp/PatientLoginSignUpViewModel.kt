@@ -27,8 +27,9 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
     val login = SingleLiveEvent<Resource<LoginModel>>()
 
     val resendLoginSignUpOtp = SingleLiveEvent<Resource<CommonModel>>()
+    val oneTapSignUpPatientOtp = SingleLiveEvent<Resource<PatientRegisterModel>>()
 
-     fun checkEmail(jsonObject: JsonObject) = viewModelScope.launch {
+    fun checkEmail(jsonObject: JsonObject) = viewModelScope.launch {
         safeCheckEmailCall(jsonObject)
     }
 
@@ -40,9 +41,9 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 response.body()?.let { stateResponse ->
                     checkEmail.postValue(Resource.Success(stateResponse))
                 }
-            }else{
+            } else {
 
-             checkEmail.postValue(Resource.Error(response.message(), null))
+                checkEmail.postValue(Resource.Error(response.message(), null))
             }
 
         } catch (t: Throwable) {
@@ -65,7 +66,7 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 response.body()?.let { stateResponse ->
                     patientReg.postValue(Resource.Success(stateResponse))
                 }
-            }else{
+            } else {
 
                 patientReg.postValue(Resource.Error(response.message(), null))
             }
@@ -90,7 +91,7 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 response.body()?.let { stateResponse ->
                     login.postValue(Resource.Success(stateResponse))
                 }
-            }else{
+            } else {
                 login.postValue(Resource.Error(response.message(), null))
             }
 
@@ -114,7 +115,7 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 response.body()?.let { stateResponse ->
                     verifyOTP.postValue(Resource.Success(stateResponse))
                 }
-            }else{
+            } else {
                 verifyOTP.postValue(Resource.Error(response.message(), null))
             }
 
@@ -138,7 +139,7 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
                 response.body()?.let { stateResponse ->
                     verifyOTP.postValue(Resource.Success(stateResponse))
                 }
-            }else{
+            } else {
                 verifyOTP.postValue(Resource.Error(response.message(), null))
             }
 
@@ -167,4 +168,23 @@ class PatientLoginSignUpViewModel @Inject constructor(private val repository: Re
             resendLoginSignUpOtp.postValue(Resource.Error(checkThrowable(t), null))
         }
     }
+
+    fun oneTapSignUpOtp(jsonObject: JsonObject) = viewModelScope.launch {
+        safeOneTapSignUpPatientCall(jsonObject)
+    }
+
+    private suspend fun safeOneTapSignUpPatientCall(jsonObject: JsonObject) {
+        oneTapSignUpPatientOtp.postValue(Resource.Loading())
+        try {
+            val response = repository.oneTapSignUpPatient(jsonObject)
+            if (response.isSuccessful)
+                oneTapSignUpPatientOtp.postValue(Resource.Success(checkResponseBody(response.body()) as PatientRegisterModel))
+            else
+                oneTapSignUpPatientOtp.postValue(Resource.Error(response.message(), null))
+
+        } catch (t: Throwable) {
+            oneTapSignUpPatientOtp.postValue(Resource.Error(checkThrowable(t), null))
+        }
+    }
+
 }

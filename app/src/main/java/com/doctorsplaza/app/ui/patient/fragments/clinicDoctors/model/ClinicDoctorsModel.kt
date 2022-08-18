@@ -3,6 +3,7 @@ package com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.model
 data class ClinicDoctorsModel(
     val code: Int,
     val count: Int,
+    val status: Int,
     val data: List<ClinicDoctorsData>,
     val message: String,
     val success: Boolean
@@ -49,6 +50,7 @@ data class DoctorData(
     val qualification: String,
     val rating: Double,
     val ratings_count: Int,
+    val experience: String,
     val searchtype: String,
     val signature: String,
     val signinotp: String,

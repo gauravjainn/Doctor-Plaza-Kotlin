@@ -17,6 +17,7 @@ import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTim
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -72,6 +73,10 @@ class ClinicsFragment : Fragment(R.layout.fragment_clinic) {
                     appLoader.dismiss()
                     binding.errorMessage.isVisible = false
                     binding.loading.isVisible = false
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.success!!) {
                         if (response.data.data.isEmpty()) {
                             binding.noData.isVisible = true
@@ -80,7 +85,7 @@ class ClinicsFragment : Fragment(R.layout.fragment_clinic) {
                             setClinicsData(response.data.data)
                         }
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }

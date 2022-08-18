@@ -1,7 +1,6 @@
 package com.doctorsplaza.app.ui.patient.fragments.search
 
 import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchData
-import com.doctorsplaza.app.utils.showToast
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,16 +22,13 @@ import com.doctorsplaza.app.ui.patient.fragments.home.HomeViewModel
 import com.doctorsplaza.app.ui.patient.fragments.home.adapter.OurSpecialistAdapter
 import com.doctorsplaza.app.ui.patient.fragments.home.model.SpecialistData
 import com.doctorsplaza.app.ui.patient.fragments.search.adapter.SearchDoctorsAdapter
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener {
-    private lateinit var specialist: SpecialistData
     private var searchKey: String = ""
     private lateinit var binding: FragmentSearchBinding
 
@@ -89,14 +85,18 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        specialistData = response.data.data
-                        if (searchKey.isEmpty()) {
-                            setSpecialists()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.status == 200) {
+                            specialistData = response.data.data
+                            if (searchKey.isEmpty()) {
+                                setSpecialists()
+                            }
                         }
                     }
                 }
-
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -111,16 +111,20 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.data!!.isNotEmpty()) {
-                        binding.loaderBg.isVisible = false
-                        binding.noDataMsg.isVisible = false
-                        setSearchRv(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        binding.loaderBg.isVisible = true
-                        binding.noDataMsg.isVisible = true
+                        if (response.data?.data!!.isNotEmpty()) {
+                            binding.loaderBg.isVisible = false
+                            binding.noDataMsg.isVisible = false
+                            setSearchRv(response.data.data)
+                        } else {
+                            binding.loaderBg.isVisible = true
+                            binding.noDataMsg.isVisible = true
+                        }
                     }
                 }
-
                 is Resource.Loading -> {
                     appLoader.show()
                 }

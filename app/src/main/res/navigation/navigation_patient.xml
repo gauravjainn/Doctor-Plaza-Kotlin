@@ -9,7 +9,11 @@
         android:id="@+id/appointmentFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentFragment"
         android:label="fragment_appointment"
-        tools:layout="@layout/fragment_appointment" />
+        tools:layout="@layout/fragment_appointment">
+        <action
+            android:id="@+id/action_appointmentFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/clinicFragment"
@@ -45,7 +49,11 @@
         android:id="@+id/doctorDetailsFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.doctorDetails.DoctorDetailsFragment"
         android:label="fragment_doctor_details"
-        tools:layout="@layout/fragment_doctor_details" />
+        tools:layout="@layout/fragment_doctor_details" >
+        <action
+            android:id="@+id/action_doctorDetailsFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
@@ -57,24 +65,24 @@
         android:id="@+id/editProfileFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.profile.EditProfileFragment"
         android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" >
+        tools:layout="@layout/fragment_edit_profile">
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment"
             app:popUpTo="@id/profileFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/addReminderFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.reminder.AddReminderFragment"
         android:label="fragment_add_reminder"
-        tools:layout="@layout/fragment_add_reminder" >
+        tools:layout="@layout/fragment_add_reminder">
         <action
             android:id="@+id/action_addReminderFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment"
             app:popUpTo="@id/reminderFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/reminderFragment" />
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/notificationsFragment"
@@ -97,7 +105,7 @@
         android:label="fragment_contact_us"
         tools:layout="@layout/fragment_contact_us" />
     <fragment
-            android:id="@+id/bookAppointmentFragment"
+        android:id="@+id/bookAppointmentFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.bookAppointment.BookAppointmentFragment"
         android:label="fragment_book_appointment"
         tools:layout="@layout/fragment_book_appointment" />
@@ -105,44 +113,44 @@
         android:id="@+id/checkOutBookingAppointmentFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.bookAppointment.CheckOutBookingAppointmentFragment"
         android:label="fragment_check_out_booking_appointment"
-        tools:layout="@layout/fragment_check_out_booking_appointment" >
+        tools:layout="@layout/fragment_check_out_booking_appointment">
         <action
             android:id="@+id/action_checkOutBookingAppointmentFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/addAppointmentFormFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.AddAppointmentFormFragment"
         android:label="fragment_add_appoinmnet_form"
-        tools:layout="@layout/fragment_add_appoinmnet_form" >
+        tools:layout="@layout/fragment_add_appoinmnet_form">
         <action
             android:id="@+id/action_addAppointmentFormFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_addAppointmentFormFragment_to_appointmentFragment"
             app:destination="@id/appointmentFragment"
             app:popUpTo="@id/appointmentFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/appointmentDetailsFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentDetailsFragment"
         android:label="fragment_appointment_details"
-        tools:layout="@layout/fragment_appointment_details" >
+        tools:layout="@layout/fragment_appointment_details">
         <action
             android:id="@+id/action_appointmentDetailsFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_appointmentDetailsFragment_to_appointmentFragment"
             app:destination="@id/appointmentFragment"
             app:popUpTo="@id/appointmentFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/prescriptionFragment"

@@ -6,12 +6,13 @@ import java.io.Serializable
 data class AppointmentModel(
     val data: AppointmentData,
     val message: String,
+    val status: Int,
     val success: Boolean
 )
 
 data class AppointmentData(
     val _id: String,
-    val age: Int,
+    val age: String,
     val appointment_type: String,
     val booked_as: String,
     val clinic_id: ClinicId,
@@ -34,9 +35,16 @@ data class AppointmentData(
     val updatedAt: String,
     val user_id: UserId,
     val rating:Rating?,
-    val prescription:String
+    val prescription:String,
+    val pat_reports:List<PatientReports>
+
 ) : Serializable
 
+data class PatientReports(
+ val _id:String,
+ val title:String,
+ val image:String
+)
 data class PaymentId(
     val _id: String,
     val amount: Int,
@@ -128,6 +136,8 @@ data class TimeSlotData(
     val day: String,
     val start_time: String,
     val end_time: String,
+    val startTimeDate:String,
+    val endTimeDate:String,
     val is_active: Boolean,
     val createdAt: String,
     val updatedAt: String

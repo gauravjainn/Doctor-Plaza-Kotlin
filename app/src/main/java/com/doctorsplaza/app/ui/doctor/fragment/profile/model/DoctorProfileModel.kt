@@ -2,12 +2,14 @@ package com.doctorsplaza.app.ui.doctor.fragment.profile.model
 
 data class DoctorProfileModel(
     val data: List<DoctorData>,
+    val message: String,
     val status: Int
 )
 
 data class DoctorData(
     val _id: String,
     val address: String,
+    val experience: String,
     val city: String,
     val clinicData: ClinicData,
     val consultationfee: String,

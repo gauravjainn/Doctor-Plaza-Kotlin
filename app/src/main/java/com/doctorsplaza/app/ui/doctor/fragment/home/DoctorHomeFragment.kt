@@ -31,8 +31,6 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
     private val doctorHomeViewModel: DoctorHomeViewModel by viewModels()
 
-    private val appointmentViewModel: AppointmentViewModel by viewModels()
-
     @Inject
     lateinit var bannerAdapter: BannerAdapter
 
@@ -42,7 +40,6 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
     private var currentView: View? = null
 
     private lateinit var appLoader: DoctorPlazaLoader
-
 
     @Inject
     lateinit var bookTimeAdapter: BookTimeAdapter
@@ -68,9 +65,9 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
     private fun init() {
         hideKeyboard(requireActivity())
+        binding.loader.isVisible = true
         appLoader = DoctorPlazaLoader(requireContext())
         doctorHomeViewModel.getDoctorBanners()
-        binding.loader.isVisible = true
         val jsonObject = JsonObject()
         jsonObject.addProperty("id", session.loginId)
         doctorHomeViewModel.getDoctorUpcomingAppointments(json = jsonObject)
@@ -91,8 +88,13 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
         doctorHomeViewModel.doctorBanner.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    if (response.data?.status == 200) {
-                        setBanners(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.status == 200) {
+                            setBanners(response.data.data)
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -108,20 +110,25 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    binding.loader.isVisible = false
-                    if (response.data?.success!!) {
-                        if (response.data.data.isEmpty()) {
-                            binding.appointmentRv.isVisible = false
-                            binding.noAppointments.isVisible = true
-                            binding.appointmentViewAll.isVisible = false
-                        } else {
-                            binding.appointmentRv.isVisible = true
-                            binding.noAppointments.isVisible = false
-                            binding.appointmentViewAll.isVisible = true
-                            setAppointmentsData(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.success!!) {
+                            if (response.data.data.isEmpty()) {
+                                binding.appointmentRv.isVisible = false
+                                binding.noAppointments.isVisible = true
+                                binding.appointmentViewAll.isVisible = false
+                            } else {
+                                binding.appointmentRv.isVisible = true
+                                binding.noAppointments.isVisible = false
+                                binding.appointmentViewAll.isVisible = true
+                                setAppointmentsData(response.data.data)
+                            }
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -136,11 +143,17 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
         doctorHomeViewModel.dashBoard.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    binding.loader.isVisible = false
                     appLoader.dismiss()
+
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.success!!) {
                         setDashBoard(response.data)
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -156,8 +169,7 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
         doctorUpcomingAppointmentAdapter.differ.submitList(data)
         binding.appointmentRv.apply {
             setHasFixedSize(true)
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = doctorUpcomingAppointmentAdapter
         }
     }
@@ -187,9 +199,9 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
         doctorUpcomingAppointmentAdapter.setOnAppointmentClickListener {
             val bundle = Bundle().apply {
-                putString("appointId",it._id)
+                putString("appointId", it._id)
             }
-            findNavController().navigate(R.id.doctorAppointmentDetailsFragment,bundle)
+            findNavController().navigate(R.id.doctorAppointmentDetailsFragment, bundle)
         }
     }
 
@@ -205,6 +217,7 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
 
     override fun onResume() {
+        hideKeyboard(requireActivity())
         super.onResume()
         setObserver()
     }

@@ -37,8 +37,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONObject
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -194,9 +192,19 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             when (response) {
                 is Resource.Success -> {
                     binding.errorMsg.isVisible = false
-                    if (response.data!!.success) {
-                        setClinicSpinner(response.data.data)
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data!!.success) {
+                            if (response.data.data.isEmpty()) {
+                                appLoader.dismiss()
+                            } else {
+                                setClinicSpinner(response.data.data)
+                            }
+                        }
                     }
+
                 }
                 is Resource.Loading -> {
                     appLoader.show()
@@ -216,8 +224,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                     binding.errorMsg.isVisible = false
                     setSpecializationSpinner(response.data)
                 }
-                is Resource.Loading -> {
-                }
+                is Resource.Loading -> {}
                 is Resource.Error -> {
                     binding.loader.isVisible = true
                     binding.errorMsg.isVisible = true
@@ -445,7 +452,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
         timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
             binding.consultationTime.text = ""
-            timeSlotsDialog.show()
+            timeSlotsDialog.dismiss()
         }
 
         val timeSlotsRv = timeSlotsDialog.findViewById<RecyclerView>(R.id.timeSlotsRv)
@@ -626,7 +633,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
         val description = binding.describeYourProblem.text.toString().trim()
         val consultationDate = binding.consultationDate.text.toString().trim()
         val consultationTime = binding.consultationTime.text.toString().trim()
-
+        val showReports = binding.showReports.isChecked
         if (patientName.isEmpty()) {
             showToast("Please Enter a Valid Patient Name")
         } else if (patientPhone.isEmpty() || patientPhone.length < 10) {
@@ -660,6 +667,8 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             jsonObject.addProperty("slotIdArray", timeSlotsList[timeSlotsListPosition]._id)
             jsonObject.addProperty("status", "pending")
             jsonObject.addProperty("user_id", session.patientId)
+            jsonObject.addProperty("user_id", session.patientId)
+            jsonObject.addProperty("showReports", showReports)
             if (selectedPaymentType == "Online") {
                 jsonObjectOnline = jsonObject
                 createOrderId()

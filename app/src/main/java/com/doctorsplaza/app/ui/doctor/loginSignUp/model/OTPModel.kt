@@ -36,5 +36,6 @@ data class OTPData(
     val state: String,
     val token: String,
     val turndayoff: Boolean,
-    val updatedAt: String
+    val updatedAt: String,
+    val auth_token: String
 )

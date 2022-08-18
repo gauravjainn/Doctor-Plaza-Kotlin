@@ -1,10 +1,10 @@
 package com.doctorsplaza.app.ui.patient.fragments.doctorDetails
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
@@ -16,10 +16,8 @@ import com.doctorsplaza.app.databinding.FragmentDoctorDetailsBinding
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.ClinicsData
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.Clinics
 import com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model.DoctorDetailsData
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.showToast
-import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.*
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -81,15 +79,20 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
-                    if (response.data?.status == 200) {
-                        binding.noData.isVisible = false
-                        binding.loader.isVisible = false
-                        setDoctorData(response.data.data[0])
-
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        binding.noData.isVisible = true
-                        binding.loader.isVisible = true
+                        if (response.data?.status == 200) {
+                            binding.noData.isVisible = false
+                            binding.loader.isVisible = false
+                            setDoctorData(response.data.data[0])
 
+                        } else {
+                            binding.noData.isVisible = true
+                            binding.loader.isVisible = true
+
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -143,6 +146,29 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
         }
     }
 
+    private fun showAddRequiredFieldsPopUp() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.update_profile_details)
+        val updateBtn = dialog.findViewById<View>(R.id.updateBtn) as MaterialButton
+        val cancelBtn = dialog.findViewById<View>(R.id.cancelBtn) as MaterialButton
+        updateBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_doctorDetailsFragment_to_editProfileFragment)
+            dialog.dismiss()
+        }
+        cancelBtn.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayWidth = displayMetrics.widthPixels
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window!!.attributes)
+        val dialogWindowWidth = (displayWidth * 0.9f).toInt()
+        layoutParams.width = dialogWindowWidth
+        dialog.window!!.attributes = layoutParams
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -150,14 +176,19 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
                 findNavController().popBackStack()
             }
             R.id.bookAppointment -> {
-                val bundle = Bundle()
-                bundle.putString("doctorId", doctorId)
-                bundle.putString("clinicId", clinicData._id)
-                bundle.putString("clinicName", clinicData.clinicName)
-                bundle.putString("clinicContact", clinicData.clinicContactNumber)
-                bundle.putString("clinicAddress", clinicData.location)
-                bundle.putString("appointmentType", appointmentType)
-                findNavController().navigate(R.id.bookAppointmentFragment, bundle)
+
+                if (session.loginName.isEmpty() || session.loginDOB.isEmpty()) {
+                    showAddRequiredFieldsPopUp()
+                } else {
+                    val bundle = Bundle()
+                    bundle.putString("doctorId", doctorId)
+                    bundle.putString("clinicId", clinicData._id)
+                    bundle.putString("clinicName", clinicData.clinicName)
+                    bundle.putString("clinicContact", clinicData.clinicContactNumber)
+                    bundle.putString("clinicAddress", clinicData.location)
+                    bundle.putString("appointmentType", appointmentType)
+                    findNavController().navigate(R.id.bookAppointmentFragment, bundle)
+                }
             }
 
             R.id.inClinicRadioBtn -> {
@@ -185,4 +216,6 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
             }
         }
     }
+
+
 }

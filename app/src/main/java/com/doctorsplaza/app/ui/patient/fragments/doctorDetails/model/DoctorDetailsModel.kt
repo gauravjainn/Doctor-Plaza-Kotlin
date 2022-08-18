@@ -2,7 +2,8 @@ package com.doctorsplaza.app.ui.patient.fragments.doctorDetails.model
 
 data class DoctorDetailsModel(
     val data: List<DoctorDetailsData>,
-    val status: Int
+    val status: Int,
+    val message: String
 )
 
 data class DoctorDetailsData(

@@ -16,6 +16,7 @@ import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.google.gson.JsonObject
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -74,13 +75,15 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications), View.On
             when (response) {
                 is Resource.Success -> {
                     appLoader.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data?.status == 200) {
                         notificationList.clear()
                         notificationList.addAll(response.data.data)
                         setNotificationRv(notificationList)
-                    } else {
-
-                    }
+                    }}
                 }
                 is Resource.Loading -> {
                     appLoader.show()

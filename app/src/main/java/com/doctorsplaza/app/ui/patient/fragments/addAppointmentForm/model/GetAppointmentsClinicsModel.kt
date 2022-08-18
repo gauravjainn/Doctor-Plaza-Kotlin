@@ -2,9 +2,10 @@ package com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model
 
 data class GetAppointmentsClinicsModel(
     val code: Int,
-    val `data`: List<ClinicsData>,
+    val status: Int,
     val message: String,
-    val success: Boolean
+    val success: Boolean,
+    val data: List<ClinicsData>
 )
 
 data class ClinicsData(

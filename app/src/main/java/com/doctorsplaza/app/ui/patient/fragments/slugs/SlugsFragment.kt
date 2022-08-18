@@ -15,7 +15,10 @@ import com.doctorsplaza.app.data.commonModel.CommonViewModel
 import com.doctorsplaza.app.ui.patient.fragments.slugs.model.SlugsData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
+import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SlugsFragment : Fragment(R.layout.fragment_slugs), View.OnClickListener {
@@ -29,6 +32,9 @@ class SlugsFragment : Fragment(R.layout.fragment_slugs), View.OnClickListener {
     private lateinit var appProgress: DoctorPlazaLoader
 
     private var title = ""
+
+    @Inject
+    lateinit var session:SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,13 +63,17 @@ class SlugsFragment : Fragment(R.layout.fragment_slugs), View.OnClickListener {
             when (response) {
                 is Resource.Success -> {
                     appProgress.dismiss()
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.success) {
                         binding.errorMessage.isVisible = false
                         setData(response.data.data)
                     } else {
                         binding.errorMessage.isVisible = true
                     }
-                }
+                }}
                 is Resource.Loading -> {
                     appProgress.show()
                 }

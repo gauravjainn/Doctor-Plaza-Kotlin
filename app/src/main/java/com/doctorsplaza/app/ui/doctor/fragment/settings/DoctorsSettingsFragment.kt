@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,11 +14,7 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentSettingsBinding
 import com.doctorsplaza.app.data.commonModel.CommonViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
-import com.doctorsplaza.app.utils.DoctorPlazaLoader
-import com.doctorsplaza.app.utils.Resource
-import com.doctorsplaza.app.utils.SessionManager
-import com.doctorsplaza.app.utils.showToast
-import com.google.android.material.button.MaterialButton
+import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -66,6 +60,10 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
                 is Resource.Success -> {
                     appLoader.dismiss()
                     dialog.dismiss()
+                    if (response.data?.status?.toInt() == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
+                    } else {
                     if (response.data!!.code.toInt() == 200) {
                         requireContext().showToast(response.data.message)
                         session.isLogin = false
@@ -74,7 +72,7 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
                     } else {
                         requireContext().showToast(response.data.message)
                     }
-                }
+                }}
 
                 is Resource.Loading -> {
                     appLoader.show()
@@ -89,11 +87,11 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
         }
     }
 
-    private fun deleteAccount(reason: String) {
+    private fun deleteAccount() {
         val jsonObject = JsonObject()
         jsonObject.addProperty("doctorid", session.doctorId)
         jsonObject.addProperty("mobilenumber", session.mobile)
-        jsonObject.addProperty("description", reason)
+        jsonObject.addProperty("description", "")
         commonViewModel.deleteDoctorAccount()
     }
 
@@ -105,22 +103,6 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
         binding.backArrow.setOnClickListener(this@DoctorsSettingsFragment)
     }
 
-    private fun showDialog() {
-        dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.delete_account_dialog)
-        val reason = dialog.findViewById(R.id.reasonEdt) as EditText
-        val submitBtn = dialog.findViewById<View>(R.id.submitBtn) as MaterialButton
-        val cancelBtn = dialog.findViewById<View>(R.id.cancelBtn) as MaterialButton
-        submitBtn.setOnClickListener {
-            val reasonText = reason.text.toString()
-            deleteAccount(reasonText)
-        }
-        cancelBtn.setOnClickListener { dialog.dismiss() }
-        dialog.show()
-    }
-
     private fun showWarning() {
         dialog = AlertDialog.Builder(context)
             .setTitle("Delete Account")
@@ -128,7 +110,7 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
             .setPositiveButton(
                 "yes"
             ) { _, _ ->
-                deleteAccount("")
+                deleteAccount()
             }
             .setNegativeButton("no", null)
             .show()
@@ -153,7 +135,6 @@ class DoctorsSettingsFragment : Fragment(R.layout.fragment_settings), View.OnCli
                 findNavController().navigate(R.id.doctorSlugsFragment, bundle)
             }
             R.id.deleteAccount -> {
-//                showDialog()
                 showWarning()
             }
             R.id.backArrow -> {

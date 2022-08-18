@@ -19,6 +19,7 @@ import com.doctorsplaza.app.ui.patient.fragments.reminder.model.ReminderData
 import com.doctorsplaza.app.utils.DoctorPlazaLoader
 import com.doctorsplaza.app.utils.Resource
 import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.logOutUnAuthorized
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.notify
 import java.text.SimpleDateFormat
@@ -99,20 +100,25 @@ class ReminderFragment : Fragment(R.layout.fragment_reminder), View.OnClickListe
                 is Resource.Success -> {
                     appLoader.dismiss()
                     binding.errorMessage.isVisible = false
-                    if (response.data?.status == 200) {
-                        if (response.data.data.isEmpty()) {
-                            binding.noData.isVisible = true
-                            binding.remindersRv.isVisible = false
-                        } else {
-                            binding.remindersRv.isVisible = true
-                            binding.noData.isVisible = false
-                            reminderData.clear()
-                            reminderData.addAll(response.data.data)
-                            setReminderRv()
-
-                        }
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                        binding.errorMessage.isVisible = true
+                        if (response.data?.status == 200) {
+                            if (response.data.data.isEmpty()) {
+                                binding.noData.isVisible = true
+                                binding.remindersRv.isVisible = false
+                            } else {
+                                binding.remindersRv.isVisible = true
+                                binding.noData.isVisible = false
+                                reminderData.clear()
+                                reminderData.addAll(response.data.data)
+                                setReminderRv()
+
+                            }
+                        } else {
+                            binding.errorMessage.isVisible = true
+                        }
                     }
                 }
                 is Resource.Loading -> {
