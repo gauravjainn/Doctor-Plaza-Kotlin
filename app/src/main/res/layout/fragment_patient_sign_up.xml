@@ -28,6 +28,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/oneTapSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:gravity="center"
+        android:padding="@dimen/_10ssp"
+        android:text="SKIP"
+        android:textColor="@color/red"
+        android:textSize="@dimen/_12sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@id/backArrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/backArrow"
+        />
+
     <ImageView
         android:id="@+id/introLogo"
         android:layout_width="0dp"
@@ -39,10 +55,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
+
+
     <View
         android:id="@+id/loginBg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="@dimen/_255sdp"
         android:background="@drawable/top_corner_radius"
         android:elevation="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,14 +71,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15ssp"
         android:elevation="@dimen/_5sdp"
         android:fontFamily="@font/poppins"
         android:text="Name"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
+
         app:layout_constraintStart_toStartOf="@id/loginBg"
-        app:layout_constraintTop_toTopOf="@id/loginBg" />
+        app:layout_constraintTop_toBottomOf="@id/introLogo" />
 
     <EditText
         android:id="@+id/userNameEdt"
@@ -304,11 +323,12 @@
         android:text="Already Registered With Us? "
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintEnd_toStartOf="@id/haveAccountSignIn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/oneTapSignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saveAndNext" />
 
     <TextView
@@ -328,27 +348,13 @@
         app:layout_constraintBottom_toBottomOf="@id/haveAccount"
          />
 
-    <TextView
-        android:id="@+id/oneTapSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:gravity="center"
-        android:paddingVertical="@dimen/_4sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:text="One Tap SignUp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/haveAccountSignIn" />
+
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/alreadyHaveAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
+
         app:constraint_referenced_ids="haveAccount,haveAccountSignIn,oneTapSignUp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

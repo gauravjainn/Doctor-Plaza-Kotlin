@@ -60,7 +60,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
         jsonObject.addProperty("patientid", session.patientId)
         jsonObject.addProperty("mobilenumber", session.mobile)
         jsonObject.addProperty("description", reason)
-        commonViewModel.deletePatientAccount()
+        commonViewModel.deletePatientAccount(jsonObject)
 
         commonViewModel.deletePatientAccount.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -71,7 +71,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                         session.isLogin = false
                         logOutUnAuthorized(requireActivity(),response.data.message)
                     } else {
-                    if (response.data!!.code.toInt() == 200) {
+                    if (response.data!!.success) {
                         requireContext().showToast(response.data.message)
                         session.isLogin = false
                         startActivity(Intent(requireActivity(), PatientLoginSignup::class.java))

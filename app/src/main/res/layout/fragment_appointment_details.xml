@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="@id/appBarBg"
         app:layout_constraintTop_toTopOf="@id/appBarBg" />
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/videoCallIcon"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="0dp"
@@ -56,7 +56,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/appBarBg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/appBarBg" />
+        app:layout_constraintTop_toTopOf="@id/appBarBg" />-->
 
     <ImageView
         android:id="@+id/backArrow"
@@ -510,7 +510,29 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/consultationLbl" />
 
+            <TextView
+                android:id="@+id/discountLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="Discount Amount"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/consultationLbl" />
 
+
+            <TextView
+                android:id="@+id/discountAmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins"
+                android:text="₹100.00"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/discountLbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/discountLbl" />
             <TextView
                 android:id="@+id/totalAmtLbl"
                 android:layout_width="wrap_content"
@@ -520,7 +542,7 @@
                 android:text="Total Amount"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/consultationLbl" />
+                app:layout_constraintTop_toBottomOf="@id/discountLbl" />
 
 
             <TextView
@@ -534,6 +556,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/totalAmtLbl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/totalAmtLbl" />
+
+
 
             <View
                 android:id="@+id/divider4"
@@ -555,13 +579,48 @@
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/divider4" />
 
+
+            <TextView
+                android:id="@+id/downloadAppointmentSlip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Download Appointment Slip"
+                android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/_10ssp"
+                android:background="@drawable/corner_radius"
+                android:drawableTint="@color/colorPrimary"
+                android:paddingStart="@dimen/_15sdp"
+                android:drawableStart="@drawable/ic_download_prescription"
+                app:layout_constraintTop_toBottomOf="@id/viewPrescription"/>
+
+            <TextView
+                android:id="@+id/joinVideoCall"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:text="Join Video Call"
+                android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/white"
+                android:paddingStart="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:drawablePadding="@dimen/_10ssp"
+                android:background="@drawable/ripple_effect"
+                android:backgroundTint="@color/colorPrimary"
+
+                android:drawableStart="@drawable/video_call_icon_new"
+                app:layout_constraintTop_toBottomOf="@id/downloadAppointmentSlip"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ratingAndRescheduleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/saveBtn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewPrescription">
+                app:layout_constraintTop_toBottomOf="@id/joinVideoCall">
 
                 <TextView
                     android:id="@+id/rateExperienceLbl"
@@ -608,6 +667,7 @@
                     android:id="@+id/ratingGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+
                     app:constraint_referenced_ids="experienceDesc,rateExperienceLbl,ratingExperienceBar" />
 
                 <TextView
@@ -631,7 +691,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:backgroundTint="@color/colorPrimary"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/white"
@@ -643,11 +703,10 @@
                     android:paddingHorizontal="@dimen/_20sdp"
                     android:paddingVertical="@dimen/_10sdp"
                     android:text="Reschedule"
-
                     app:cornerRadius="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cancelAppointment"
-                    app:layout_constraintTop_toBottomOf="@+id/experienceDesc" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/rescheduleCancelGroup"

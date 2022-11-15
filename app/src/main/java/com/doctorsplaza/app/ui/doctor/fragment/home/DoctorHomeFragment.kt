@@ -1,7 +1,5 @@
 package com.doctorsplaza.app.ui.doctor.fragment.home
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
@@ -9,13 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentDoctoHomeBinding
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.adapter.DoctorsUpcomingAppointmentsAdapter
 import com.doctorsplaza.app.ui.doctor.fragment.home.model.AppointmentData
 import com.doctorsplaza.app.ui.doctor.loginSignUp.model.DoctorDashBoard
-import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.patient.fragments.home.adapter.BannerAdapter
 import com.doctorsplaza.app.ui.patient.fragments.home.model.BannerData
@@ -64,7 +60,7 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
 
     private fun init() {
-        hideKeyboard(requireActivity())
+        hideKeyboard(requireActivity(), binding.revenueLbl)
         binding.loader.isVisible = true
         appLoader = DoctorPlazaLoader(requireContext())
         doctorHomeViewModel.getDoctorBanners()
@@ -217,7 +213,7 @@ class DoctorHomeFragment : Fragment(R.layout.fragment_docto_home), View.OnClickL
 
 
     override fun onResume() {
-        hideKeyboard(requireActivity())
+        hideKeyboard(requireActivity(),binding.revenueLbl)
         super.onResume()
         setObserver()
     }

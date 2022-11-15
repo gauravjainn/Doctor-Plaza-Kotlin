@@ -31,6 +31,7 @@ data class SearchData(
     val qualification:String,
     val rating: Double,
     val ratings_count: Int,
+    val experience: String,
     val roomId: String,
     val searchtype: String,
     val signinotp: String,

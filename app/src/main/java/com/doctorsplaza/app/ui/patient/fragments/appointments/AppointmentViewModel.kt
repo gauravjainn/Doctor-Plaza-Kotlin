@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
 import com.doctorsplaza.app.data.commonModel.AppointmentsModel
 import com.doctorsplaza.app.data.commonModel.CommonModel
+import com.doctorsplaza.app.data.commonModel.DownloadAppointmentSlipModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.GetPrescriptionDetailsModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionPDFModel
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.*
@@ -53,8 +54,10 @@ class AppointmentViewModel @Inject constructor(
 
     val getPrescriptionPdfUrl = SingleLiveEvent<Resource<PrescriptionPDFModel>>()
     val doctorAppointmentPrescription = SingleLiveEvent<Resource<GetPrescriptionDetailsModel>>()
-    val generateVieoToken = SingleLiveEvent<Resource<VideoTokenModel>>()
+    val generateVideoToken = SingleLiveEvent<Resource<VideoTokenModel>>()
     val callNotify = SingleLiveEvent<Resource<CommonModel>>()
+
+    val downLoadAppointmentSlip = SingleLiveEvent<Resource<DownloadAppointmentSlipModel>>()
 
 
     fun getDoctor(doctorId: String) = viewModelScope.launch {
@@ -282,6 +285,7 @@ class AppointmentViewModel @Inject constructor(
                         null
                     )
                 )
+
                 else -> drClinicTimeSlots.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
@@ -690,26 +694,26 @@ class AppointmentViewModel @Inject constructor(
     }
 
     private suspend fun safeGenerateVideoTokenCall(jsonObject: JsonObject) {
-        generateVieoToken.postValue(Resource.Loading())
+        generateVideoToken.postValue(Resource.Loading())
         try {
             val response = repository.generateVideoToken(jsonObject)
             if (response.isSuccessful) {
                 response.body()?.let { stateResponse ->
-                    generateVieoToken.postValue(Resource.Success(stateResponse))
+                    generateVideoToken.postValue(Resource.Success(stateResponse))
                 }
             } else {
-                generateVieoToken.postValue(Resource.Error(response.message(), null))
+                generateVideoToken.postValue(Resource.Error(response.message(), null))
             }
 
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> generateVieoToken.postValue(
+                is IOException -> generateVideoToken.postValue(
                     Resource.Error(
                         "Network Failure",
                         null
                     )
                 )
-                else -> generateVieoToken.postValue(
+                else -> generateVideoToken.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null
@@ -744,6 +748,41 @@ class AppointmentViewModel @Inject constructor(
                     )
                 )
                 else -> callNotify.postValue(
+                    Resource.Error(
+                        "Conversion Error ${t.message}",
+                        null
+                    )
+                )
+            }
+        }
+    }
+
+
+    fun downloadAppointmentSlip(appointmentId: String) = viewModelScope.launch {
+        safeDownloadAppointmentSlipCall(appointmentId)
+    }
+
+    private suspend fun safeDownloadAppointmentSlipCall(appointmentId: String) {
+        downLoadAppointmentSlip.postValue(Resource.Loading())
+        try {
+            val response = repository.downloadAppointmentSlip(appointmentId)
+            if (response.isSuccessful) {
+                response.body()?.let { stateResponse ->
+                    downLoadAppointmentSlip.postValue(Resource.Success(stateResponse))
+                }
+            } else {
+                    downLoadAppointmentSlip.postValue(Resource.Error(response.message(), null))
+            }
+
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> downLoadAppointmentSlip.postValue(
+                    Resource.Error(
+                        "Network Failure",
+                        null
+                    )
+                )
+                else -> downLoadAppointmentSlip.postValue(
                     Resource.Error(
                         "Conversion Error ${t.message}",
                         null

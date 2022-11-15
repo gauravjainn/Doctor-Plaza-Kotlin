@@ -29,7 +29,6 @@ class RentStatusAdapter @Inject constructor() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: RentData) {
             with(binding) {
-
                 val parseDate = inputFormat.parse(data.month)
                 val formattedDate = outputFormat.format(parseDate)
 

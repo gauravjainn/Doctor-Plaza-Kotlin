@@ -70,7 +70,7 @@ class Repository @Inject constructor() {
 
     suspend fun getSlugs() = service.getSlugs()
 
-    suspend fun deletePatientAccount(patientId: String) = service.deletePatientAccount(patientId)
+    suspend fun deletePatientAccount(patientId: String,json: JsonObject) = service.deletePatientAccount(patientId,json)
 
 
     suspend fun contactUs(jsonObject: JsonObject) = service.contactUs(jsonBody = jsonObject)
@@ -160,6 +160,8 @@ class Repository @Inject constructor() {
     suspend fun generateVideoToken(json: JsonObject) = service.generateVideoToken(json)
 
     suspend fun callNotify(json: JsonObject) = service.notifyCallStatus(json)
+
+    suspend fun downloadAppointmentSlip(appointmentId: String) = service.downloadAppointmentSlip(appointmentId)
 
     suspend fun updateAppointmentStatus(json: JsonObject) = service.updateAppointmentStatus(json)
 

@@ -3,8 +3,6 @@ package com.doctorsplaza.app.utils
 const val BASE_URL = "http://65.0.71.39:5000/api/"
 //const val BASE_URL = "https://test.doctorsplaza.in/api/"
 
-
-
 const val DATE_FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val DATE_PATTERN = "yyyy-MM-dd"
 const val REMINDER_DATE_MONTH_PATTERN2 = "dd-MM-yyyy hh:mm aaa"

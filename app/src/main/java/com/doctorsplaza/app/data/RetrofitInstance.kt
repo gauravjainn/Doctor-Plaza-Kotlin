@@ -16,7 +16,7 @@ class RetrofitInstance {
         val gson = GsonBuilder().setLenient().create()
 
         private val retrofit by lazy {
-            println("==succeed ${sessionManager.token}")
+
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 

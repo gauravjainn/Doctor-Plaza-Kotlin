@@ -541,8 +541,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             super.onScrolled(recyclerView, dx, dy)
 
             if (dy > 0) {
-                val recycleLayoutManager =
-                    binding.appointmentRv.layoutManager as LinearLayoutManager
+                val recycleLayoutManager = binding.appointmentRv.layoutManager as LinearLayoutManager
                 if (!isLoading) {
                     if (recycleLayoutManager != null && recycleLayoutManager.findLastCompletelyVisibleItemPosition() == upcomingAppointmentsAdapter.itemCount - 2) {
                         pageNo++

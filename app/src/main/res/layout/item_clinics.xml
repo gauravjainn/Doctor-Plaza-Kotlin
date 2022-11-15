@@ -14,8 +14,7 @@
         android:src="@drawable/ic_hospital"
 
         android:background="@color/purple_lite_200"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:roundPercent="0.2" />
 
@@ -33,22 +32,34 @@
         app:layout_constraintStart_toEndOf="@id/clinicImage"
         app:layout_constraintTop_toTopOf="@id/clinicImage" />
 
+    <ImageView
+        android:id="@+id/locationPin"
+        android:layout_width="@dimen/_13sdp"
+        android:layout_height="@dimen/_13sdp"
+        android:src="@drawable/ic_location_green"
+        android:scaleType="fitXY"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_6sdp"
+        app:layout_constraintEnd_toStartOf="@id/clinicAddress"
+        app:layout_constraintStart_toEndOf="@id/clinicImage"
+        app:layout_constraintTop_toBottomOf="@id/clinicName"/>
+
     <TextView
         android:id="@+id/clinicAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/_5sdp"
         android:ellipsize="marquee"
         android:fontFamily="@font/poppins_medium"
-        android:singleLine="true"
-        android:text="16, Gagan Vihar Main Rd, Krishna Nagar Delhi"
+        android:text="16, Gagan Vihar Main Rd, 16, Gagan Vihar Main Rd, "
+        app:layout_constraintVertical_bias="0"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
-        app:drawableStartCompat="@drawable/ic_location_green"
-        app:layout_constraintBottom_toTopOf="@+id/clinicTimings"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintStart_toEndOf="@+id/locationPin"
+        app:layout_constraintTop_toTopOf="@id/locationPin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/clinicName"
-        app:layout_constraintTop_toBottomOf="@id/clinicName" />
+         />
 
     <TextView
         android:id="@+id/clinicTimings"
@@ -62,9 +73,10 @@
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
         app:drawableStartCompat="@drawable/ic_time_circle"
-        app:layout_constraintBottom_toTopOf="@+id/clinicPhone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/clinicName"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_7sdp"
+        app:layout_constraintStart_toEndOf="@id/clinicImage"
         app:layout_constraintTop_toBottomOf="@id/clinicAddress" />
 
     <TextView
@@ -79,9 +91,10 @@
         android:textColor="@color/colorPrimaryLight"
         android:textSize="@dimen/_9sdp"
         app:drawableStartCompat="@drawable/ic_call_green"
-        app:layout_constraintBottom_toTopOf="@+id/clinicHereForDoctors"
+        android:layout_marginTop="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/clinicName"
+        android:layout_marginStart="@dimen/_9sdp"
+        app:layout_constraintStart_toEndOf="@id/clinicImage"
         app:layout_constraintTop_toBottomOf="@id/clinicTimings" />
 
     <TextView
@@ -96,7 +109,7 @@
         android:text="@string/click_to_view_doctors_lbl"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_9sdp"
-        app:layout_constraintBottom_toBottomOf="@id/clinicImage"
+        android:layout_marginTop="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/clinicName"
         app:layout_constraintTop_toBottomOf="@id/clinicPhone" />
@@ -108,5 +121,5 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:background="#e3e3e3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clinicImage" />
+        app:layout_constraintTop_toBottomOf="@id/clinicHereForDoctors" />
 </androidx.constraintlayout.widget.ConstraintLayout>

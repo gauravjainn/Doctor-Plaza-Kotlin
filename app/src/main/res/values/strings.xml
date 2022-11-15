@@ -5,6 +5,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="room_screen_select_device">Select Device</string>
     <string name="permissions_needed">Camera and Microphone permissions needed. Please allow in App Settings for additional functionality.</string>
+    <string name="overlay_permission">please allow  screen overlay permission for doctor plaza for smooth performance</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_all_lbl">View all</string>
@@ -65,6 +66,7 @@
     <string name="clinic_details_lbl">Clinic Details</string>
     <string name="attended_appointments_lbl">Attended appointments</string>
     <string name="reschedule_appointments_lbl">Reschedule appointments</string>
+    <string name="rescheduled_appointments_lbl">Rescheduled appointments</string>
     <string name="specialization_lbl">Specialization</string>
     <string name="consultation_fee_lbl">Consultation Fee</string>
     <string name="state_lbl">State</string>

@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -44,10 +45,9 @@ import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
-class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_form),
-    View.OnClickListener {
+class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_form), View.OnClickListener {
 
-
+    private var doctorConsultationFee: Int = 0
     private var consultationDate: String? = ""
 
     private var selectedConsultationDate: String? = ""
@@ -124,6 +124,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
         setSelfGuestData("self")
         binding.loader.isVisible = true
         appointmentViewModel.getAppointmentClinics()
+
     }
 
     private fun setSpinners() {
@@ -131,11 +132,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             requireContext().resources.getStringArray(R.array.appointment_type)
         val paymentTypeArray = requireContext().resources.getStringArray(R.array.payment_type)
 
-        val appointmentAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.appointment_type,
-            R.layout.spinner_text
-        )
+        val appointmentAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.appointment_type, R.layout.spinner_text)
         appointmentAdapter.setDropDownViewResource(R.layout.spinner_text)
 
         binding.selectAppointmentSpinner.adapter = appointmentAdapter
@@ -240,6 +237,9 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                     binding.loader.isVisible = false
                     binding.errorMsg.isVisible = false
                     if (response.data?.data?.isEmpty()!!) {
+                        binding.consultationFees.text = ""
+                        consultationFee = 0
+                        setDoctorsSpinner(response.data.data)
                         showToast("No Doctors Found")
                     } else {
                         setDoctorsSpinner(response.data.data)
@@ -319,17 +319,33 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
 
     private fun setCouponApplied(data: CouponData) {
         with(binding) {
-            applyCouponBtn.text = "Applied"
-            applyCouponBtn.isEnabled = false
-            couponEdt.isEnabled = false
 
+            couponEdt.isEnabled = false
             totalLbl.isVisible = true
             total.isVisible = true
 
             consultationFees.text = "₹${data.original_price}"
             total.text = "₹${data.final_price}"
             consultationFee = data.final_price
+
+            applyCouponBtn.visibility = View.INVISIBLE
+            removeCouponBtn.visibility = View.VISIBLE
         }
+    }
+
+    private fun removeAppliedCoupon() {
+        with(binding){
+            applyCouponBtn.visibility = View.VISIBLE
+            removeCouponBtn.visibility = View.GONE
+            couponEdt.isEnabled = true
+            couponEdt.setText("")
+            consultationFees.text = "₹${doctorConsultationFee}"
+            consultationFee = doctorConsultationFee
+            totalLbl.isVisible = false
+            total.isVisible = false
+
+        }
+
     }
 
     private fun setClinicSpinner(data: List<ClinicsData>) {
@@ -355,8 +371,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             specializationList.add(specializationName)
         }
 
-        val specializationAdapter =
-            ArrayAdapter(requireContext(), R.layout.spinner_text, specializationList)
+        val specializationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_text, specializationList)
         specializationAdapter.setDropDownViewResource(R.layout.spinner_text)
         binding.specializationSpinner.adapter = specializationAdapter
         binding.specializationSpinner.onItemSelectedListener =
@@ -389,6 +404,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                 doctorData = binding.doctorSpinner.selectedItem as DoctorsData
                 binding.consultationFees.text = "₹${doctorData!!.consultationfee}"
                 selectedDoctorId = doctorData!!._id
+                doctorConsultationFee = doctorData!!.consultationfee.toInt()
                 consultationFee = doctorData!!.consultationfee.toInt()
 
             }
@@ -450,7 +466,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             }
         }
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
+        timeSlotsDialog.findViewById<View>(R.id.dialogCancelBtn).setOnClickListener {
             binding.consultationTime.text = ""
             timeSlotsDialog.dismiss()
         }
@@ -521,9 +537,10 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             applyCouponBtn.setOnClickListener(this@AddAppointmentFormFragment)
 
             consultationTime.setOnClickListener(this@AddAppointmentFormFragment)
+            removeCouponBtn.setOnClickListener(this@AddAppointmentFormFragment)
         }
-    }
 
+    }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun setOnAdapterClickListener() {
@@ -609,8 +626,13 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             R.id.consultationTime -> {
                 showTimeSlotsDialog()
             }
+            R.id.removeCouponBtn -> {
+                removeAppliedCoupon()
+            }
         }
     }
+
+
 
     private fun applyCoupon() {
         val couponCode = binding.couponEdt.text.toString()
@@ -801,6 +823,7 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
                 }
                 is Resource.Error -> {
                     appLoader.dismiss()
+
                     showToast("something went wrong")
 
                 }

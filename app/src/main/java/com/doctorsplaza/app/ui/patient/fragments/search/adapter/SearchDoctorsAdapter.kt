@@ -13,19 +13,23 @@ import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchData
 import com.doctorsplaza.app.utils.clinicRequestOption
 import javax.inject.Inject
 
-class SearchDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<SearchDoctorsAdapter.ViewHolder>() {
-    private lateinit var  context: Context
-    inner class  ViewHolder(private val itemClinicDoctorsBinding: ItemClinicDoctorsBinding):RecyclerView.ViewHolder(itemClinicDoctorsBinding.root){
+class SearchDoctorsAdapter @Inject constructor() :
+    RecyclerView.Adapter<SearchDoctorsAdapter.ViewHolder>() {
+    private lateinit var context: Context
+
+    inner class ViewHolder(private val itemClinicDoctorsBinding: ItemClinicDoctorsBinding) :
+        RecyclerView.ViewHolder(itemClinicDoctorsBinding.root) {
         fun bind(data: SearchData) {
-                with(itemClinicDoctorsBinding){
+            with(itemClinicDoctorsBinding) {
                 doctorName.text = data.doctorName
                 doctorSpecialistIn.text = data.specialization
                 doctorRating.text = data.rating.toString()
                 doctorRatingCount.text = "(${data.ratings_count})"
-
+                doctorExperience.text = "${data.experience} years"
                 doctorDegree.text = data.qualification
 
-                Glide.with(context).applyDefaultRequestOptions(clinicRequestOption()).load(data.profile_picture).fitCenter().into(doctorImage)
+                Glide.with(context).applyDefaultRequestOptions(clinicRequestOption())
+                    .load(data.profile_picture).fitCenter().into(doctorImage)
                 root.setOnClickListener {
                     viewDoctorsClickListener?.let {
                         it(data)
@@ -35,7 +39,7 @@ class SearchDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<SearchDoc
         }
     }
 
-   private val diffUtil = object :DiffUtil.ItemCallback<SearchData>(){
+    private val diffUtil = object : DiffUtil.ItemCallback<SearchData>() {
         override fun areItemsTheSame(oldItem: SearchData, newItem: SearchData): Boolean {
             return oldItem._id == newItem._id
         }
@@ -45,12 +49,21 @@ class SearchDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<SearchDoc
         }
 
     }
-    val differ = AsyncListDiffer(this,diffUtil)
+    val differ = AsyncListDiffer(this, diffUtil)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchDoctorsAdapter.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): SearchDoctorsAdapter.ViewHolder {
         context = parent.context
-        return ViewHolder(ItemClinicDoctorsBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(
+            ItemClinicDoctorsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     private var viewDoctorsClickListener: ((data: SearchData) -> Unit)? = null

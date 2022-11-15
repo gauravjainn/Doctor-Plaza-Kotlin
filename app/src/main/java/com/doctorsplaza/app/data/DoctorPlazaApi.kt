@@ -10,6 +10,7 @@ import com.doctorsplaza.app.ui.doctor.fragment.reports.model.RentStatusModel
 import com.doctorsplaza.app.ui.doctor.loginSignUp.model.*
 import com.doctorsplaza.app.data.commonModel.AppointmentsModel
 import com.doctorsplaza.app.data.commonModel.CommonModel
+import com.doctorsplaza.app.data.commonModel.DownloadAppointmentSlipModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.GetPrescriptionDetailsModel
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionPDFModel
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.AddPrescriptionModel
@@ -155,17 +156,17 @@ interface DoctorPlazaApi {
     @GET("cms")
     suspend fun getSlugs(): Response<SlugsModel>
 
-    /*@PUT("doctor/deleteAccount/{patientId}")
+    @PUT("patient/deleteAccount/{patientId}")
     suspend fun deletePatientAccount(
         @Path("patientId") patientId: String,
         @Body jsonBody: JsonObject
-    ): Response<CommonModel>*/
+    ): Response<CommonModel>
 
 
-    @DELETE("deletepatient/{patientId}")
+  /*  @DELETE("deletepatient/{patientId}")
     suspend fun deletePatientAccount(
         @Path("patientId") patientId: String
-    ): Response<CommonModel>
+    ): Response<CommonModel>*/
 
 
     @POST("contactUs")
@@ -339,6 +340,9 @@ interface DoctorPlazaApi {
 
     @POST("callnotify")
     suspend fun notifyCallStatus(@Body jsonBody: JsonObject): Response<CommonModel>
+
+    @GET("getAppointmentSlip/{id}")
+    suspend fun downloadAppointmentSlip(@Path("id") appointmentId: String): Response<DownloadAppointmentSlipModel>
 
     @POST("logout")
     suspend fun logout(@Body jsonBody: JsonObject): Response<CommonModel>

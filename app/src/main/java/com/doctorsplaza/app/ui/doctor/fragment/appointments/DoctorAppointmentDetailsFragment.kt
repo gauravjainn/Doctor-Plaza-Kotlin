@@ -289,9 +289,23 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             contactDetails.text = data.mobile
             ageDetails.text = data.age
             gender.text = data.gender
-            consultationFees.text = "₹${data.consultation_fee}"
-            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
-            if (data.problem.isEmpty()) {
+
+
+            consultationFees.text = "₹${data.doctor_id.consultationfee}"
+
+            val discountAmount = data.doctor_id.consultationfee.toInt() - data.consultation_fee
+
+            if(discountAmount>=1){
+                binding.discountAmt.text = "-₹${discountAmount}"
+            }else{
+                binding.discountAmt.isVisible = false
+                binding.discountLbl.isVisible = false
+            }
+
+//            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
+            binding.joinVideoCall.isVisible = data.appointment_type.lowercase() == "online"
+
+            if (data.problem?.isEmpty() == true) {
                 problem.isVisible = false
                 problemLbl.isVisible = false
             } else {
@@ -355,6 +369,8 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
     }
 
     private fun setPaymentStatusView(data: AppointmentData) {
+
+
         if (data.payment_id != null) {
             binding.totalAmt.text = "₹${data.payment_id.amount}"
             binding.paymentMode.text = data.mode_of_payment
@@ -371,7 +387,8 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             addPrescription.setOnClickListener(this@DoctorAppointmentDetailsFragment)
             completeAppointment.setOnClickListener(this@DoctorAppointmentDetailsFragment)
             cancelAppointment.setOnClickListener(this@DoctorAppointmentDetailsFragment)
-            videoCallIcon.setOnClickListener(this@DoctorAppointmentDetailsFragment)
+//            videoCallIcon.setOnClickListener(this@DoctorAppointmentDetailsFragment)
+            joinVideoCall.setOnClickListener(this@DoctorAppointmentDetailsFragment)
         }
     }
 
@@ -406,15 +423,13 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                 showPopUp("done")
             }
 
-            R.id.videoCallIcon -> {
+            R.id.joinVideoCall -> {
 
                 val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
                 val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
 
                 val currentTime = Date().time
                 val ctf = isoFormat.format(currentTime)
-
-
 
                 if (isoFormat.parse(ctf).before(parsedStartTime)) {
                     showVideoCallNotStartAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
@@ -425,7 +440,6 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                     showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
                     return
                 }
-
 
                 val jsonObject = JsonObject().apply {
                     addProperty("id", appointmentId)

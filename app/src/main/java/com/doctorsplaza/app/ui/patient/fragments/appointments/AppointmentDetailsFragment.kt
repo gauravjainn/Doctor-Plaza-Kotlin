@@ -2,13 +2,21 @@ package com.doctorsplaza.app.ui.patient.fragments.appointments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.DownloadManager
+
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,29 +27,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentAppointmentDetailsBinding
-import com.doctorsplaza.app.service.callNotification.HeadsUpNotificationService
 import com.doctorsplaza.app.ui.doctor.fragment.appointments.model.PrescriptionData
 import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTimeSlotsData
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
-import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.*
+
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.notify
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
+
 
 
 @AndroidEntryPoint
 class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_details),
     View.OnClickListener {
 
+    private lateinit var  downloadDialog: Dialog
+    private var downloadId: Long = 0L
     private lateinit var prescriptionData: List<PrescriptionData>
     private lateinit var rescheduleDialog: Dialog
     private var timeSlotsListPosition: Int = 0
@@ -54,7 +64,9 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     private var selectedConsultationDate: String? = ""
 
     private var appointmentId: String = ""
+
     private var from: String = ""
+
     private lateinit var binding: FragmentAppointmentDetailsBinding
 
     @Inject
@@ -82,12 +94,13 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         if (currentView == null) {
             currentView = inflater.inflate(R.layout.fragment_appointment_details, container, false)
             binding = FragmentAppointmentDetailsBinding.bind(currentView!!)
             init()
+            showProgressDialog()
             setObserver()
             setOnClickListener()
             setOnAdapterClickListener()
@@ -128,7 +141,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     binding.errorMessage.isVisible = false
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.success!!) {
                             appointmentData = response.data.data
@@ -159,7 +172,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     appLoader.dismiss()
                     if (response.data?.status?.toInt() == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.success!!) {
                             showToast(response.data.message)
@@ -186,7 +199,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     appLoader.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.data?.isEmpty()!!) {
                             showToast("No Slots Available for Selected Date")
@@ -214,7 +227,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     rescheduleDialog.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.code == 200) {
                             showToast(response.data.message)
@@ -240,7 +253,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     appLoader.dismiss()
                     if (response.data?.status?.toInt() == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.success!!) {
                             findNavController().navigate(R.id.action_appointmentDetailsFragment_to_homeFragment)
@@ -264,7 +277,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 is Resource.Success -> {
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.code == 200) {
                             appLoader.dismiss()
@@ -290,12 +303,12 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         }
 
 
-        appointmentViewModel.generateVieoToken.observe(viewLifecycleOwner) { response ->
+        appointmentViewModel.generateVideoToken.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data?.code != null && response.data.code == 200) {
                             response.data.message.let { showToast(it) }
@@ -328,6 +341,20 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 }
             }
             appointmentViewModel.callNotify.observe(viewLifecycleOwner) { }
+        }
+
+        appointmentViewModel.downLoadAppointmentSlip.observe(viewLifecycleOwner){response->
+            when(response){
+                is Resource.Success->{
+                    if(response.data?.code == 200){
+                        downloadAppointmentSlip(response.data.url)
+                    }else{
+                        downloadDialog.dismiss()
+                    }
+                }
+                is Resource.Loading->{}
+                is Resource.Error->{}
+            }
         }
 
     }
@@ -400,7 +427,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             }
         }
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
+        timeSlotsDialog.findViewById<View>(R.id.dialogCancelBtn).setOnClickListener {
             consultationTimeView.text = ""
         }
 
@@ -435,24 +462,35 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             patientName.text = data.patientname
             appointmentDateTime.text = data.patientname
             clinicDetails.text = data.clinic_id.location
-            contactDetails.text = data.clinic_id.clinicContactNumber.toString()
-            ageDetails.text = data.age.toString()
+            contactDetails.text = session.loginPhone
+            ageDetails.text = data.age
             gender.text = data.gender
 
             consultationFees.text = "₹${data.doctor_id.consultationfee}"
+
             if (data.mode_of_payment == "Cash") {
                 totalAmt.text = "₹${data.doctor_id.consultationfee}"
             } else {
                 totalAmt.text = "₹${data.payment_id.amount}"
             }
+
             val parsedDate = isoFormat.parse(data.date)
             val formattedDate = showDateFormat.format(parsedDate)
             val formattedDay = showDayFormat.format(parsedDate)
             appointmentDateTime.text =
                 "$formattedDay  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
 
-//            totalAmt.text = "₹${data.doctor_id.consultationfee}"
-            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
+            val discountAmount = data.doctor_id.consultationfee.toInt() - data.consultation_fee
+
+            if (discountAmount >= 1) {
+                binding.discountAmt.text = "-₹${discountAmount}"
+            } else {
+                binding.discountAmt.isVisible = false
+                binding.discountLbl.isVisible = false
+            }
+            totalAmt.text = "₹${data.consultation_fee}"
+//            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
+            binding.joinVideoCall.isVisible = data.appointment_type.lowercase() == "online"
             if (data.payment_status) {
                 binding.paymentStatus.text = "Successful"
             } else {
@@ -492,7 +530,9 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         binding.reschedule.setOnClickListener(this@AppointmentDetailsFragment)
         binding.cancelAppointment.setOnClickListener(this@AppointmentDetailsFragment)
         binding.viewPrescription.setOnClickListener(this@AppointmentDetailsFragment)
-        binding.videoCallIcon.setOnClickListener(this@AppointmentDetailsFragment)
+//        binding.videoCallIcon.setOnClickListener(this@AppointmentDetailsFragment)
+        binding.joinVideoCall.setOnClickListener(this@AppointmentDetailsFragment)
+        binding.downloadAppointmentSlip.setOnClickListener(this@AppointmentDetailsFragment)
     }
 
 
@@ -514,35 +554,65 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             R.id.cancelAppointment -> {
                 showCancelWarning()
             }
-            R.id.videoCallIcon -> {
+            R.id.downloadAppointmentSlip -> {
+                downloadDialog.show()
+                appointmentViewModel.downloadAppointmentSlip(appointmentId)
+                requireActivity().registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+            }
 
-                val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
-                val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
 
-
-                val currentTime = Date().time
-                val ctf = isoFormat.format(currentTime)
-
-                if (isoFormat.parse(ctf).before(parsedStartTime)) {
-                    showVideoCallNotStartAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
-                    return
-                }
-
-                if (isoFormat.parse(ctf).after(parsedEndTime)) {
-                    showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
-                    return
-                }
-
-                val jsonObject = JsonObject().apply {
-                    addProperty("id", appointmentId)
-                    addProperty("type", "patient")
-                }
-                appointmentViewModel.generateVideoToken(jsonObject)
+            R.id.joinVideoCall -> {
+               joinVideoCall()
             }
         }
     }
 
+    private fun joinVideoCall() {
 
+        val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
+        val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
+
+        val currentTime = Date().time
+        val ctf = isoFormat.format(currentTime)
+
+        if (isoFormat.parse(ctf).before(parsedStartTime)) {
+            showVideoCallNotStartAlertPopUp("Your booking Time is not started, Please try again at your booking time.")
+            return
+        }
+
+        if (isoFormat.parse(ctf).after(parsedEndTime)) {
+            showVideoCallAlertPopUp("Your booking Time has been completed, Please contact admin in case of any queries.")
+            return
+        }
+
+        val jsonObject = JsonObject().apply {
+            addProperty("id", appointmentId)
+            addProperty("type", "patient")
+        }
+        appointmentViewModel.generateVideoToken(jsonObject)
+    }
+
+
+    private fun downloadAppointmentSlip(url: String) {
+        val fileName = url.substring(url.lastIndexOf('/') + 1)
+        val downloadManager: DownloadManager? = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
+        val uri = Uri.parse(url)
+        val request = DownloadManager.Request(uri)
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+        downloadId =  downloadManager!!.enqueue(request)
+    }
+
+    private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            if (downloadId == id) {
+                downloadDialog.dismiss()
+                Toast.makeText(requireContext(), "Appointment Slip Downloaded....", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     private fun showVideoCallAlertPopUp(msg: String) {
         AlertDialog.Builder(context)
             .setMessage(msg)
@@ -643,14 +713,10 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
                 else -> {
                     val jsonObject = JsonObject()
-                    jsonObject.addProperty(
-                        "date",
-                        getDateFormatted(
-                            consultationDate.toString(),
+                    jsonObject.addProperty("date",
+                        getDateFormatted(consultationDate.toString(),
                             DATE_PATTERN,
-                            DATE_FULL_PATTERN
-                        )
-                    )
+                            DATE_FULL_PATTERN))
                     jsonObject.addProperty("by", "patient")
                     jsonObject.addProperty("time", timeSlotsList[timeSlotsListPosition]._id)
                     appointmentViewModel.rescheduleAppointment(appointmentId, jsonObject)
@@ -733,6 +799,22 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         val jsonObject = JsonObject()
         jsonObject.addProperty("by", "patient")
         appointmentViewModel.cancelAppointment(appointmentId = appointmentId, jsonObject)
+    }
+    private fun showProgressDialog() {
+        downloadDialog = Dialog(requireActivity())
+        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        downloadDialog.setCancelable(true)
+        downloadDialog.setContentView(R.layout.dialogue_loading)
+        downloadDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val displayMetrics = DisplayMetrics()
+        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayWidth = displayMetrics.widthPixels
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(downloadDialog.window!!.attributes)
+        val dialogWindowWidth = (displayWidth * 0.8f).toInt()
+        layoutParams.width = dialogWindowWidth
+        downloadDialog.window!!.attributes = layoutParams
     }
 
     override fun onResume() {

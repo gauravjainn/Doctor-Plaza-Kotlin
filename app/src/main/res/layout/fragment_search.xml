@@ -42,7 +42,8 @@
                 android:textColorHint="@color/colorPrimaryLight"
                 android:textSize="@dimen/_10sdp"
                 android:background="@null"
-
+                android:singleLine="true"
+                android:imeActionLabel="Done"
                 android:paddingVertical="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/closeIcon"

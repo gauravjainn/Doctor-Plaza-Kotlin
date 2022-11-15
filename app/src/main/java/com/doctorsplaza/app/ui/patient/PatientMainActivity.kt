@@ -1,13 +1,17 @@
 package com.doctorsplaza.app.ui.patient
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,18 +21,17 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ActivityPatientMainBinding
+import com.doctorsplaza.app.service.callNotification.mp
+import com.doctorsplaza.app.service.callNotification.r
 import com.doctorsplaza.app.ui.patient.fragments.profile.ProfileViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNav
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNavBuilder
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -66,6 +69,43 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
         setBottomNavigation()
         setNavigationDrawer(savedInstanceState)
     }
+
+
+    private fun chekOverLayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+            /*   val permissionDialog = Dialog(this)
+               permissionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+               permissionDialog.setCancelable(true)
+               permissionDialog.setContentView(R.layout.overlay_screen_permission_dialog)
+               permissionDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+               val openSettings = permissionDialog.findViewById<TextView>(R.id.openSettings)
+
+               openSettings.setOnClickListener {
+                   if (!Settings.canDrawOverlays(this@DoctorMainActivity)) {
+                       startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+                           permissionDialog.dismiss()
+                   }
+               }
+               permissionDialog.show()*/
+
+
+
+            if (!Settings.canDrawOverlays(this@PatientMainActivity)) {
+                val dialog = AlertDialog.Builder(this)
+                dialog.setCancelable(false)
+                dialog.setMessage(getString(R.string.overlay_permission))
+                dialog.setPositiveButton("open settings") { _, _ ->
+
+                    startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+                }
+                dialog.show()
+            }
+
+        }
+    }
+
 
     private fun addFcmToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -251,6 +291,19 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
         slidingRootNav.closeMenu()
         startActivity(Intent(this, PatientLoginSignup::class.java))
         finish()
+    }
+    /*override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            mp?.stop()
+            r?.stop()
+        }
+        return true
+    }*/
+
+    override fun onResume() {
+        chekOverLayPermission()
+        super.onResume()
+
     }
 
 }

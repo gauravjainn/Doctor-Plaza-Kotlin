@@ -512,6 +512,7 @@
                 app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
                 app:layout_constraintTop_toBottomOf="@id/clinicDetails" />
 
+
             <TextView
                 android:id="@+id/contactDetails"
                 android:layout_width="0dp"
@@ -527,9 +528,9 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/patientDetailsLbl"
                 app:layout_constraintTop_toBottomOf="@id/contactDetailsLbl" />
-
 
             <View
                 android:id="@+id/divider1"
@@ -587,6 +588,28 @@
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_7sdp"
                 android:text="Apply"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/_5sdp"
+
+                app:layout_constraintBottom_toBottomOf="@id/couponEdt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/couponEdt" />
+
+            <TextView
+                android:id="@+id/removeCouponBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:background="@drawable/ripple_effect_red"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_medium"
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_7sdp"
+                android:text="Remove"
                 android:textColor="@color/white"
                 app:cornerRadius="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="@id/couponEdt"

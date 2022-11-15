@@ -21,15 +21,15 @@ class CommonViewModel @Inject constructor(private val repository: Repository,pri
     val deleteDoctorAccount = SingleLiveEvent<Resource<CommonModel>>()
     val contactUs = SingleLiveEvent<Resource<CommonModel>>()
 
-        fun deletePatientAccount() = viewModelScope.launch {
-        safeDeletePatientAccountCall()
+        fun deletePatientAccount(jsonObject: JsonObject) = viewModelScope.launch {
+        safeDeletePatientAccountCall(jsonObject)
     }
 
 
-    private suspend fun safeDeletePatientAccountCall() {
+    private suspend fun safeDeletePatientAccountCall(jsonObject: JsonObject) {
         deletePatientAccount.postValue(Resource.Loading())
         try {
-            val response = repository.deletePatientAccount(session.patientId)
+            val response = repository.deletePatientAccount(session.patientId,jsonObject)
             if (response.isSuccessful) {
                 response.body()?.let { deletePatientAccountResponse ->
                     deletePatientAccount.postValue(Resource.Success(deletePatientAccountResponse))

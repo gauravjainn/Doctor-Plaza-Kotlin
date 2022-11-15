@@ -100,7 +100,7 @@ class FinancialFragment : Fragment(R.layout.fragment_financial) {
         binding.totalAppointment.text = "Total   ${data.totalamount}"
         binding.cashAppointment.text = "Cash    ${data.cashpayment}"
         binding.onlineAppointment.text = "Online  ${data.onlinepayment}"
-        binding.revenueCount.text = data.onlinepayment.toString()
+        binding.revenueCount.text = data.totalamount.toString()
 
 
     }

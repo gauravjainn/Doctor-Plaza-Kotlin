@@ -34,6 +34,7 @@ import javax.inject.Inject
 class CheckOutBookingAppointmentFragment :
     Fragment(R.layout.fragment_check_out_booking_appointment), View.OnClickListener {
 
+    private var doctorConsultationFee: Int = 0
     private var selectedBookType: String = "user"
     private var selectedGender: String = ""
     private var showDateParsed: Date? = null
@@ -271,8 +272,8 @@ class CheckOutBookingAppointmentFragment :
 
     private fun setCouponApplied(data: CouponData) {
         with(binding) {
-            applyCouponBtn.text = "Applied"
-            applyCouponBtn.isEnabled = false
+            removeCouponBtn.isVisible = true
+            applyCouponBtn.visibility = View.INVISIBLE
             couponEdt.isEnabled = false
             couponAmt.isVisible = true
             couponAppliedLbl.isVisible = true
@@ -284,6 +285,21 @@ class CheckOutBookingAppointmentFragment :
         }
     }
 
+    private fun removeAppliedCoupon(){
+        with(binding){
+            applyCouponBtn.visibility = View.VISIBLE
+            removeCouponBtn.visibility = View.GONE
+            couponEdt.isEnabled = true
+            couponAmt.isVisible = false
+            couponAppliedLbl.isVisible = false
+            couponEdt.isEnabled = true
+            couponEdt.setText("")
+            totalAmt.text = "₹${doctorConsultationFee}"
+            consultationFee = doctorConsultationFee
+
+        }
+
+    }
     @SuppressLint("SetTextI18n")
     private fun setDoctorData() {
 
@@ -297,6 +313,7 @@ class CheckOutBookingAppointmentFragment :
             consultationFees.text = "₹${doctorDetails.consultationfee}"
             totalAmt.text = "₹${doctorDetails.consultationfee}"
             consultationFee = doctorDetails.consultationfee.toInt()
+            doctorConsultationFee = doctorDetails.consultationfee.toInt()
         }
 
 
@@ -322,6 +339,7 @@ class CheckOutBookingAppointmentFragment :
             femaleRadioBg.setOnClickListener(this@CheckOutBookingAppointmentFragment)
             femaleRadioBtn.setOnClickListener(this@CheckOutBookingAppointmentFragment)
             applyCouponBtn.setOnClickListener(this@CheckOutBookingAppointmentFragment)
+            removeCouponBtn.setOnClickListener(this@CheckOutBookingAppointmentFragment)
 
         }
     }
@@ -406,6 +424,11 @@ class CheckOutBookingAppointmentFragment :
             R.id.applyCouponBtn -> {
                 applyCoupon()
             }
+
+         R.id.removeCouponBtn -> {
+                removeAppliedCoupon()
+            }
+
         }
     }
 

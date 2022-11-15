@@ -1,14 +1,13 @@
 package com.doctorsplaza.app.ui.patient.fragments.search
 
-import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchData
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,10 +21,11 @@ import com.doctorsplaza.app.ui.patient.fragments.home.HomeViewModel
 import com.doctorsplaza.app.ui.patient.fragments.home.adapter.OurSpecialistAdapter
 import com.doctorsplaza.app.ui.patient.fragments.home.model.SpecialistData
 import com.doctorsplaza.app.ui.patient.fragments.search.adapter.SearchDoctorsAdapter
+import com.doctorsplaza.app.ui.patient.fragments.search.model.SearchData
 import com.doctorsplaza.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener {
@@ -49,11 +49,12 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
 
     lateinit var specialistData: List<SpecialistData>
 
+    private var specialistShowed = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         if (currentView == null) {
             currentView = inflater.inflate(R.layout.fragment_search, container, false)
@@ -76,6 +77,10 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
             homeViewModel.search(searchKey)
         }
         homeViewModel.getOurSpecialists()
+
+        binding.searchSpecialists.imeOptions = EditorInfo.IME_ACTION_DONE
+
+
     }
 
 
@@ -119,6 +124,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
                             binding.loaderBg.isVisible = false
                             binding.noDataMsg.isVisible = false
                             setSearchRv(response.data.data)
+
                         } else {
                             binding.loaderBg.isVisible = true
                             binding.noDataMsg.isVisible = true
@@ -126,7 +132,7 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
                     }
                 }
                 is Resource.Loading -> {
-                    appLoader.show()
+//                    appLoader.show()
                 }
 
                 is Resource.Error -> {
@@ -147,12 +153,18 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
             layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = specialistAdapter
         }
-        runAnimation()
+
+        if (!specialistShowed) {
+            specialistShowed = true
+            runAnimation()
+        }
+
     }
 
     private fun setSearchRv(data: List<SearchData>) {
         searchDoctorsAdapter.differ.submitList(data)
         binding.specialistRv.apply {
+            itemAnimator?.changeDuration = 0
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = searchDoctorsAdapter
@@ -166,14 +178,14 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
         binding.backArrow.setOnClickListener(this)
         binding.closeIcon.setOnClickListener(this)
         binding.searchSpecialists.doOnTextChanged { text, _, _, _ ->
+            binding.searchSpecialists.requestFocus()
+            if (text!!.isEmpty() || text.length < 2) {
 
-            if (text!!.isEmpty()) {
-
-                if (searchKey.isNotEmpty()) {
-                    if (this::specialistData.isInitialized) {
-                        setSpecialists()
-                    }
+                if (this::specialistData.isInitialized) {
+                    setSpecialists()
                 }
+
+
             } else {
                 if (text.length > 2) {
                     homeViewModel.search(text.toString().trim())
@@ -209,18 +221,19 @@ class SearchFragment : Fragment(R.layout.fragment_search), View.OnClickListener 
                 findNavController().popBackStack()
             }
             R.id.closeIcon -> {
-
                 binding.searchSpecialists.setText("")
+                binding.searchSpecialists.clearFocus()
+                hideKeyboard(requireActivity(), binding.searchSpecialists)
             }
         }
     }
 
-    private fun runAnimation(){
+    private fun runAnimation() {
         val context = binding.specialistRv.context
-        val layoutAnimationController: LayoutAnimationController? = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation)
+        val layoutAnimationController: LayoutAnimationController? =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
         binding.specialistRv.layoutAnimation = layoutAnimationController
         binding.specialistRv.scheduleLayoutAnimation()
-
     }
 }
 

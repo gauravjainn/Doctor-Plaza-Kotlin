@@ -12,14 +12,16 @@ import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
-import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.UpdatedProfileData
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.gym.gymapp.utils.SingleLiveEvent
@@ -264,13 +266,20 @@ fun checkThrowable(t: Throwable): String {
 }
 
 
-fun hideKeyboard(activity: Activity) {
-    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+fun hideKeyboard(activity: Activity, view: View) {
+    /*val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     var view = activity.currentFocus
     if (view == null) {
         view = View(activity)
     }
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
+    imm.hideSoftInputFromWindow(view.windowToken, 0)*/
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm!!.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Activity.showKeyboard(searchSpecialists: EditText) {
+    val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    imm!!.showSoftInput(searchSpecialists, 0)
 }
 
 fun Activity.turnScreenOnAndKeyguardOff() {

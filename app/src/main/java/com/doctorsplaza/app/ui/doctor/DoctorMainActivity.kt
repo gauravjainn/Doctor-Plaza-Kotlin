@@ -1,36 +1,40 @@
 package com.doctorsplaza.app.ui.doctor
 
+
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.constraintlayout.utils.widget.ImageFilterView
-import androidx.constraintlayout.widget.Group
+import android.app.AlertDialog
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.provider.Settings
+import android.view.Window
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
-import com.doctorsplaza.app.data.commonModel.CommonModel
 import com.doctorsplaza.app.databinding.ActivityDoctorMainBinding
 import com.doctorsplaza.app.ui.doctor.fragment.profile.DoctorProfileViewModel
-import com.doctorsplaza.app.ui.patient.fragments.profile.ProfileViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNav
 import com.doctorsplaza.app.utils.slidingrootnav.SlidingRootNavBuilder
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.JsonObject
-import com.gym.gymapp.utils.SingleLiveEvent
 import dagger.hilt.android.AndroidEntryPoint
-import hilt_aggregated_deps._dagger_hilt_android_internal_lifecycle_HiltWrapper_HiltViewModelFactory_ActivityCreatorEntryPoint
-import org.json.JSONObject
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
@@ -59,6 +63,8 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var drawerLogout: TextView
 
     private lateinit var drawerName: TextView
+
+    lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +102,41 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    private fun chekOverLayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+            /*   val permissionDialog = Dialog(this)
+               permissionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+               permissionDialog.setCancelable(true)
+               permissionDialog.setContentView(R.layout.overlay_screen_permission_dialog)
+               permissionDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+               val openSettings = permissionDialog.findViewById<TextView>(R.id.openSettings)
+
+               openSettings.setOnClickListener {
+                   if (!Settings.canDrawOverlays(this@DoctorMainActivity)) {
+                       startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+                           permissionDialog.dismiss()
+                   }
+               }
+               permissionDialog.show()*/
+
+
+
+            if (!Settings.canDrawOverlays(this@DoctorMainActivity)) {
+                val dialog = AlertDialog.Builder(this)
+                dialog.setCancelable(false)
+                dialog.setMessage(getString(R.string.overlay_permission))
+                dialog.setPositiveButton("open settings") { _, _ ->
+
+                    startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+                }
+                dialog.show()
+            }
+
+        }
+    }
+
     private fun setObserver() {
         doctorProfileUpdated.observe(this) {
             if (it) {
@@ -103,7 +144,7 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        profileViewModel.refreshToken.observe(this){ }
+        profileViewModel.refreshToken.observe(this) { }
 
         profileViewModel.doctorProfile.observe(this) { response ->
             when (response) {
@@ -272,7 +313,16 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onResume() {
+        chekOverLayPermission()
+        hideKeyboard(this, binding.profile)
         super.onResume()
-        hideKeyboard(this)
     }
+
+    /*  override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+          if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+              mp?.stop()
+              r?.stop()
+          }
+          return true
+      }*/
 }

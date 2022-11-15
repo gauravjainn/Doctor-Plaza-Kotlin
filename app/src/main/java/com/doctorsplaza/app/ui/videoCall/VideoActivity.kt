@@ -2,7 +2,6 @@ package com.doctorsplaza.app.ui.videoCall
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
@@ -11,7 +10,6 @@ import android.os.SystemClock
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -20,11 +18,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ActivityVideoBinding
+import com.doctorsplaza.app.service.callNotification.mp
+import com.doctorsplaza.app.service.callNotification.r
 import com.doctorsplaza.app.ui.patient.fragments.appointments.AppointmentViewModel
-import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*
 import com.google.gson.JsonObject
 import com.twilio.audioswitch.AudioDevice
@@ -54,8 +52,6 @@ class VideoActivity : AppCompatActivity() {
 
     private val CAMERA_MIC_PERMISSION_REQUEST_CODE = 1
     private val TAG = "VideoActivity"
-    private val CAMERA_PERMISSION_INDEX = 0
-    private val MIC_PERMISSION_INDEX = 1
 
 
     private lateinit var accessToken: String
@@ -76,9 +72,6 @@ class VideoActivity : AppCompatActivity() {
         const val PREF_VP8_SIMULCAST_DEFAULT = false
         const val PREF_ENABLE_AUTOMATIC_SUBSCRIPTION = "enable_automatic_subscription"
         const val PREF_ENABLE_AUTOMATIC_SUBCRIPTION_DEFAULT = true
-        val VIDEO_CODEC_NAMES = arrayOf(Vp8Codec.NAME, H264Codec.NAME, Vp9Codec.NAME)
-        val AUDIO_CODEC_NAMES =
-            arrayOf(IsacCodec.NAME, OpusCodec.NAME, PcmaCodec.NAME, PcmuCodec.NAME, G722Codec.NAME)
     }
 
     /*
@@ -133,6 +126,7 @@ class VideoActivity : AppCompatActivity() {
     /*
      * Encoding parameters represent the sender side bandwidth constraints.
      */
+
     private val encodingParameters: EncodingParameters
         get() {
             val defaultMaxAudioBitrate = PREF_SENDER_MAX_AUDIO_BITRATE_DEFAULT
@@ -229,7 +223,7 @@ class VideoActivity : AppCompatActivity() {
     private val participantListener = object : RemoteParticipant.Listener {
         override fun onAudioTrackPublished(
             remoteParticipant: RemoteParticipant,
-            remoteAudioTrackPublication: RemoteAudioTrackPublication
+            remoteAudioTrackPublication: RemoteAudioTrackPublication,
         ) {
             Log.i(
                 TAG, "onAudioTrackPublished: " +
@@ -244,7 +238,7 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onAudioTrackUnpublished(
             remoteParticipant: RemoteParticipant,
-            remoteAudioTrackPublication: RemoteAudioTrackPublication
+            remoteAudioTrackPublication: RemoteAudioTrackPublication,
         ) {
             Log.i(
                 TAG, "onAudioTrackUnpublished: " +
@@ -259,7 +253,7 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onDataTrackPublished(
             remoteParticipant: RemoteParticipant,
-            remoteDataTrackPublication: RemoteDataTrackPublication
+            remoteDataTrackPublication: RemoteDataTrackPublication,
         ) {
             Log.i(
                 TAG, "onDataTrackPublished: " +
@@ -274,7 +268,7 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onDataTrackUnpublished(
             remoteParticipant: RemoteParticipant,
-            remoteDataTrackPublication: RemoteDataTrackPublication
+            remoteDataTrackPublication: RemoteDataTrackPublication,
         ) {
             Log.i(
                 TAG, "onDataTrackUnpublished: " +
@@ -289,7 +283,7 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onVideoTrackPublished(
             remoteParticipant: RemoteParticipant,
-            remoteVideoTrackPublication: RemoteVideoTrackPublication
+            remoteVideoTrackPublication: RemoteVideoTrackPublication,
         ) {
             Log.i(
                 TAG, "onVideoTrackPublished: " +
@@ -304,7 +298,7 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onVideoTrackUnpublished(
             remoteParticipant: RemoteParticipant,
-            remoteVideoTrackPublication: RemoteVideoTrackPublication
+            remoteVideoTrackPublication: RemoteVideoTrackPublication,
         ) {
             Log.i(
                 TAG, "onVideoTrackUnpublished: " +
@@ -320,7 +314,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onAudioTrackSubscribed(
             remoteParticipant: RemoteParticipant,
             remoteAudioTrackPublication: RemoteAudioTrackPublication,
-            remoteAudioTrack: RemoteAudioTrack
+            remoteAudioTrack: RemoteAudioTrack,
         ) {
             Log.i(
                 TAG, "onAudioTrackSubscribed: " +
@@ -335,7 +329,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onAudioTrackUnsubscribed(
             remoteParticipant: RemoteParticipant,
             remoteAudioTrackPublication: RemoteAudioTrackPublication,
-            remoteAudioTrack: RemoteAudioTrack
+            remoteAudioTrack: RemoteAudioTrack,
         ) {
             Log.i(
                 TAG, "onAudioTrackUnsubscribed: " +
@@ -350,7 +344,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onAudioTrackSubscriptionFailed(
             remoteParticipant: RemoteParticipant,
             remoteAudioTrackPublication: RemoteAudioTrackPublication,
-            twilioException: TwilioException
+            twilioException: TwilioException,
         ) {
             Log.i(
                 TAG, "onAudioTrackSubscriptionFailed: " +
@@ -366,7 +360,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onDataTrackSubscribed(
             remoteParticipant: RemoteParticipant,
             remoteDataTrackPublication: RemoteDataTrackPublication,
-            remoteDataTrack: RemoteDataTrack
+            remoteDataTrack: RemoteDataTrack,
         ) {
             Log.i(
                 TAG, "onDataTrackSubscribed: " +
@@ -380,7 +374,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onDataTrackUnsubscribed(
             remoteParticipant: RemoteParticipant,
             remoteDataTrackPublication: RemoteDataTrackPublication,
-            remoteDataTrack: RemoteDataTrack
+            remoteDataTrack: RemoteDataTrack,
         ) {
             Log.i(
                 TAG, "onDataTrackUnsubscribed: " +
@@ -394,7 +388,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onDataTrackSubscriptionFailed(
             remoteParticipant: RemoteParticipant,
             remoteDataTrackPublication: RemoteDataTrackPublication,
-            twilioException: TwilioException
+            twilioException: TwilioException,
         ) {
             Log.i(
                 TAG, "onDataTrackSubscriptionFailed: " +
@@ -410,7 +404,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onVideoTrackSubscribed(
             remoteParticipant: RemoteParticipant,
             remoteVideoTrackPublication: RemoteVideoTrackPublication,
-            remoteVideoTrack: RemoteVideoTrack
+            remoteVideoTrack: RemoteVideoTrack,
         ) {
             Log.i(
                 TAG, "onVideoTrackSubscribed: " +
@@ -425,7 +419,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onVideoTrackUnsubscribed(
             remoteParticipant: RemoteParticipant,
             remoteVideoTrackPublication: RemoteVideoTrackPublication,
-            remoteVideoTrack: RemoteVideoTrack
+            remoteVideoTrack: RemoteVideoTrack,
         ) {
             Log.i(
                 TAG, "onVideoTrackUnsubscribed: " +
@@ -440,7 +434,7 @@ class VideoActivity : AppCompatActivity() {
         override fun onVideoTrackSubscriptionFailed(
             remoteParticipant: RemoteParticipant,
             remoteVideoTrackPublication: RemoteVideoTrackPublication,
-            twilioException: TwilioException
+            twilioException: TwilioException,
         ) {
             Log.i(
                 TAG, "onVideoTrackSubscriptionFailed: " +
@@ -456,25 +450,25 @@ class VideoActivity : AppCompatActivity() {
 
         override fun onAudioTrackEnabled(
             remoteParticipant: RemoteParticipant,
-            remoteAudioTrackPublication: RemoteAudioTrackPublication
+            remoteAudioTrackPublication: RemoteAudioTrackPublication,
         ) {
         }
 
         override fun onVideoTrackEnabled(
             remoteParticipant: RemoteParticipant,
-            remoteVideoTrackPublication: RemoteVideoTrackPublication
+            remoteVideoTrackPublication: RemoteVideoTrackPublication,
         ) {
         }
 
         override fun onVideoTrackDisabled(
             remoteParticipant: RemoteParticipant,
-            remoteVideoTrackPublication: RemoteVideoTrackPublication
+            remoteVideoTrackPublication: RemoteVideoTrackPublication,
         ) {
         }
 
         override fun onAudioTrackDisabled(
             remoteParticipant: RemoteParticipant,
-            remoteAudioTrackPublication: RemoteAudioTrackPublication
+            remoteAudioTrackPublication: RemoteAudioTrackPublication,
         ) {
         }
     }
@@ -508,6 +502,8 @@ class VideoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         turnScreenOnAndKeyguardOff()
+        mp?.stop()
+        r?.stop()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -543,10 +539,8 @@ class VideoActivity : AppCompatActivity() {
         localVideoView = binding.thumbnailVideoView
         binding.thumbnailVideoView.mirror = true
 
-
         savedVolumeControlStream = volumeControlStream
         volumeControlStream = AudioManager.STREAM_VOICE_CALL
-
 
         if (!checkPermissionForCameraAndMicrophone()) {
             requestPermissionForCameraMicrophoneAndBluetooth()
@@ -554,6 +548,7 @@ class VideoActivity : AppCompatActivity() {
             audioSwitch.start { _, audioDevice -> updateAudioDeviceIcon(audioDevice) }
             createAudioAndVideoTracks()
         }
+
         initializeUI()
 
 
@@ -582,7 +577,7 @@ class VideoActivity : AppCompatActivity() {
             session.callStatus = ""
 
         }
-        appointmentViewModel.generateVieoToken.observe(this) { response ->
+        appointmentViewModel.generateVideoToken.observe(this) { response ->
             when (response) {
                 is Resource.Success -> {
                     if (response.data?.code != null && response.data.code == 200) {
@@ -590,7 +585,6 @@ class VideoActivity : AppCompatActivity() {
                         accessToken = if (session.loginType == "doctor") {
                             response.data.data.doctor_token
                         } else {
-
                             response.data.data.patients_token
                         }
 
@@ -600,10 +594,8 @@ class VideoActivity : AppCompatActivity() {
                         response.data?.message?.let { showToast(it) }
                     }
                 }
-                is Resource.Loading -> {
-                }
-                is Resource.Error -> {
-                }
+                is Resource.Loading -> {}
+                is Resource.Error -> {}
             }
         }
     }
@@ -611,11 +603,10 @@ class VideoActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_MIC_PERMISSION_REQUEST_CODE) {
-
             val cameraAndMicPermissionGranted = ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -633,11 +624,7 @@ class VideoActivity : AppCompatActivity() {
                 createAudioAndVideoTracks()
                 connectToRoom()
             } else {
-                Toast.makeText(
-                    this,
-                    R.string.permissions_needed,
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, R.string.permissions_needed, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -673,12 +660,17 @@ class VideoActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        audioSwitch.stop()
-        volumeControlStream = savedVolumeControlStream
-        room?.disconnect()
-        disconnectedFromOnDestroy = true
-        localAudioTrack?.release()
-        localVideoTrack?.release()
+        try{
+            audioSwitch.stop()
+            volumeControlStream = savedVolumeControlStream
+            room?.disconnect()
+            disconnectedFromOnDestroy = true
+            localAudioTrack?.release()
+            localVideoTrack?.release()
+        }catch (e:Exception){
+
+        }
+
 
         super.onDestroy()
     }
@@ -703,6 +695,14 @@ class VideoActivity : AppCompatActivity() {
                 )
         }
         if (displayRational) {
+           /* val alertBuilder = AlertDialog.Builder(this)
+            alertBuilder.setCancelable(true)
+            alertBuilder.setMessage(getString(R.string.permissions_needed))
+            alertBuilder.setPositiveButton("Yes") { _, _ ->
+                ActivityCompat.requestPermissions((this),
+                    permissions,
+                    CAMERA_MIC_PERMISSION_REQUEST_CODE)
+            }*/
             Toast.makeText(this, R.string.permissions_needed, Toast.LENGTH_LONG).show()
         } else {
             ActivityCompat.requestPermissions(this, permissions, CAMERA_MIC_PERMISSION_REQUEST_CODE)
@@ -925,5 +925,12 @@ class VideoActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onBackPressed() {
+        notifyCallDisconnected()
+        room?.disconnect()
+        finish()
+        super.onBackPressed()
     }
 }

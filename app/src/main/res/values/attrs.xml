@@ -29,9 +29,10 @@
     </string-array>
 
     <string-array name="appointment_type">
-        <item>In Clinic</item>
+        <item>Offline</item>
         <item>Online</item>
     </string-array>
+
     <string-array name="payment_type">
         <item>Online</item>
         <item>Cash</item>

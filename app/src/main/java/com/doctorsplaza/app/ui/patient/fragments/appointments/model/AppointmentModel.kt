@@ -29,7 +29,7 @@ data class AppointmentData(
     val patientname: String,
     val payment_id: PaymentId,
     val payment_status: Boolean,
-    val problem: String,
+    val problem: String?="",
     val room_time_slot_id: RoomTimeSlotId,
     val status: String,
     val updatedAt: String,

@@ -4,28 +4,24 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.RingtoneManager
+import android.media.*
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PowerManager
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.doctorsplaza.app.R
-import com.doctorsplaza.app.ui.doctor.DoctorMainActivity
-import com.doctorsplaza.app.ui.patient.PatientMainActivity
-import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.*
 import java.util.*
 
 
 var mp: MediaPlayer? = null
-
+var r: Ringtone?=null
 class HeadsUpNotificationService : Service() {
+    private val TAG = "BackupService"
+
     private val CHANNEL_ID = "VoipChannel"
     private val CHANNEL_NAME = "Voip Channel"
     lateinit var notificationBuilder: Notification
@@ -38,12 +34,13 @@ class HeadsUpNotificationService : Service() {
     @SuppressLint("UnspecifiedImmutableFlag")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        var data: Bundle? = null
-        var title: String = ""
-        var subTitle: String = ""
-        var videoToken: String = ""
-        var appointmentid: String = ""
-        var name: String = ""
+
+        val data: Bundle? = null
+        var title = ""
+        var subTitle = ""
+        var videoToken = ""
+        var appointmentid = ""
+        var name = ""
         if (intent != null && intent.extras != null) {
             title = intent.getStringExtra("title").toString()
             subTitle = intent.getStringExtra("subTitle").toString()
@@ -67,7 +64,6 @@ class HeadsUpNotificationService : Service() {
                         applicationContext,
                         HeadsUpNotificationActionReceiver::class.java
                     ).apply {
-
                         putExtra(CALL_RESPONSE_ACTION_KEY, CALL_RECEIVE_ACTION)
                         putExtra("videoToken", videoToken)
                         putExtra("appointmentid", appointmentid)
@@ -139,9 +135,18 @@ class HeadsUpNotificationService : Service() {
                 0
             )
 
+
             mp = MediaPlayer.create(this, defaultSoundUri)
             mp?.setOnCompletionListener { mp -> mp.release() }
             mp?.start()
+
+//            val notification: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL)
+//            r = RingtoneManager.getRingtone(applicationContext, notification)
+//            r?.isLooping = true
+//            r?.play()
+
+            val audiomanager = this.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audiomanager.ringerMode = AudioManager.RINGER_MODE_NORMAL
 
             val viewCallAction = Intent(applicationContext, HeadsUpNotificationActionReceiver::class.java)
             val viewCallPendingIntent = PendingIntent.getActivity(
@@ -163,28 +168,23 @@ class HeadsUpNotificationService : Service() {
                 .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setFullScreenIntent(viewCallPendingIntent, true)
-                .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+                .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setStyle(NotificationCompat.DecoratedCustomViewStyle())
                 .addAction(R.drawable.ic_call_green, "Answer", receiveCallPendingIntent)
                 .addAction(R.drawable.end_call, "Decline", cancelCallPendingIntent)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .build()
 
-
             val incomingCallNotification: Notification?
             incomingCallNotification = notificationBuilder
-
             startForeground(120, incomingCallNotification)
 
-            am.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
-                0
-            )
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0)
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         return START_STICKY
     }
 
