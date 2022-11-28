@@ -69,7 +69,7 @@ class AddPrescriptionWithMedicineFragment :
                 inflater.inflate(R.layout.fragment_add_prescription_with_medicine, container, false)
             binding = FragmentAddPrescriptionWithMedicineBinding.bind(currentView!!)
             init()
-            setObserver()
+//            setObserver()
             setOnClickListener()
         }
         return currentView!!
@@ -78,6 +78,8 @@ class AddPrescriptionWithMedicineFragment :
 
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
+        addMedicine?.value = null
+        medicines.clear()
         appointmentId = arguments?.getString("appointmentId")
         appointmentDateTime = arguments?.getString("appointmentTime")
         consultationFee = arguments?.getString("consultationFee")
@@ -109,13 +111,22 @@ class AddPrescriptionWithMedicineFragment :
     }
 
     private fun setObserver() {
-        addMedicine.observe(requireActivity()) {
+
+        if(addMedicine?.value!=null){
+            if (editMedicinePosition != null) {
+                medicines.removeAt(editMedicinePosition!!)
+            }
+            medicines.addAll(listOf(addMedicine.value!!))
+            setMedicineRv()
+        }
+
+       /* addMedicine.observe(requireActivity()) {
             if (editMedicinePosition != null) {
                 medicines.removeAt(editMedicinePosition!!)
             }
             medicines.addAll(listOf(it))
             setMedicineRv()
-        }
+        }*/
 
         doctorAppointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -213,9 +224,9 @@ class AddPrescriptionWithMedicineFragment :
             layoutManager = LinearLayoutManager(requireContext())
             adapter = medicineAdapter
         }
-
         medicineAdapter.notifyDataSetChanged()
     }
+
 
     @SuppressLint("CheckResult")
     private fun setPrescriptionData(data: List<PrescriptionData>) {
@@ -314,10 +325,7 @@ class AddPrescriptionWithMedicineFragment :
     }
 
     private fun getPrescriptionPdfUrl() {
-
         doctorAppointmentViewModel.getPrescriptionPdfUrl(prescriptionId)
-
-
     }
 
     override fun onClick(v: View?) {
@@ -341,7 +349,7 @@ class AddPrescriptionWithMedicineFragment :
 
 
     override fun onResume() {
-        super.onResume()
         setObserver()
+        super.onResume()
     }
 }

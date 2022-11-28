@@ -446,6 +446,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                     addProperty("type", "doctor")
                 }
                 doctorAppointmentViewModel.generateVideoToken(jsonObject)
+                hideKeyboard(requireActivity(),binding.backArrow)
             }
         }
     }

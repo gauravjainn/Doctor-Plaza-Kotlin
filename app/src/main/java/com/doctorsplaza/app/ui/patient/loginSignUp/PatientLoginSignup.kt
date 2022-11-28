@@ -3,9 +3,11 @@ package com.doctorsplaza.app.ui.patient.loginSignUp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import com.doctorsplaza.app.databinding.ActivityPatientLoginSigupBinding
 import com.doctorsplaza.app.ui.doctor.DoctorMainActivity
 import com.doctorsplaza.app.ui.patient.PatientMainActivity
+import com.doctorsplaza.app.ui.videoCall.VideoActivity
 import com.doctorsplaza.app.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,6 +28,8 @@ class PatientLoginSignup : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPatientLoginSigupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
         sessionManager = SessionManager(this)
         if (session.isLogin) {
             if (session.loginType == "patient") {

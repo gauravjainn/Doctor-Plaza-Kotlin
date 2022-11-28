@@ -589,7 +589,9 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             addProperty("id", appointmentId)
             addProperty("type", "patient")
         }
+
         appointmentViewModel.generateVideoToken(jsonObject)
+        hideKeyboard(requireActivity(),binding.backArrow)
     }
 
 

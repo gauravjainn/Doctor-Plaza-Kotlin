@@ -137,12 +137,15 @@ class VideoActivity : AppCompatActivity() {
                     defaultMaxAudioBitrate
                 ) ?: defaultMaxAudioBitrate
             )
-            val maxVideoBitrate = Integer.parseInt(
+            /*val maxVideoBitrate = Integer.parseInt(
                 sharedPreferences.getString(
                     PREF_SENDER_MAX_VIDEO_BITRATE,
                     defaultMaxVideoBitrate
                 ) ?: defaultMaxVideoBitrate
-            )
+            )*/
+            val maxVideoBitrate = -2
+
+
 
             return EncodingParameters(maxAudioBitrate, maxVideoBitrate)
         }
@@ -500,6 +503,7 @@ class VideoActivity : AppCompatActivity() {
     private lateinit var localVideoView: VideoSink
     private var disconnectedFromOnDestroy = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         turnScreenOnAndKeyguardOff()
         mp?.stop()
@@ -513,6 +517,7 @@ class VideoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVideoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideKeyboard(this,binding.primaryVideoView)
         setObserver()
         when {
             intent.hasExtra("appointmentid") -> {

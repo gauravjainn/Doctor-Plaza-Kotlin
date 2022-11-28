@@ -2,11 +2,13 @@ package com.doctorsplaza.app.ui.patient.fragments.doctorDetails
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Html
 import android.util.DisplayMetrics
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -118,7 +120,8 @@ class DoctorDetailsFragment : Fragment(R.layout.fragment_doctor_details), View.O
             doctorDegree.text = data.qualification
             verifiedIcon.isVisible = data.is_approved
             verifiedViewGrp.isVisible = data.is_approved
-            about.text = data.about
+            about.text = HtmlCompat.fromHtml(data.about, HtmlCompat.FROM_HTML_MODE_LEGACY);
+
             setClinicsSpinner(data.clinics)
         }
     }

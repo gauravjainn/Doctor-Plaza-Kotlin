@@ -247,7 +247,7 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
                 medicineTime,
                 false
             )
-            addMedicine.postValue(medicineData)
+            addMedicine?.postValue(medicineData)
             findNavController().popBackStack()
         }
     }

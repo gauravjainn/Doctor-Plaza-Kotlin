@@ -316,6 +316,6 @@ val CALL_CANCEL_ACTION = "CALL_CANCEL_ACTION"
 val doctorProfileUpdated = SingleLiveEvent<Boolean>()
 val profileImageUpdated = MutableLiveData<String>()
 val profileDetailsUpdated = MutableLiveData<UpdatedProfileData>()
-val addMedicine = SingleLiveEvent<Medicine>()
+val addMedicine:SingleLiveEvent<Medicine>? = SingleLiveEvent()
 val callEnded = SingleLiveEvent<String>()
 
