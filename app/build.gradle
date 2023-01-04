@@ -15,10 +15,19 @@ android {
         applicationId "com.doctorsplaza.app"
         minSdk 21
         targetSdk 32
-        versionCode 25
-        versionName "1.0.25"
+        versionCode 26
+        versionName "1.0.26"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("DoctorsPlaza-keystore.jks")
+            storePassword 'doctorsplaza'
+            keyAlias 'doctorsplaza'
+            keyPassword 'doctorsplaza'
+        }
     }
 
     buildTypes {
