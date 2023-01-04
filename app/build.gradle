@@ -19,16 +19,6 @@ android {
         versionName "1.0.25"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "Doctors Plaza v" + versionCode + " -v" + versionName)
-    }
-
-    signingConfigs {
-        release {
-            storeFile file("DoctorsPlaza-keystore.jks")
-            storePassword 'doctorsplaza'
-            keyAlias 'doctorsplaza'
-            keyPassword 'doctorsplaza'
-        }
     }
 
     buildTypes {
@@ -59,6 +49,7 @@ android {
 }
 
 dependencies {
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
