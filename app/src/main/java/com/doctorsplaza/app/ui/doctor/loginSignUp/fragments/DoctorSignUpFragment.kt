@@ -32,6 +32,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
     private var address: String = ""
     private var email: String = ""
     private var phone: String = ""
+    private var licenseNo: String = ""
     private var selectedState: String = ""
     private var selectedCity: String = ""
     private var pincode: String = ""
@@ -237,6 +238,7 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
         jsonObject.addProperty(PatientGender, selectedGender)
         jsonObject.addProperty(PatientAddress, address)
         jsonObject.addProperty(DoctorNo, phone)
+        jsonObject.addProperty(DoctorLicenseNo, licenseNo)
         jsonObject.addProperty("qualification", qualification)
         jsonObject.addProperty(DoctorState, selectedState)
         jsonObject.addProperty(DoctorCity, selectedCity)
@@ -427,14 +429,17 @@ class DoctorSignUpFragment : Fragment(R.layout.fragment_doctor_sign_up), View.On
             4 -> {
                 email = binding.emailEdt.text.toString()
                 phone = binding.phoneEdt.text.toString()
+                licenseNo = binding.licenseNoEdt.text.toString()
 
                 when {
                     !email.isValidEmail() -> {
                         showToast("please enter a valid email")
                     }
-
-                    phone.isEmpty() && phone.length<10 -> {
+                    phone.isEmpty() && phone.length < 10 -> {
                         showToast("please enter a valid phone number")
+                    }
+                    licenseNo.isEmpty() -> {
+                        showToast("please enter your license number")
                     }
                     else -> {
                         pageCount.postValue(5)

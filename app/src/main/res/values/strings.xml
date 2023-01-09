@@ -20,6 +20,8 @@
     <string name="book_appointment_lbl">Book Appointment</string>
     <string name="something_went_wrong_lbl">Something went wrong</string>
     <string name="phone_number_lbl">Phone Number</string>
+    <string name="license_number_lbl">License Number</string>
+
     <string name="address_lbl">Address</string>
     <string name="profile_lbl">Profile</string>
     <string name="set_reminder_lbl">Set Reminder</string>

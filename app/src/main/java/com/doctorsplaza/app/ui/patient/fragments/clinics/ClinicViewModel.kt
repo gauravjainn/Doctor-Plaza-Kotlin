@@ -1,5 +1,6 @@
 package com.doctorsplaza.app.ui.patient.fragments.clinics
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
@@ -34,6 +35,7 @@ class ClinicViewModel @Inject constructor(private val repository: Repository) : 
             }
 
         } catch (t: Throwable) {
+            Log.e("TAG",""+t.message)
             when (t) {
                 is IOException -> clinics.postValue(Resource.Error("Network Failure", null))
                 else -> clinics.postValue(

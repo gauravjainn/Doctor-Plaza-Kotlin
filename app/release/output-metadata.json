@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.doctorsplaza.app",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 26,
+      "versionName": "1.0.26",
+      "outputFile": "DoctorsPlaza v26 -v1.0.26-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

@@ -11,7 +11,7 @@ data class ClinicData(
     val _id: String,
     val city: String,
     val clinicContactNumber: Long,
-    val clinicManagerId: String,
+    val clinicManagerId: ClinicManagerId,
     val clinicName: String,
     val comment: String,
     val coords: Coords,
@@ -33,4 +33,12 @@ data class ClinicData(
 data class Coords(
     val coordinates: List<Double>,
     val type: String
+)
+
+data class ClinicManagerId(
+    val _id: String,
+    val staff_id: String,
+    val user_name: String,
+    val email: String,
+    val employee_id: String,
 )

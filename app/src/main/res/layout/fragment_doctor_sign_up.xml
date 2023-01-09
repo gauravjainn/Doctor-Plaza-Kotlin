@@ -552,12 +552,45 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/phoneLbl" />
 
+                <TextView
+                    android:id="@+id/licenseNoLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/license_number_lbl"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="@dimen/_9sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/phoneEdt" />
+
+                <EditText
+                    android:id="@+id/licenseNoEdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/edt_bg"
+                    android:drawableStart="@drawable/ic_license_24"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:inputType="text"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/licenseNoLbl" />
+
                 <androidx.constraintlayout.widget.Group
                     android:id="@+id/phoneEmailGrp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="emailEdt,emailLbl,phoneEdt,phoneLbl" />
+                    app:constraint_referenced_ids="emailEdt,emailLbl,phoneEdt,phoneLbl,licenseNoEdt,licenseNoLbl" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

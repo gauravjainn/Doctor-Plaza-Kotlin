@@ -1,7 +1,8 @@
 package com.doctorsplaza.app.utils
 
 //const val BASE_URL = "http://65.0.71.39:5000/api/"
-const val BASE_URL = "https://test.doctorsplaza.in/api/"
+//const val BASE_URL = "https://test.doctorsplaza.in/api/"
+const val BASE_URL = "https://www.doctorsplaza.in/api/"
 
 const val DATE_FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"
 const val DATE_PATTERN = "yyyy-MM-dd"
@@ -24,6 +25,7 @@ const val PatientOtp = "otp"
 const val DoctorName = "doctorName"
 const val DepartmentName = "departmentName"
 const val DoctorNo = "phoneNo"
+const val DoctorLicenseNo = "licenseNo"
 const val DoctorState = "state"
 const val DoctorCity = "city"
 const val DoctorPincode = "pincode"
