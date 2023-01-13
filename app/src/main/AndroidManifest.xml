@@ -3,18 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.doctorsplaza.app">
 
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        tools:ignore="ProtectedPermissions" />
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-        />
-
-    <permission android:name="android.permission.GRANT_RUNTIME_PERMISSIONS"
+    <permission
+        android:name="android.permission.GRANT_RUNTIME_PERMISSIONS"
         android:protectionLevel="signature|installer|verifier" />
 
-    <permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
-        android:label="@string/app_name"
+    <permission
+        android:name="android.permission.SYSTEM_ALERT_WINDOW"
         android:description="@string/app_name"
+        android:label="@string/app_name"
         android:protectionLevel="signature|preinstalled|appop|pre23" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -81,9 +83,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="true" />
         <activity
             android:name=".ui.patient.payment.PaymentActivity"
             android:exported="true" />
@@ -156,7 +155,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".utils.PlayerService"/>
+        <service android:name=".utils.PlayerService" />
 
     </application>
 
