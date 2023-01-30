@@ -284,7 +284,7 @@ class DoctorMainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.drawerCustomerSupport -> {
                 slidingRootNav.closeMenu()
-                val number = Uri.parse("tel:+911149424130")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 startActivity(callIntent)
             }

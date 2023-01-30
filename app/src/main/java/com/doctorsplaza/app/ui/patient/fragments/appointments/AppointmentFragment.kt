@@ -583,7 +583,6 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.addAppointment -> {
-
                 if (session.loginName.isEmpty() || session.loginDOB.isEmpty()) {
                     showAddRequiredFieldsPopUp()
                 } else {
@@ -592,17 +591,17 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             }
 
             R.id.bookBloodCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.physioCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.orderMedicineCallNow -> {
-                val number = Uri.parse("tel:9876543214")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }

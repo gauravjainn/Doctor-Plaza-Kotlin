@@ -504,27 +504,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
             }
 
             R.id.bookBloodCallNow -> {
-                val number = Uri.parse("tel:+919910295721")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.physioCallNow -> {
-                val number = Uri.parse("tel:+919910295721")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.orderMedicineCallNow -> {
-                val number = Uri.parse("tel:+911149424130 ")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.physioTherapyBg1 -> {
-                val number = Uri.parse("tel:+919910295721")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
             R.id.bookBloodTestBg1 -> {
-                val number = Uri.parse("tel:+911149424130")
+                val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }

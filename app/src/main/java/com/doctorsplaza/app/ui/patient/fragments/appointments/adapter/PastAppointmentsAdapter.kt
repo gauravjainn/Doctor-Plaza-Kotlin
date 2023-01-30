@@ -27,36 +27,43 @@ class PastAppointmentsAdapter @Inject constructor() :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(appointmentData: AppointmentData) {
             with(binding) {
-
-                doctorName.text = appointmentData.doctor_id.doctorName
-                doctorSpecialistIn.text = appointmentData.doctor_id.specialization
-                doctorQualification = appointmentData.doctor_id.qualification
-                Glide.with(context).load(appointmentData.doctor_id.profile_picture)
-                    .into(doctorImage)
-                consultationFees.text = "₹${appointmentData.consultation_fee}"
-                val parsedDate =
-                    inputFormat.parse(appointmentData.date)
-                val formattedDate = outputFormat.format(parsedDate)
-
-                appointmentTimings.text =
-                    "$formattedDate (${appointmentData.room_time_slot_id.timeSlotData.start_time} - ${appointmentData.room_time_slot_id.timeSlotData.end_time})"
-
-
-                if (appointmentData.status.lowercase() == "cancelled") {
-                    appointmentStatus.text = "Cancelled"
-                    appointmentStatus.background =
-                        ContextCompat.getDrawable(context, R.drawable.red_corner_radius)
-                } else if (appointmentData.status.lowercase() == "done") {
-                    appointmentStatus.background =
-                        ContextCompat.getDrawable(context, R.drawable.gree_corner_radius)
-                    appointmentStatus.text = "Success"
+                try {
+                    doctorName.text = appointmentData.doctor_id.doctorName
+                    doctorSpecialistIn.text = appointmentData.doctor_id.specialization
+                    doctorQualification = appointmentData.doctor_id.qualification
+                    Glide.with(context).load(appointmentData.doctor_id.profile_picture)
+                        .into(doctorImage)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                root.setOnClickListener {
-                    if (appointmentData.status.lowercase() == "done") {
-                        pastAppointmentClickListener?.let {
-                            it(appointmentData._id)
+
+                try {
+                    consultationFees.text = "₹${appointmentData.consultation_fee}"
+                    val parsedDate =
+                        inputFormat.parse(appointmentData.date)
+                    val formattedDate = outputFormat.format(parsedDate)
+
+                    appointmentTimings.text =
+                        "$formattedDate (${appointmentData.room_time_slot_id.timeSlotData.start_time} - ${appointmentData.room_time_slot_id.timeSlotData.end_time})"
+
+                    if (appointmentData.status.lowercase() == "cancelled") {
+                        appointmentStatus.text = "Cancelled"
+                        appointmentStatus.background =
+                            ContextCompat.getDrawable(context, R.drawable.red_corner_radius)
+                    } else if (appointmentData.status.lowercase() == "done") {
+                        appointmentStatus.background =
+                            ContextCompat.getDrawable(context, R.drawable.gree_corner_radius)
+                        appointmentStatus.text = "Success"
+                    }
+                    root.setOnClickListener {
+                        if (appointmentData.status.lowercase() == "done") {
+                            pastAppointmentClickListener?.let {
+                                it(appointmentData._id)
+                            }
                         }
                     }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }

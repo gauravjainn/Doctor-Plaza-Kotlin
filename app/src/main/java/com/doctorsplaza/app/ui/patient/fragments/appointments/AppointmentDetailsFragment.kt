@@ -44,13 +44,11 @@ import java.util.*
 import javax.inject.Inject
 
 
-
-
 @AndroidEntryPoint
 class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_details),
     View.OnClickListener {
 
-    private lateinit var  downloadDialog: Dialog
+    private lateinit var downloadDialog: Dialog
     private var downloadId: Long = 0L
     private lateinit var prescriptionData: List<PrescriptionData>
     private lateinit var rescheduleDialog: Dialog
@@ -343,17 +341,17 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             appointmentViewModel.callNotify.observe(viewLifecycleOwner) { }
         }
 
-        appointmentViewModel.downLoadAppointmentSlip.observe(viewLifecycleOwner){response->
-            when(response){
-                is Resource.Success->{
-                    if(response.data?.code == 200){
+        appointmentViewModel.downLoadAppointmentSlip.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    if (response.data?.code == 200) {
                         downloadAppointmentSlip(response.data.url)
-                    }else{
+                    } else {
                         downloadDialog.dismiss()
                     }
                 }
-                is Resource.Loading->{}
-                is Resource.Error->{}
+                is Resource.Loading -> {}
+                is Resource.Error -> {}
             }
         }
 
@@ -453,56 +451,68 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
     private fun setAppointmentsDetails(data: AppointmentData) {
         with(binding) {
-            doctorName.text = data.doctor_id.doctorName
-            doctorSpecialistIn.text = data.doctor_id.specialization
-            doctorDegree.text = data.doctor_id.qualification
-            Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
-                .load(data.doctor_id.profile_picture).into(doctorImage)
+            try {
+                doctorName.text = data.doctor_id.doctorName
+                doctorSpecialistIn.text = data.doctor_id.specialization
+                doctorDegree.text = data.doctor_id.qualification
+                Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
+                    .load(data.doctor_id.profile_picture).into(doctorImage)
 
-            patientName.text = data.patientname
-            appointmentDateTime.text = data.patientname
-            clinicDetails.text = data.clinic_id.location
-            contactDetails.text = session.loginPhone
-            ageDetails.text = data.age
-            gender.text = data.gender
-
-            consultationFees.text = "₹${data.doctor_id.consultationfee}"
-
-            if (data.mode_of_payment == "Cash") {
-                totalAmt.text = "₹${data.doctor_id.consultationfee}"
-            } else {
-                totalAmt.text = "₹${data.payment_id.amount}"
+                consultationFees.text = "₹${data.doctor_id.consultationfee}"
+                val discountAmount = data.doctor_id.consultationfee.toInt() - data.consultation_fee
+                if (discountAmount >= 1) {
+                    binding.discountAmt.text = "-₹${discountAmount}"
+                } else {
+                    binding.discountAmt.isVisible = false
+                    binding.discountLbl.isVisible = false
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
-            val parsedDate = isoFormat.parse(data.date)
-            val formattedDate = showDateFormat.format(parsedDate)
-            val formattedDay = showDayFormat.format(parsedDate)
-            appointmentDateTime.text =
-                "$formattedDay  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
-
-            val discountAmount = data.doctor_id.consultationfee.toInt() - data.consultation_fee
-
-            if (discountAmount >= 1) {
-                binding.discountAmt.text = "-₹${discountAmount}"
-            } else {
-                binding.discountAmt.isVisible = false
-                binding.discountLbl.isVisible = false
+            try {
+                if (data.mode_of_payment == "Cash") {
+                    totalAmt.text = "₹${data.doctor_id.consultationfee}"
+                } else {
+                    totalAmt.text = "₹${data.payment_id.amount}"
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            totalAmt.text = "₹${data.consultation_fee}"
+
+            try {
+                patientName.text = data.patientname
+                appointmentDateTime.text = data.patientname
+                clinicDetails.text = data.clinic_id.location
+                contactDetails.text = session.loginPhone
+                ageDetails.text = data.age
+                gender.text = data.gender
+
+                val parsedDate = isoFormat.parse(data.date)
+                val formattedDate = showDateFormat.format(parsedDate)
+                val formattedDay = showDayFormat.format(parsedDate)
+                appointmentDateTime.text =
+                    "$formattedDay  $formattedDate (${data.room_time_slot_id.timeSlotData.start_time} - ${data.room_time_slot_id.timeSlotData.end_time})"
+
+
+                totalAmt.text = "₹${data.consultation_fee}"
 //            binding.videoCallIcon.isVisible = data.appointment_type.lowercase() == "online"
-            binding.joinVideoCall.isVisible = data.appointment_type.lowercase() == "online"
-            if (data.payment_status) {
-                binding.paymentStatus.text = "Successful"
-            } else {
-                binding.paymentStatus.text = "Pending"
-            }
+                binding.joinVideoCall.isVisible = data.appointment_type.lowercase() == "online"
+                if (data.payment_status) {
+                    binding.paymentStatus.text = "Successful"
+                } else {
+                    binding.paymentStatus.text = "Pending"
+                }
 
-            if (data.rating != null) {
-                binding.ratingExperienceBar.rating = data.rating.rating.toString().toFloat()
-                binding.experienceDesc.setText(data.rating.review)
-                binding.ratingExperienceBar.isFocusable = false
-                binding.experienceDesc.isEnabled = false
-                binding.saveBtn.isVisible = false
+                if (data.rating != null) {
+                    binding.ratingExperienceBar.rating = data.rating.rating.toString().toFloat()
+                    binding.experienceDesc.setText(data.rating.review)
+                    binding.ratingExperienceBar.isFocusable = false
+                    binding.experienceDesc.isEnabled = false
+                    binding.saveBtn.isVisible = false
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
@@ -557,20 +567,25 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             R.id.downloadAppointmentSlip -> {
                 downloadDialog.show()
                 appointmentViewModel.downloadAppointmentSlip(appointmentId)
-                requireActivity().registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+                requireActivity().registerReceiver(
+                    onDownloadComplete,
+                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+                )
             }
 
 
             R.id.joinVideoCall -> {
-               joinVideoCall()
+                joinVideoCall()
             }
         }
     }
 
     private fun joinVideoCall() {
 
-        val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
-        val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
+        val parsedStartTime =
+            isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
+        val parsedEndTime =
+            isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
 
         val currentTime = Date().time
         val ctf = isoFormat.format(currentTime)
@@ -591,19 +606,20 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         }
 
         appointmentViewModel.generateVideoToken(jsonObject)
-        hideKeyboard(requireActivity(),binding.backArrow)
+        hideKeyboard(requireActivity(), binding.backArrow)
     }
 
 
     private fun downloadAppointmentSlip(url: String) {
         val fileName = url.substring(url.lastIndexOf('/') + 1)
-        val downloadManager: DownloadManager? = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
+        val downloadManager: DownloadManager? =
+            requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
         val uri = Uri.parse(url)
         val request = DownloadManager.Request(uri)
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName)
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
-        downloadId =  downloadManager!!.enqueue(request)
+        downloadId = downloadManager!!.enqueue(request)
     }
 
     private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
@@ -611,10 +627,15 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
             if (downloadId == id) {
                 downloadDialog.dismiss()
-                Toast.makeText(requireContext(), "Appointment Slip Downloaded....", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Appointment Slip Downloaded....",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
+
     private fun showVideoCallAlertPopUp(msg: String) {
         AlertDialog.Builder(context)
             .setMessage(msg)
@@ -715,10 +736,14 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
                 else -> {
                     val jsonObject = JsonObject()
-                    jsonObject.addProperty("date",
-                        getDateFormatted(consultationDate.toString(),
+                    jsonObject.addProperty(
+                        "date",
+                        getDateFormatted(
+                            consultationDate.toString(),
                             DATE_PATTERN,
-                            DATE_FULL_PATTERN))
+                            DATE_FULL_PATTERN
+                        )
+                    )
                     jsonObject.addProperty("by", "patient")
                     jsonObject.addProperty("time", timeSlotsList[timeSlotsListPosition]._id)
                     appointmentViewModel.rescheduleAppointment(appointmentId, jsonObject)
@@ -802,6 +827,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         jsonObject.addProperty("by", "patient")
         appointmentViewModel.cancelAppointment(appointmentId = appointmentId, jsonObject)
     }
+
     private fun showProgressDialog() {
         downloadDialog = Dialog(requireActivity())
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
