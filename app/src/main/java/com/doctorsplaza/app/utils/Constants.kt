@@ -1,7 +1,6 @@
 package com.doctorsplaza.app.utils
 
-//const val BASE_URL = "http://65.0.71.39:5000/api/"
-//const val BASE_URL = "https://test.doctorsplaza.in/api/"
+//const val BASE_URL = "http://65.2.74.84:5000/api/"
 const val BASE_URL = "https://www.doctorsplaza.in/api/"
 
 const val DATE_FULL_PATTERN = "yyyy-MM-dd'T'HH:mm:ss"

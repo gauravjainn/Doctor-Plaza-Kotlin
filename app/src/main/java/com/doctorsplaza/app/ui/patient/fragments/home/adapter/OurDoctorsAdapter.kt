@@ -21,7 +21,7 @@ class OurDoctorsAdapter @Inject constructor(): RecyclerView.Adapter<OurDoctorsAd
                 doctorSpecialistIn.text = data.specialization
                 doctorRating.text = data.rating.toString()
                 doctorDegree.text = data.qualification
-                doctorRatingCount.text = "${data.ratings_count}"
+                doctorRatingCount.text = "(${data.ratings_count})"
                 Glide.with(context).applyDefaultRequestOptions(doctorRequestOption()).load(data.profile_picture).into(doctorImage)
                 root.setOnClickListener {
                     doctorClickListener?.let {
