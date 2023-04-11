@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/left_nav"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_gravity="center_vertical|left"
+        android:src="@drawable/ic_left_arrow" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/right_nav"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_gravity="center_vertical|right"
+        android:src="@drawable/ic_right_arrow" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnClose"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@android:drawable/ic_menu_close_clear_cancel"
+        android:gravity="right"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp" />
+</FrameLayout>

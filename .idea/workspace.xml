@@ -42,6 +42,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="resourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -62,26 +63,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ApkExportedModule" value="Doctors_Plaza.app" />
-    <property name="BundleExportedModule" value="Doctors_Plaza.app" />
-    <property name="ExportApk.ApkPath" value="D:\StudioAndroid\workspace_studio\Gaurav Projects\Doctor-Plaza-Kotlin\app" />
-    <property name="ExportApk.BuildVariants" value="release" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.17" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-viewD:/StudioAndroid/workspace_studio/Gaurav Projects/Doctor-Plaza-Kotlin/app/src/main/java/com/doctorsplaza/app/utils/TouchImageView.java_SELECTED": "TouchImageView",
+    "android-custom-viewD:/StudioAndroid/workspace_studio/Gaurav Projects/Doctor-Plaza-Kotlin/app/src/main/java/com/doctorsplaza/app/utils/TouchImageView.kt_SELECTED": "TouchImageView",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "D:/StudioAndroid/workspace_studio/Gaurav Projects/campr-android",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\StudioAndroid\workspace_studio\Gaurav Projects\Doctor-Plaza-Kotlin\app\src\main\java\com\doctorsplaza\app\utils" />
+      <recent name="D:\StudioAndroid\workspace_studio\Gaurav Projects\Doctor-Plaza-Kotlin\app\src\main\res\drawable" />
+      <recent name="D:\StudioAndroid\workspace_studio\Gaurav Projects\Doctor-Plaza-Kotlin\app\src\main\res\layout" />
       <recent name="D:\StudioAndroid\workspace_studio\Gaurav Projects\Doctor-Plaza-Kotlin" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="com.doctorsplaza.app.ui.patient.fragments.profile.adapter" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.doctorsplaza.app.utils" />
     </key>
   </component>
   <component name="RunManager">
@@ -134,7 +141,6 @@
         <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
         <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
         <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-        <option name="PROFILING_MODE" value="NOT_SET" />
       </Profilers>
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />

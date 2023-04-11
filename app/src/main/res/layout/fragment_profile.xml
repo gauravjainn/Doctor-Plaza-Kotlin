@@ -21,8 +21,8 @@
                 android:id="@+id/userImage"
                 android:layout_width="@dimen/_65sdp"
                 android:layout_height="@dimen/_65sdp"
-                android:src="@drawable/ic_user_image"
                 android:scaleType="fitXY"
+                android:src="@drawable/ic_user_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +72,6 @@
                 android:text="Jane Smith"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
                 app:drawableStartCompat="@drawable/ic_user"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameLbl" />
@@ -88,7 +87,6 @@
                 android:text="Date of birth"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="@dimen/_9sdp"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -107,7 +105,6 @@
                 android:text="29 April 1995"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
                 app:drawableStartCompat="@drawable/ic_calendar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateOfBirthLbl" />
@@ -140,7 +137,6 @@
                 android:text="Male"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
                 app:drawableStartCompat="@drawable/ic_gender"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/genderLbl" />
@@ -173,7 +169,6 @@
                 android:text="janesmith@gmail.com"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
                 app:drawableStartCompat="@drawable/ic_message"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/emailLbl" />
@@ -205,7 +200,6 @@
                 android:text="9865543145"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10sdp"
-
                 app:drawableStartCompat="@drawable/ic_calling"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/phoneLbl" />
@@ -283,8 +277,8 @@
                 android:id="@+id/patientReportsRv"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:orientation="horizontal"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="@id/addReport"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -293,15 +287,39 @@
                 app:layout_constraintTop_toTopOf="@+id/addReport"
                 tools:listitem="@layout/item_patient_report" />
 
+            <TextView
+                android:id="@+id/myAdminReportsLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/admin_reports_lbl"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addReport" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/patientAdminReportsRv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_minus10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/myAdminReportsLbl"
+                tools:listitem="@layout/item_patient_admin_report" />
+
             <View
                 android:id="@+id/loader"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/white"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/errorMessage"

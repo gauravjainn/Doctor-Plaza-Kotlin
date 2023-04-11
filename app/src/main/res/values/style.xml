@@ -25,4 +25,11 @@
         <item name="android:background">@drawable/top_corner_radius</item>
     </style>
 
+    <!-- for Image Zoom dialog -->
+    <style name="ImageZoomDialog" parent="android:Theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
 </resources>

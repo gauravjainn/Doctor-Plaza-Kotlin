@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentProfileBinding
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.adapter.ClinicDoctorsAdapter
+import com.doctorsplaza.app.ui.patient.fragments.profile.adapter.PatientAdminReportAdapter
 import com.doctorsplaza.app.ui.patient.fragments.profile.adapter.PatientReportAdapter
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.PatientReportData
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.ProfileData
@@ -71,14 +72,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     @Inject
     lateinit var reportAdapter: PatientReportAdapter
 
+    @Inject
+    lateinit var reportAdminAdapter: PatientAdminReportAdapter
+
     private lateinit var profileData: ProfileData
 
     private lateinit var pdfPicker: ActivityResultLauncher<String>
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         if (currentView == null) {
             currentView = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -89,7 +91,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         }
         return currentView!!
     }
-
 
     private fun init() {
         appLoader = DoctorPlazaLoader(requireContext())
@@ -151,8 +152,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     } else {
                         if (response.data!!.code == 200) {
                             binding.patientReportsRv.isVisible = true
-                            setReportRv(response.data.data)
-                        }else{
+                            setReportRv(response.data.reports, response.data.admin_reports)
+                        } else {
                             binding.patientReportsRv.isVisible = false
                         }
                     }
@@ -197,7 +198,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         }
     }
 
-    private fun setReportRv(data: List<PatientReportData>) {
+    private fun setReportRv(data: List<PatientReportData>, dataAdmin: List<PatientReportData>) {
         reportAdapter.differ.submitList(data)
         binding.patientReportsRv.apply {
             setHasFixedSize(true)
@@ -205,11 +206,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = reportAdapter
         }
+
+        reportAdminAdapter.differ.submitList(dataAdmin)
+        binding.patientAdminReportsRv.apply {
+            setHasFixedSize(true)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = reportAdminAdapter
+        }
     }
 
     private fun setUserData(data: ProfileData) {
 
-        val dobParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",Locale.getDefault())
+        val dobParse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val dobFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         var userDob = ""
 
@@ -320,15 +329,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     appLoader.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                    if (response.data!!.code == 200) {
-                        showToast(response.data.message)
-                        profileViewModel.getPatientReport()
-                    } else {
-                        showToast(response.data.message)
+                        if (response.data!!.code == 200) {
+                            showToast(response.data.message)
+                            profileViewModel.getPatientReport()
+                        } else {
+                            showToast(response.data.message)
+                        }
                     }
-                }}
+                }
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -356,20 +366,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         pdfPick.isVisible = true
 
         cameraPick.setOnClickListener {
-            ImagePicker.with(this)
-                .cameraOnly()
-                .crop()
-                .compress(512)
-                .maxResultSize(720, 720)
-                .start()
+            ImagePicker.with(this).cameraOnly().crop().compress(512).maxResultSize(720, 720).start()
             pickerDialog.dismiss()
         }
         galleryPick.setOnClickListener {
-            ImagePicker.with(this)
-                .galleryOnly()
-                .crop()
-                .compress(512)
-                .maxResultSize(720, 720)
+            ImagePicker.with(this).galleryOnly().crop().compress(512).maxResultSize(720, 720)
                 .start()
 
             pickerDialog.dismiss()
@@ -404,8 +405,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
 
                 val uri: Uri = data.data!!
                 requireActivity().contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 val filePath = copyFileToInternalStorage(uri, "reports")
                 reportFile = File(filePath)
