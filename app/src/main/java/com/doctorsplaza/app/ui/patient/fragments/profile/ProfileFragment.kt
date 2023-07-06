@@ -19,7 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -32,12 +32,16 @@ import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.FragmentProfileBinding
 import com.doctorsplaza.app.ui.patient.fragments.clinicDoctors.adapter.ClinicDoctorsAdapter
 import com.doctorsplaza.app.ui.patient.fragments.profile.adapter.PatientAdminReportAdapter
-import com.doctorsplaza.app.ui.patient.fragments.profile.adapter.PatientReportAdapter
+import com.doctorsplaza.app.ui.patient.fragments.profile.adapter.ReportAdapter
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.PatientReportData
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.ProfileData
 import com.doctorsplaza.app.utils.*
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.drjacky.imagepicker.ImagePicker as MultiImagePicker
+import com.github.drjacky.imagepicker.constant.ImageProvider
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+
 import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
@@ -69,8 +73,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     @Inject
     lateinit var clinicDoctorsAdapter: ClinicDoctorsAdapter
 
+//    @Inject
+//    lateinit var reportAdapter: PatientReportAdapter
+
     @Inject
-    lateinit var reportAdapter: PatientReportAdapter
+    lateinit var reportAdapter: ReportAdapter
+
+    @Inject
+    lateinit var bloodReportAdapter: ReportAdapter
 
     @Inject
     lateinit var reportAdminAdapter: PatientAdminReportAdapter
@@ -80,7 +90,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
     private lateinit var pdfPicker: ActivityResultLauncher<String>
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         if (currentView == null) {
             currentView = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -180,6 +190,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                         logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
                         if (response.data!!.code == 200) {
+
                             profileViewModel.getPatientReport()
                             showToast(response.data.message)
                         } else {
@@ -202,18 +213,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         reportAdapter.differ.submitList(data)
         binding.patientReportsRv.apply {
             setHasFixedSize(true)
+            itemAnimator?.addDuration=0
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = reportAdapter
         }
 
-        reportAdminAdapter.differ.submitList(dataAdmin)
+        reportAdapter.showDeleteButton(true)
+
+        bloodReportAdapter.differ.submitList(dataAdmin)
         binding.patientAdminReportsRv.apply {
             setHasFixedSize(true)
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = reportAdminAdapter
+            itemAnimator?.addDuration=0
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = bloodReportAdapter
         }
+
+        bloodReportAdapter.showDeleteButton(false)
     }
 
     private fun setUserData(data: ProfileData) {
@@ -274,6 +290,49 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         reportAdapter.setOnReportDeleteClickListener {
             profileViewModel.deleteReport(it)
         }
+
+        reportAdapter.setOnPDFClickListener { data->
+            val bundle = Bundle().apply {
+                putString("prescription", data.image)
+                putString("from", "Profile")
+            }
+            findNavController().navigate(R.id.prescriptionFragment, bundle)
+        }
+
+        reportAdapter.setOnImageClickListener { data, position ->
+            openReportImagesFragment(data,position)
+
+        }
+
+
+        bloodReportAdapter.setOnPDFClickListener { data->
+            val bundle = Bundle().apply {
+                putString("prescription", data.image)
+            }
+            findNavController().navigate(R.id.prescriptionFragment2, bundle)
+        }
+
+        bloodReportAdapter.setOnImageClickListener { data, position ->
+            openReportImagesFragment(data,position)
+
+        }
+    }
+
+    private fun openReportImagesFragment(data: List<PatientReportData>, position: Int) {
+        val imageList:MutableList<String> = ArrayList()
+
+        data.forEach{
+            val extension = it.file_name.substring(it.file_name.lastIndexOf("."))
+            if(extension!=".pdf"){
+                imageList.add(it.image)
+            }
+        }
+
+        val bundle = Bundle()
+        bundle.putString("images", Gson().toJson(imageList as List<String>))
+        bundle.putInt("position", position)
+        findNavController().navigate(R.id.reportsImagesFragment, bundle)
+
     }
 
 
@@ -307,7 +366,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
                     .show()
             }
             else -> {
-                Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -369,9 +428,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             ImagePicker.with(this).cameraOnly().crop().compress(512).maxResultSize(720, 720).start()
             pickerDialog.dismiss()
         }
+
         galleryPick.setOnClickListener {
-            ImagePicker.with(this).galleryOnly().crop().compress(512).maxResultSize(720, 720)
-                .start()
+
+           /* MultiImagePicker.with(requireActivity())
+                .provider(ImageProvider.GALLERY) //Or bothCameraGallery()
+                .setMultipleAllowed(true)
+                .createIntentFromDialog { launcher.launch(it) }*/
+
+              ImagePicker.with(this)
+                  .galleryOnly()
+                  .crop()
+
+                  .compress(512)
+                  .maxResultSize(720, 720)
+                  .start()
 
             pickerDialog.dismiss()
         }
@@ -396,6 +467,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         layoutParams.width = dialogWindowWidth
         pickerDialog.window!!.attributes = layoutParams
     }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val uri = it.data?.data!!
+                // Use the uri to load the image
+                // Only if you are not using crop feature:
+                uri.let { _ ->
+                    requireActivity().contentResolver.takePersistableUriPermission(
+                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                }
+                //////////////
+            }
+        }
 
     @SuppressLint("Range")
     private val launchPDFActivity =
@@ -423,7 +509,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         val sizeIndex = returnCursor?.getColumnIndex(OpenableColumns.SIZE)
         returnCursor?.moveToFirst()
         val name = nameIndex?.let { returnCursor.getString(it) }
-        val size = sizeIndex?.let { returnCursor.getLong(it).toString() }
+        sizeIndex?.let { returnCursor.getLong(it).toString() }
         val output: File = if (newDirName != "") {
             val dir = File(requireContext().filesDir.toString() + "/" + newDirName)
             if (!dir.exists()) {
@@ -452,5 +538,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
             Log.e("Exception", e.message!!)
         }
         return output.path
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setObserver()
     }
 }

@@ -6,12 +6,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +18,6 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ActivityPatientMainBinding
-import com.doctorsplaza.app.service.callNotification.mp
-import com.doctorsplaza.app.service.callNotification.r
 import com.doctorsplaza.app.ui.patient.fragments.profile.ProfileViewModel
 import com.doctorsplaza.app.ui.patient.loginSignUp.PatientLoginSignup
 import com.doctorsplaza.app.utils.*

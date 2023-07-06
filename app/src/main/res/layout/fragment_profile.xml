@@ -294,7 +294,7 @@
                 android:layout_marginTop="@dimen/_18sdp"
                 android:drawablePadding="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/admin_reports_lbl"
+                android:text="@string/blood_reports_lbl"
                 android:textColor="@color/colorPrimaryLight"
                 android:textSize="@dimen/_9sdp"
                 app:layout_constraintStart_toStartOf="parent"

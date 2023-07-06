@@ -76,35 +76,6 @@ class FirebaseCloudMessaging : FirebaseMessagingService() {
             request.setInputData(data.build())
             WorkManager.getInstance(applicationContext).enqueue(request.build())
 
-           /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val request =
-                    OneTimeWorkRequest.Builder(BackupWorker::class.java).addTag("BACKUP_WORKER_TAG")
-                val data = Data.Builder()
-                data.putString("title", "Call Started")
-                data.putString("subTitle", remoteMessage.data.getValue("subtitle"))
-                data.putString("appointmentid", remoteMessage.data.getValue("appointmentid"))
-                data.putString("name", remoteMessage.data.getValue("name"))
-                request.setInputData(data.build())
-                WorkManager.getInstance(applicationContext).enqueue(request.build())
-
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(Intent(applicationContext,
-                    HeadsUpNotificationService::class.java).apply {
-                    putExtra("title", "Call Started")
-                    putExtra("subTitle", remoteMessage.data.getValue("subtitle"))
-                    putExtra("appointmentid", remoteMessage.data.getValue("appointmentid"))
-                    putExtra("name", remoteMessage.data.getValue("name"))
-                })
-            } else {
-                startService(Intent(applicationContext,
-                    HeadsUpNotificationService::class.java).apply {
-                    putExtra("title", "Call Started")
-                    putExtra("subTitle", remoteMessage.data.getValue("subtitle"))
-                    putExtra("appointmentid", remoteMessage.data.getValue("appointmentid"))
-                    putExtra("name", remoteMessage.data.getValue("name"))
-                })
-            }*/
-
 
         } else if (remoteMessage.data.getValue("subtitle").contains("rejected")) {
             val mNotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
@@ -166,8 +137,7 @@ class FirebaseCloudMessaging : FirebaseMessagingService() {
         }
 
         val channelId = getString(R.string.default_notification_channel_id)
-        val soundUri =
-            Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context!!.packageName + R.raw.notification_audio)
+        val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context!!.packageName + R.raw.notification_audio)
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val builder = NotificationCompat.Builder(this, channelId)

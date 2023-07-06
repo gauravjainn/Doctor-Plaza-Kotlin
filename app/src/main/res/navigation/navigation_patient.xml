@@ -172,5 +172,10 @@
         android:name="com.doctorsplaza.app.ui.patient.fragments.videos.VideosFragment"
         android:label="fragment_videos"
         tools:layout="@layout/fragment_videos" />
+    <fragment
+        android:id="@+id/reportsImagesFragment"
+        android:name="com.doctorsplaza.app.ui.patient.fragments.profile.ReportsImagesFragment"
+        android:label="fragment_reports_images"
+        tools:layout="@layout/fragment_reports_images" />
 
 </navigation>

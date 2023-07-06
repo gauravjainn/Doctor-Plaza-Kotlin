@@ -27,7 +27,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ItemPatientReportBinding
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.PatientReportData
-import com.doctorsplaza.app.utils.TouchImageView
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import javax.inject.Inject
 
@@ -167,11 +166,11 @@ class PatientReportAdapter @Inject constructor() :
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val imgDisplay: TouchImageView
+//            val imgDisplay: TouchImageView
             inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val itemView: View =
                 inflater!!.inflate(R.layout.imagezoomviewpagerlayout, container, false)
-            imgDisplay = itemView.findViewById(R.id.imgDisplay)
+//            imgDisplay = itemView.findViewById(R.id.imgDisplay)
             try {
                 Glide.with(itemView).load(dataList[position].image)
                     .into(object : CustomTarget<Drawable?>() {
@@ -179,69 +178,12 @@ class PatientReportAdapter @Inject constructor() :
                         override fun onResourceReady(
                             resource: Drawable, transition: Transition<in Drawable?>?
                         ) {
-                            imgDisplay.setImageDrawable(resource)
+//                            imgDisplay.setImageDrawable(resource)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {}
                     })
 
-
-//                val picassoClient: OkHttpClient? = getUnsafeOkHttpClient()?.build()
-//                val picasso = Picasso.Builder(context)
-//                    .downloader(OkHttp3Downloader(picassoClient)).build()
-//                picasso.isLoggingEnabled = true
-//                picasso.load(dataList[position].image).into(imgDisplay)
-
-
-//                Picasso.get()
-//                    .load(dataList[position].image)
-//                    .into(imgDisplay)
-//                Picasso.get().load(dataList[position].image).into(imgDisplay, object : Callback {
-//                    override fun onSuccess() {
-//                        Log.e("onSuccess", "onSuccess")
-//                    }
-//
-//                    override fun onError(e: Exception) {
-//                        Log.e("onError", "onError " + e.printStackTrace())
-//                        Log.e("onError", "onError " + e.message)
-//                        Picasso.get().load(dataList[position].image).into(imgDisplay)
-//                    }
-//                })
-//                Glide.with(context).load(dataList[position].image).into(imgDisplay)
-//                Glide.with(context).load(dataList[position].image)
-//                    .listener(object : RequestListener<Drawable> {
-//                        override fun onLoadFailed(
-//                            e: GlideException?,
-//                            model: Any?,
-//                            target: com.bumptech.glide.request.target.Target<Drawable>?,
-//                            isFirstResource: Boolean
-//                        ): Boolean {
-//                            Glide.with(context).load(dataList[position].image).into(imgDisplay)
-//                            return false
-//                        }
-//
-//                        override fun onResourceReady(
-//                            resource: Drawable?,
-//                            model: Any?,
-//                            target: com.bumptech.glide.request.target.Target<Drawable>?,
-//                            dataSource: DataSource?,
-//                            isFirstResource: Boolean
-//                        ): Boolean {
-//                            imgDisplay.setImageDrawable(resource)
-//                            return false
-//                        }
-//
-//                    }).into(object : CustomTarget<Drawable?>(1980, 1080) {
-//                        override fun onResourceReady(
-//                            resource: Drawable, transition: Transition<in Drawable?>?
-//                        ) {
-//                            imgDisplay.setImageDrawable(resource)
-//                        }
-//
-//                        override fun onLoadCleared(placeholder: Drawable?) {
-//                            Log.e("onLoadCleared", "onLoadCleared")
-//                        }
-//                    })
                 container.addView(itemView)
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()

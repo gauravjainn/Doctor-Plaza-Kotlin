@@ -541,9 +541,20 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             }
             findNavController().navigate(R.id.addPrescriptionWithMedicineFragment, bundle)
         }
+
         bottomSheet.setOnScanClickListener {
             ImagePicker.with(this)
                 .cameraOnly()
+                .crop()
+                .compress(512)
+
+                .maxResultSize(720, 1080)
+                .start()
+        }
+
+        bottomSheet.setOnImagePickerClickListener {
+            ImagePicker.with(this)
+                .galleryOnly()
                 .crop()
                 .compress(512)
                 .maxResultSize(720, 1080)

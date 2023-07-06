@@ -52,6 +52,7 @@
     <string name="past_appointments_lbl">Past Appointments</string>
     <string name="reports_lbl">Reports</string>
     <string name="admin_reports_lbl">Admin Reports</string>
+    <string name="blood_reports_lbl">Blood Reports</string>
     <string name="add_reports_lbl">Add Reports</string>
     <string name="apply_coupons_optional_lbl">Apply Coupons (optional)</string>
     <string name="payment_details_lbl">Payment Details</string>

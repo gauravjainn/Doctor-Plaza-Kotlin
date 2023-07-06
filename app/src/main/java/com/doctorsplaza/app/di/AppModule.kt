@@ -14,35 +14,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-/*
-    @Singleton
-    @Provides
-    fun provideRepository(dao:AppDatabaseDao) = Repository(dao)
-*/
-
-/*
-
-    @Singleton
-    @Provides
-    fun provideAgileLoader(@ApplicationContext context: Context) = AgileLoader(context)
-*/
-
     @Singleton
     @Provides
     fun provideSessionManager(@ApplicationContext context: Context) =
         SessionManager(context)
-
-    /*@Singleton
-    @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context):AppDataBase =
-        Room.databaseBuilder(context,AppDataBase::class.java,"gym_app_db").fallbackToDestructiveMigration()
-            .allowMainThreadQueries()
-            .build()
-
-    @Singleton
-    @Provides
-    fun provideAppDao(db: AppDataBase) =
-        db.getAppDao()*/
-
-
 }

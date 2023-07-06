@@ -49,5 +49,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
 
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/devider"
+        app:layout_constraintBottom_toTopOf="@id/gallery"
+        app:layout_constraintTop_toBottomOf="@id/scanPrescription" />
+
+    <TextView
+        android:id="@+id/gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_insert_photo"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:drawablePadding="@dimen/_10sdp"
+        android:drawableTint="@color/black"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="@dimen/_10sdp"
+        android:text="Gallery"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

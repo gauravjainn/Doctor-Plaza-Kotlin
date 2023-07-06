@@ -47,6 +47,12 @@ class OptionsBottomSheetFragment : BottomSheetDialogFragment() {
             scanClickListener?.let { it("scan") }
 
         }
+
+        binding.gallery.setOnClickListener {
+            dismissAllowingStateLoss()
+            imagePickerClickListener?.let { it("gallery") }
+
+        }
     }
 
     companion object {
@@ -57,8 +63,10 @@ class OptionsBottomSheetFragment : BottomSheetDialogFragment() {
             return fragment
         }
     }
+
     private var scanClickListener: ((id: String) -> Unit)? = null
     private var prescriptionClickListener: ((id: String) -> Unit)? = null
+    private var imagePickerClickListener: ((id: String) -> Unit)? = null
 
     fun setOnScanClickListener(listener: (id: String) -> Unit) {
         scanClickListener = listener
@@ -67,4 +75,9 @@ class OptionsBottomSheetFragment : BottomSheetDialogFragment() {
     fun setOnPrescriptionClickListener(listener: (id: String) -> Unit) {
         prescriptionClickListener = listener
     }
+
+    fun setOnImagePickerClickListener(listener: (id: String) -> Unit) {
+        imagePickerClickListener = listener
+    }
+
 }

@@ -7,12 +7,12 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.doctorsplaza.app.utils.TouchImageView
+   <!-- <com.doctorsplaza.app.utils.TouchImageView
         android:id="@+id/imgDisplay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:gravity="center" />
+        android:gravity="center" />-->
 
 </LinearLayout>

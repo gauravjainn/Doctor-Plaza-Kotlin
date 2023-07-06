@@ -34,6 +34,20 @@
         app:layout_constraintTop_toTopOf="@id/appBarBg" />
 
     <ImageView
+
+        android:id="@+id/downLoad"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="0dp"
+        android:elevation="@dimen/_45sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:src="@drawable/download_prescription"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/appBarBg"
+        app:layout_constraintTop_toTopOf="@id/appBarBg"
+        app:tint="@color/colorPrimary" />
+
+    <ImageView
         android:id="@+id/backArrow"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="0dp"

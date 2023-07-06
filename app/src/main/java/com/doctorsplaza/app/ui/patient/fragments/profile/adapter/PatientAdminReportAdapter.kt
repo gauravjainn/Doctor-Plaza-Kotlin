@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -32,7 +31,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.doctorsplaza.app.R
 import com.doctorsplaza.app.databinding.ItemPatientAdminReportBinding
 import com.doctorsplaza.app.ui.patient.fragments.profile.model.PatientReportData
-import com.doctorsplaza.app.utils.TouchImageView
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import javax.inject.Inject
 
@@ -166,13 +164,13 @@ class PatientAdminReportAdapter @Inject constructor() :
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val imgDisplay: TouchImageView
+//            val imgDisplay: TouchImageView
             inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val itemView: View =
                 inflater!!.inflate(R.layout.imagezoomviewpagerlayout, container, false)
-            imgDisplay = itemView.findViewById(R.id.imgDisplay)
+//            imgDisplay = itemView.findViewById(R.id.imgDisplay)
             try {
-                Glide.with(context).load(dataList[position].image).into(imgDisplay)
+//                Glide.with(context).load(dataList[position].image).into(imgDisplay)
                 Glide.with(context).load(dataList[position].image)
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
@@ -181,7 +179,7 @@ class PatientAdminReportAdapter @Inject constructor() :
                             target: com.bumptech.glide.request.target.Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            Glide.with(context).load(dataList[position].image).into(imgDisplay)
+//                            Glide.with(context).load(dataList[position].image).into(imgDisplay)
                             return false
                         }
 
@@ -192,7 +190,7 @@ class PatientAdminReportAdapter @Inject constructor() :
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            imgDisplay.setImageDrawable(resource)
+//                            imgDisplay.setImageDrawable(resource)
                             return false
                         }
 
@@ -200,7 +198,7 @@ class PatientAdminReportAdapter @Inject constructor() :
                         override fun onResourceReady(
                             resource: Drawable, transition: Transition<in Drawable?>?
                         ) {
-                            imgDisplay.setImageDrawable(resource)
+//                            imgDisplay.setImageDrawable(resource)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {

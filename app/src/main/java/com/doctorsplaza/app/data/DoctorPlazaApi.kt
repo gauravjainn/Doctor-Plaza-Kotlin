@@ -129,7 +129,6 @@ interface DoctorPlazaApi {
     @GET("getPatientReportBypatient/{id}")
     suspend fun getPatientReport(@Path("id") id: String): Response<GetPatientReportsModel>
 
-
     @DELETE("removepatientreport/{id}")
     suspend fun deleteReport(@Path("id") id: String): Response<DeleteReportModel>
 
