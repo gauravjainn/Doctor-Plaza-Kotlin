@@ -3,7 +3,6 @@ package com.doctorsplaza.app.ui.patient.fragments.appointments
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DownloadManager
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -11,10 +10,16 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.DisplayMetrics
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -32,15 +37,24 @@ import com.doctorsplaza.app.ui.patient.fragments.addAppointmentForm.model.RoomTi
 import com.doctorsplaza.app.ui.patient.fragments.appointments.model.AppointmentData
 import com.doctorsplaza.app.ui.patient.fragments.bookAppointment.adapter.BookTimeAdapter
 import com.doctorsplaza.app.ui.videoCall.VideoActivity
-import com.doctorsplaza.app.utils.*
-
+import com.doctorsplaza.app.utils.DATE_FULL_PATTERN
+import com.doctorsplaza.app.utils.DATE_PATTERN
+import com.doctorsplaza.app.utils.DoctorPlazaLoader
+import com.doctorsplaza.app.utils.Resource
+import com.doctorsplaza.app.utils.SessionManager
+import com.doctorsplaza.app.utils.doctorRequestOption
+import com.doctorsplaza.app.utils.getDateFormatted
+import com.doctorsplaza.app.utils.hideKeyboard
+import com.doctorsplaza.app.utils.logOutUnAuthorized
+import com.doctorsplaza.app.utils.showToast
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonObject
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -209,9 +223,11 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -235,6 +251,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
@@ -291,9 +308,11 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -321,8 +340,9 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                             appointmentViewModel.callNotify(jsonObject)
 
                             startActivity(
-                                Intent(requireActivity(), VideoActivity::class.java)
-                                    .putExtra("videoToken", response.data.data.patients_token)
+                                Intent(
+                                    requireActivity(), VideoActivity::class.java
+                                ).putExtra("videoToken", response.data.data.patients_token)
                                     .putExtra("name", appointmentData.doctorname)
                                     .putExtra("appointId", appointmentData._id)
                             )
@@ -331,9 +351,11 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -350,6 +372,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                         downloadDialog.dismiss()
                     }
                 }
+
                 is Resource.Loading -> {}
                 is Resource.Error -> {}
             }
@@ -370,8 +393,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 }
                 if (!pdf) {
                     findNavController().navigate(
-                        R.id.imagePrescriptionViewFragment2,
-                        bundle
+                        R.id.imagePrescriptionViewFragment2, bundle
                     )
                     pdf = true
 
@@ -383,26 +405,21 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     putString("prescriptionAdded", "yes")
                     putString("appointmentId", appointmentId)
                     putString(
-                        "appointmentTime",
-                        binding.appointmentDateTime.text.toString()
+                        "appointmentTime", binding.appointmentDateTime.text.toString()
                     )
                     putString(
-                        "consultationFee",
-                        appointmentData.consultation_fee.toString()
+                        "consultationFee", appointmentData.consultation_fee.toString()
                     )
                     putString(
-                        "clinicName",
-                        appointmentData.clinic_id.clinicName
+                        "clinicName", appointmentData.clinic_id.clinicName
                     )
                     putString(
-                        "clinicLocation",
-                        appointmentData.clinic_id.location
+                        "clinicLocation", appointmentData.clinic_id.location
                     )
                 }
                 if (!scan) {
                     findNavController().navigate(
-                        R.id.addPrescriptionWithMedicineFragment2,
-                        bundle
+                        R.id.addPrescriptionWithMedicineFragment2, bundle
                     )
                     scan = true
                 }
@@ -552,25 +569,39 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 appointmentViewModel.getAppointmentPrescriptionDetails(appointmentId)
 
             }
+
             R.id.backArrow -> {
                 findNavController().popBackStack()
             }
+
             R.id.saveBtn -> {
                 saveReviewRating()
             }
+
             R.id.reschedule -> {
                 showRescheduleDialog()
             }
+
             R.id.cancelAppointment -> {
                 showCancelWarning()
             }
+
             R.id.downloadAppointmentSlip -> {
                 downloadDialog.show()
                 appointmentViewModel.downloadAppointmentSlip(appointmentId)
-                requireActivity().registerReceiver(
-                    onDownloadComplete,
-                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    ContextCompat.registerReceiver(
+                        requireActivity(),
+                        onDownloadComplete,
+                        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                        ContextCompat.RECEIVER_NOT_EXPORTED
+                    )
+                } else {
+                    requireActivity().registerReceiver(
+                        onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+                    )
+                }
             }
 
 
@@ -618,37 +649,35 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         val request = DownloadManager.Request(uri)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+        request.setAllowedNetworkTypes(
+            DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
+        )
+        request.setVisibleInDownloadsUi(true)
+        request.allowScanningByMediaScanner()
         downloadId = downloadManager!!.enqueue(request)
+        downloadDialog.dismiss()
     }
 
     private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
+            Log.e("LOG", "Appointment Details onDownloadComplete")
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
             if (downloadId == id) {
                 downloadDialog.dismiss()
                 Toast.makeText(
-                    requireContext(),
-                    "Appointment Slip Downloaded....",
-                    Toast.LENGTH_SHORT
+                    requireContext(), "Appointment Slip Downloaded....", Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
 
     private fun showVideoCallAlertPopUp(msg: String) {
-        AlertDialog.Builder(context)
-            .setMessage(msg)
-            .setPositiveButton("yes", null)
-            .setNegativeButton("no", null)
-            .show()
+        AlertDialog.Builder(context).setMessage(msg).setPositiveButton("yes", null)
+            .setNegativeButton("no", null).show()
     }
 
     private fun showVideoCallNotStartAlertPopUp(msg: String) {
-        AlertDialog.Builder(context)
-            .setMessage(msg)
-            .setPositiveButton("ok", null)
-            .show()
+        AlertDialog.Builder(context).setMessage(msg).setPositiveButton("ok", null).show()
     }
 
     private fun saveReviewRating() {
@@ -689,8 +718,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 ContextCompat.getDrawable(requireContext(), R.drawable.radius_box)
             offlineText.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(),
-                    R.color.colorPrimaryLight
+                    requireContext(), R.color.colorPrimaryLight
                 )
             )
             selectedAppointmentType = "Online"
@@ -705,8 +733,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 ContextCompat.getDrawable(requireContext(), R.drawable.radius_box)
             onlineText.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(),
-                    R.color.colorPrimaryLight
+                    requireContext(), R.color.colorPrimaryLight
                 )
             )
             selectedAppointmentType = "Offline"
@@ -737,11 +764,8 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 else -> {
                     val jsonObject = JsonObject()
                     jsonObject.addProperty(
-                        "date",
-                        getDateFormatted(
-                            consultationDate.toString(),
-                            DATE_PATTERN,
-                            DATE_FULL_PATTERN
+                        "date", getDateFormatted(
+                            consultationDate.toString(), DATE_PATTERN, DATE_FULL_PATTERN
                         )
                     )
                     jsonObject.addProperty("by", "patient")
@@ -772,15 +796,11 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         val dateValidator: CalendarConstraints.DateValidator = DateValidatorPointForward.now()
         constraintsBuilder.setValidator(dateValidator)
 
-        val datePicker: MaterialDatePicker<Long> = MaterialDatePicker
-            .Builder
-            .datePicker()
+        val datePicker: MaterialDatePicker<Long> = MaterialDatePicker.Builder.datePicker()
             .setCalendarConstraints(constraintsBuilder.build())
-            .setTheme(R.style.MaterialCalendarTheme)
-            .setSelection(Date().time)
+            .setTheme(R.style.MaterialCalendarTheme).setSelection(Date().time)
             .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR)
-            .setTitleText("Select date of birth")
-            .build()
+            .setTitleText("Select date of birth").build()
         datePicker.show(childFragmentManager, "DATE_PICKER")
 
         datePicker.addOnPositiveButtonClickListener {
@@ -801,8 +821,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             jsonObject.addProperty("date", selectedConsultationDate)
             jsonObject.addProperty("day", consultationDay)
             appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(
-                appointmentType = selectedAppointmentType,
-                jsonObject
+                appointmentType = selectedAppointmentType, jsonObject
             )
             consultationDateView.text = showDateSelectedFormat.format(stringDate).toString()
         }
@@ -810,16 +829,12 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
 
     private fun showCancelWarning() {
-        AlertDialog.Builder(context)
-            .setTitle("Cancel Appointment")
-            .setMessage("Are you sure you want to Cancel Appointment?")
-            .setPositiveButton(
+        AlertDialog.Builder(context).setTitle("Cancel Appointment")
+            .setMessage("Are you sure you want to Cancel Appointment?").setPositiveButton(
                 "yes"
             ) { _, _ ->
                 cancelAppointment()
-            }
-            .setNegativeButton("no", null)
-            .show()
+            }.setNegativeButton("no", null).show()
     }
 
     private fun cancelAppointment() {

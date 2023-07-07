@@ -116,9 +116,7 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
             jsonObject.addProperty("patientid", session.patientId)
             jsonObject.addProperty("device_type", "android")
             profileViewModel.refreshToken(jsonObject)
-
         })
-
     }
 
     private fun setObserver() {
@@ -147,7 +145,9 @@ class PatientMainActivity : AppCompatActivity(), View.OnClickListener {
 
             }
         }
-        profileViewModel.refreshToken.observe(this){}
+        profileViewModel.refreshToken.observe(this){
+
+        }
     }
 
 

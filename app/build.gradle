@@ -15,8 +15,8 @@ android {
         applicationId "com.doctorsplaza.app"
         minSdk 21
         targetSdk 33
-        versionCode 31
-        versionName "1.0.31"
+        versionCode 32
+        versionName "1.0.32"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "DoctorsPlaza v" + versionCode + " -v" + versionName)

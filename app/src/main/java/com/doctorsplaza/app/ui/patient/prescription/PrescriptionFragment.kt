@@ -8,14 +8,17 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -114,12 +117,18 @@ class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnC
         val request = DownloadManager.Request(uri)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+        request.setAllowedNetworkTypes(
+            DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE
+        )
+        request.setVisibleInDownloadsUi(true)
+        request.allowScanningByMediaScanner()
         downloadId = downloadManager!!.enqueue(request)
+        appLoader.dismiss()
     }
 
     private val onDownloadComplete: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
+            Log.e("LOG", "Prescription Details onDownloadComplete")
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
             if (downloadId == id) {
                 appLoader.dismiss()
@@ -140,10 +149,18 @@ class PrescriptionFragment : Fragment(R.layout.fragment_prescription) , View.OnC
             R.id.downLoad -> {
                 appLoader.show()
                 downloadAppointmentSlip(prescriptionUrl)
-                requireActivity().registerReceiver(
-                    onDownloadComplete,
-                    IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    ContextCompat.registerReceiver(
+                        requireActivity(),
+                        onDownloadComplete,
+                        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                        ContextCompat.RECEIVER_NOT_EXPORTED
+                    )
+                } else {
+                    requireActivity().registerReceiver(
+                        onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+                    )
+                }
             }
         }
     }
