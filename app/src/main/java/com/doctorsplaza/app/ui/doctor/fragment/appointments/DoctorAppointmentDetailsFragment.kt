@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -229,6 +230,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
         doctorAppointmentViewModel.generateVideoToken.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    Log.e("TAG","generate call response called")
                     if (response.data?.status == 401) {
                         session.isLogin = false
                         logOutUnAuthorized(requireActivity(),response.data.message)
@@ -243,7 +245,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                             addProperty("status", "calling")
                             addProperty("appointmentId", appointmentId)
                         }
-                        doctorAppointmentViewModel.callNotify(jsonObject)
+                        //doctorAppointmentViewModel.callNotify(jsonObject)
                         startActivity(
                             Intent(
                                 requireActivity(),
@@ -266,6 +268,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                 else -> {}
             }
         }
+
         doctorAppointmentViewModel.callNotify.observe(viewLifecycleOwner) { }
 
     }
@@ -424,7 +427,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
             }
 
             R.id.joinVideoCall -> {
-
+                Log.e("TAG","doct joinVideoCall request called")
                 val parsedStartTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.startTimeDate)
                 val parsedEndTime = isoFormat.parse(appointmentData.room_time_slot_id.timeSlotData.endTimeDate)
 
@@ -447,6 +450,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                 }
                 doctorAppointmentViewModel.generateVideoToken(jsonObject)
                 hideKeyboard(requireActivity(),binding.backArrow)
+                Log.e("TAG","generate call")
             }
         }
     }

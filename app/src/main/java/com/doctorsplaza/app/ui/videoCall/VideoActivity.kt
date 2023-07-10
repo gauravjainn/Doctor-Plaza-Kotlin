@@ -527,6 +527,7 @@ class VideoActivity : AppCompatActivity() {
                     addProperty("type", session.loginType)
 
                 }
+                Log.e("TAG","generate call request called")
                 appointmentViewModel.generateVideoToken(jsonObject)
                 binding.oppositeName.text = intent?.getStringExtra("name").toString()
             }

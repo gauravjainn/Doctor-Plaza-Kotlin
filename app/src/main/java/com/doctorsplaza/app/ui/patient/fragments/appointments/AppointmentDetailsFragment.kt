@@ -323,6 +323,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
         appointmentViewModel.generateVideoToken.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    Log.e("TAG", "generate call response called")
                     if (response.data?.status == 401) {
                         session.isLogin = false
                         logOutUnAuthorized(requireActivity(), response.data.message)
@@ -337,8 +338,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                                 addProperty("status", "calling")
                                 addProperty("appointmentId", appointmentId)
                             }
-                            appointmentViewModel.callNotify(jsonObject)
-
+                            //appointmentViewModel.callNotify(jsonObject)
                             startActivity(
                                 Intent(
                                     requireActivity(), VideoActivity::class.java
@@ -606,6 +606,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
 
             R.id.joinVideoCall -> {
+                Log.e("TAG", "joinVideoCall request called")
                 joinVideoCall()
             }
         }
@@ -638,6 +639,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
         appointmentViewModel.generateVideoToken(jsonObject)
         hideKeyboard(requireActivity(), binding.backArrow)
+        Log.e("TAG", "call request called")
     }
 
 
