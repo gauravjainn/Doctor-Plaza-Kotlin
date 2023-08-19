@@ -466,10 +466,6 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
         timeSlotsDialog.setContentView(R.layout.time_slots_dialogue)
         timeSlotsDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
-            timeSlotsDialog.dismiss()
-        }
-
         timeSlotsDialog.findViewById<View>(R.id.submitBtn).setOnClickListener {
             if (timeSlotSelected) {
                 timeSlotsDialog.dismiss()
@@ -478,7 +474,7 @@ class AppointmentFragment : Fragment(R.layout.fragment_appointment), View.OnClic
             }
         }
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
+        timeSlotsDialog.findViewById<View>(R.id.dialogCancelBtn).setOnClickListener {
             consultationTimeView.text = ""
             timeSlotsDialog.dismiss()
         }

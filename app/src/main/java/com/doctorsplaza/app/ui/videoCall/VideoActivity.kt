@@ -525,7 +525,6 @@ class VideoActivity : AppCompatActivity() {
                 val jsonObject = JsonObject().apply {
                     addProperty("id", intent?.getStringExtra("appointmentid").toString())
                     addProperty("type", session.loginType)
-
                 }
                 Log.e("TAG","generate call request called")
                 appointmentViewModel.generateVideoToken(jsonObject)

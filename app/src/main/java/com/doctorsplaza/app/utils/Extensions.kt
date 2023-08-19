@@ -225,12 +225,15 @@ fun covertTimeToText(dataDate: String?): String? {
             second < 60 -> {
                 convTime = "$second Seconds $suffix"
             }
+
             minute < 60 -> {
                 convTime = "$minute Minutes $suffix"
             }
+
             hour < 24 -> {
                 convTime = "$hour Hours $suffix"
             }
+
             day >= 7 -> {
                 convTime = if (day > 360) {
                     (day / 360).toString() + " Years " + suffix
@@ -240,9 +243,11 @@ fun covertTimeToText(dataDate: String?): String? {
                     (day / 7).toString() + " Week " + suffix
                 }
             }
+
             day < 7 && day == 1L -> {
                 convTime = "$day Day $suffix"
             }
+
             day < 7 -> {
                 convTime = "$day Days $suffix"
             }
@@ -260,6 +265,7 @@ fun checkThrowable(t: Throwable): String {
     return when (t) {
         is IOException ->
             "Network Failure"
+
         else -> "Conversion Error ${t.message}"
 
     }
@@ -316,6 +322,6 @@ val CALL_CANCEL_ACTION = "CALL_CANCEL_ACTION"
 val doctorProfileUpdated = SingleLiveEvent<Boolean>()
 val profileImageUpdated = MutableLiveData<String>()
 val profileDetailsUpdated = MutableLiveData<UpdatedProfileData>()
-val addMedicine:SingleLiveEvent<Medicine>? = SingleLiveEvent()
+val addMedicine: SingleLiveEvent<Medicine>? = SingleLiveEvent()
 val callEnded = SingleLiveEvent<String>()
 

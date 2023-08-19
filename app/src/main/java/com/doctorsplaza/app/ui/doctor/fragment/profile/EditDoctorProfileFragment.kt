@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -87,16 +88,18 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                 is Resource.Success -> {
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else if (response.data?.status == 200) {
                         profileData = response.data.data[0]
                         profileLoaded = true
                         allLoaded.postValue(profileLoaded && specializationLoaded)
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -109,15 +112,18 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                         appLoader.dismiss()
                         if (response.data?.status == 401) {
                             session.isLogin = false
-                            logOutUnAuthorized(requireActivity(),response.data.message)
+                            logOutUnAuthorized(requireActivity(), response.data.message)
                         } else {
-                        specialists = response.data?.data!!
-                        specializationLoaded = true
-                        allLoaded.postValue(profileLoaded && specializationLoaded)
-                    }}
+                            specialists = response.data?.data!!
+                            specializationLoaded = true
+                            allLoaded.postValue(profileLoaded && specializationLoaded)
+                        }
+                    }
+
                     is Resource.Loading -> {
                         appLoader.show()
                     }
+
                     is Resource.Error -> {
                         appLoader.dismiss()
                     }
@@ -131,17 +137,19 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                     appLoader.dismiss()
                     if (response.data?.status?.toInt() == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else
-                    if (response.data?.status=="200") {
-                        doctorProfileUpdated.postValue(true)
-                        findNavController().navigate(R.id.action_editDoctorProfileFragment_to_doctorProfileFragment)
+                        if (response.data?.status == "200") {
+                            doctorProfileUpdated.postValue(true)
+                            findNavController().navigate(R.id.action_editDoctorProfileFragment_to_doctorProfileFragment)
 
-                    }
+                        }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -155,12 +163,18 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                     when (response.data?.status) {
                         401 -> {
                             session.isLogin = false
-                            logOutUnAuthorized(requireActivity(),response.data.message)
+                            logOutUnAuthorized(requireActivity(), response.data.message)
                         }
+
                         200 -> {
                             session.loginImage = response.data.profile_picture
+                            Glide.with(requireContext())
+                                .applyDefaultRequestOptions(doctorRequestOption())
+                                .load(response.data.profile_picture).into(binding.userImage)
+
                             doctorProfileUpdated.postValue(true)
                         }
+
                         else -> {
                             binding.userImage.setImageResource(R.drawable.doctor_placeholder)
                         }
@@ -238,7 +252,7 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             }
         }
 
-        if(profileData.gender!=null){
+        if (profileData.gender != null) {
             if (profileData.gender.lowercase() == "male") {
                 binding.genderSpinner.setSelection(1)
             } else if (profileData.gender.lowercase() == "female") {
@@ -358,9 +372,11 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
             R.id.backArrow -> {
                 findNavController().popBackStack()
             }
+
             R.id.changeProfileImage -> {
                 showPickerDialog()
             }
+
             R.id.saveBtn -> {
                 validateAndUpdateProfile()
             }
@@ -374,13 +390,26 @@ class EditDoctorProfileFragment : Fragment(R.layout.fragment_edit_doctor_profile
                 val uri: Uri = data?.data!!
                 println("got image $uri")
                 binding.userImage.setImageURI(uri)
+//                try {
+//                    val file_uri = data.data
+//                    val bitmap = MediaStore.Images.Media.getBitmap(
+//                        requireActivity().contentResolver,
+//                        file_uri
+//                    )
+//                    binding.userImage.setImageBitmap(bitmap)
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
                 val profileImage = File(uri.path)
+                println("got uri.path $uri.path")
                 doctorProfileViewModel.uploadDoctorImage(profileImage)
             }
+
             ImagePicker.RESULT_ERROR -> {
                 Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
                     .show()
             }
+
             else -> {
                 Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
             }

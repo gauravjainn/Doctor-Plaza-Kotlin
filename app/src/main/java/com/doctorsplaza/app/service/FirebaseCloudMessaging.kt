@@ -75,9 +75,8 @@ class FirebaseCloudMessaging : FirebaseMessagingService() {
             data.putString("name", remoteMessage.data.getValue("name"))
             request.setInputData(data.build())
             WorkManager.getInstance(applicationContext).enqueue(request.build())
-
-
-        } else if (remoteMessage.data.getValue("subtitle").contains("rejected")) {
+        }
+        else if (remoteMessage.data.getValue("subtitle").contains("rejected")) {
             val mNotificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
             mNotificationManager!!.cancel(120)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
@@ -90,7 +89,8 @@ class FirebaseCloudMessaging : FirebaseMessagingService() {
             mp?.stop()
             r?.stop()
 
-        } else {
+        }
+        else {
             mp?.stop()
             r?.stop()
             sendNotification(remoteMessage)

@@ -1,5 +1,6 @@
 package com.doctorsplaza.app.ui.patient.fragments.appointments
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.doctorsplaza.app.data.Repository
@@ -663,6 +664,7 @@ class AppointmentViewModel @Inject constructor(
         doctorAppointmentPrescription.postValue(Resource.Loading())
         try {
             val response = repository.getAppointmentPrescription(id)
+            Log.e("TAG","setPrescriptionData response get called")
             if (response.isSuccessful) {
                 response.body()?.let { stateResponse ->
                     doctorAppointmentPrescription.postValue(Resource.Success(stateResponse))

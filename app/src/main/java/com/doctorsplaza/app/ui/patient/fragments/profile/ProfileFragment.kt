@@ -308,6 +308,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), View.OnClickListene
         bloodReportAdapter.setOnPDFClickListener { data->
             val bundle = Bundle().apply {
                 putString("prescription", data.image)
+                putString("from","Profile")
             }
             findNavController().navigate(R.id.prescriptionFragment2, bundle)
         }

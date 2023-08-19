@@ -1,6 +1,7 @@
 package com.doctorsplaza.app.ui.doctor.fragment.prescription
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,35 +21,27 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
-    View.OnClickListener {
+class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine), View.OnClickListener {
 
     private lateinit var medicineData: Medicine
-
     private var appointmentId: String? = ""
-
     private lateinit var binding: FragmentAddMedicineBinding
 
     @Inject
     lateinit var session: SessionManager
 
     private var currentView: View? = null
-
     private lateinit var appLoader: DoctorPlazaLoader
 
-
-    private var beforeBreakfast = 0
-    private var beforeLunch = 0
-    private var beforeDinner = 0
-
-    private var afterBreakfast = 0
-    private var afterLunch = 0
-    private var afterDinner = 0
+    private var beforeBreakfast: Boolean = false
+    private var beforeLunch: Boolean = false
+    private var beforeDinner: Boolean = false
+    private var afterBreakfast: Boolean = false
+    private var afterLunch: Boolean = false
+    private var afterDinner: Boolean = false
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         if (currentView == null) {
             currentView = inflater.inflate(R.layout.fragment_add_medicine, container, false)
@@ -79,57 +72,53 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
             instructions.setText(medicineData.medicineInstruction)
         }
 
-        if (medicineData.time[0].beforeLunch == 0) {
-            beforeLunch = 1
-            setMedicineTimeSelectionViews(binding.beforeLunch, 1)
-        } else {
-            beforeLunch = 0
-            setMedicineTimeSelectionViews(binding.beforeLunch, 0)
-        }
-
-        if (medicineData.time[0].afterLunch == 0) {
-            afterLunch = 1
-            setMedicineTimeSelectionViews(binding.afterLunch, 1)
-        } else {
-            afterLunch = 0
-            setMedicineTimeSelectionViews(binding.afterLunch, 0)
-        }
-
-        if (medicineData.time[0].beforeBreakfast == 0) {
-            beforeBreakfast = 1
+        if (medicineData.time[0].beforeBreakfast) {
+            beforeBreakfast = true
             setMedicineTimeSelectionViews(binding.beforeBreakFast, 1)
         } else {
-            beforeBreakfast = 0
+            beforeBreakfast = false
             setMedicineTimeSelectionViews(binding.beforeBreakFast, 0)
         }
 
-
-        if (medicineData.time[0].afterBreakfast == 0) {
-            afterBreakfast = 1
-            setMedicineTimeSelectionViews(binding.afterBreakFast, 1)
+        if (medicineData.time[1].beforeLunch) {
+            beforeLunch = true
+            setMedicineTimeSelectionViews(binding.beforeLunch, 1)
         } else {
-            afterBreakfast = 0
-            setMedicineTimeSelectionViews(binding.afterBreakFast, 0)
+            beforeLunch = false
+            setMedicineTimeSelectionViews(binding.beforeLunch, 0)
         }
 
-
-        if (medicineData.time[0].beforeDinner == 0) {
-            beforeDinner = 1
+        if (medicineData.time[2].beforeDinner) {
+            beforeDinner = true
             setMedicineTimeSelectionViews(binding.beforeDinner, 1)
         } else {
-            beforeDinner = 0
+            beforeDinner = false
             setMedicineTimeSelectionViews(binding.beforeDinner, 0)
         }
 
-
-        if (medicineData.time[0].afterDinner == 0) {
-            afterDinner = 1
-            setMedicineTimeSelectionViews(binding.afterDinner, 1)
+        if (medicineData.time[3].afterBreakfast) {
+            afterBreakfast = true
+            setMedicineTimeSelectionViews(binding.afterBreakFast, 1)
         } else {
-            afterDinner = 0
-            setMedicineTimeSelectionViews(binding.afterDinner, 0)
+            afterBreakfast = false
+            setMedicineTimeSelectionViews(binding.afterBreakFast, 0)
         }
 
+        if (medicineData.time[4].afterLunch) {
+            afterLunch = true
+            setMedicineTimeSelectionViews(binding.afterLunch, 1)
+        } else {
+            afterLunch = false
+            setMedicineTimeSelectionViews(binding.afterLunch, 0)
+        }
+
+        if (medicineData.time[5].afterDinner) {
+            afterDinner = true
+            setMedicineTimeSelectionViews(binding.afterDinner, 1)
+        } else {
+            afterDinner = false
+            setMedicineTimeSelectionViews(binding.afterDinner, 0)
+        }
     }
 
 
@@ -153,67 +142,118 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
             R.id.backArrow -> {
                 findNavController().popBackStack()
             }
+
             R.id.saveBtn -> {
                 validateAndAddMedicine()
             }
+
             R.id.beforeBreakFast -> {
-                if (beforeBreakfast == 0) {
-                    beforeBreakfast = 1
+                if (!beforeBreakfast) {
+                    beforeBreakfast = true
                     setMedicineTimeSelectionViews(binding.beforeBreakFast, 1)
                 } else {
-                    beforeBreakfast = 0
+                    beforeBreakfast = false
                     setMedicineTimeSelectionViews(binding.beforeBreakFast, 0)
                 }
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
+
             R.id.beforeLunch -> {
-                if (beforeLunch == 0) {
-                    beforeLunch = 1
+                if (!beforeLunch) {
+                    beforeLunch = true
                     setMedicineTimeSelectionViews(binding.beforeLunch, 1)
                 } else {
-                    beforeLunch = 0
+                    beforeLunch = false
                     setMedicineTimeSelectionViews(binding.beforeLunch, 0)
                 }
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
+
             R.id.beforeDinner -> {
-                if (beforeDinner == 0) {
-                    beforeDinner = 1
+                if (!beforeDinner) {
+                    beforeDinner = true
                     setMedicineTimeSelectionViews(binding.beforeDinner, 1)
                 } else {
-                    beforeDinner = 0
+                    beforeDinner = false
                     setMedicineTimeSelectionViews(binding.beforeDinner, 0)
                 }
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
+
             R.id.afterBreakFast -> {
-                if (afterBreakfast == 0) {
-                    afterBreakfast = 1
+                if (!afterBreakfast) {
+                    afterBreakfast = true
                     setMedicineTimeSelectionViews(binding.afterBreakFast, 1)
                 } else {
-                    afterBreakfast = 0
+                    afterBreakfast = false
                     setMedicineTimeSelectionViews(binding.afterBreakFast, 0)
                 }
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
+
             R.id.afterLunch -> {
-                if (afterLunch == 0) {
-                    afterLunch = 1
+                if (!afterLunch) {
+                    afterLunch = true
                     setMedicineTimeSelectionViews(binding.afterLunch, 1)
                 } else {
-                    afterLunch = 0
+                    afterLunch = false
                     setMedicineTimeSelectionViews(binding.afterLunch, 0)
                 }
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
+
             R.id.afterDinner -> {
-                if (afterDinner == 0) {
-                    afterDinner = 1
+                if (!afterDinner) {
+                    afterDinner = true
                     setMedicineTimeSelectionViews(binding.afterDinner, 1)
                 } else {
-                    afterDinner = 0
+                    afterDinner = false
                     setMedicineTimeSelectionViews(binding.afterDinner, 0)
                 }
+
+                Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+                Log.e("TAG", "beforeLunch " + beforeLunch)
+                Log.e("TAG", "beforeDinner " + beforeDinner)
+                Log.e("TAG", "afterBreakfast " + afterBreakfast)
+                Log.e("TAG", "afterLunch " + afterLunch)
+                Log.e("TAG", "afterDinner " + afterDinner)
             }
         }
     }
 
     private fun validateAndAddMedicine() {
+        Log.e("TAG", "beforeBreakfast " + beforeBreakfast)
+        Log.e("TAG", "beforeLunch " + beforeLunch)
+        Log.e("TAG", "beforeDinner " + beforeDinner)
+        Log.e("TAG", "afterBreakfast " + afterBreakfast)
+        Log.e("TAG", "afterLunch " + afterLunch)
+        Log.e("TAG", "afterDinner " + afterDinner)
+
         val medicine = binding.medicine.text.toString()
         val medicineType = binding.medicineType.text.toString()
         val days = binding.days.text.toString()
@@ -223,30 +263,78 @@ class AddMedicineFragment : Fragment(R.layout.fragment_add_medicine),
             showToast("Please enter any Medicine")
         } else if (medicineType.isEmpty()) {
             showToast("Please enter any Medicine Type")
-        } else if (beforeBreakfast == 0 && beforeLunch == 0 && beforeDinner == 0 && afterBreakfast == 0 && afterLunch == 0 && afterDinner == 0) {
+        } else if (!beforeBreakfast && !beforeLunch && !beforeDinner && !afterBreakfast && !afterLunch && !afterDinner) {
             showToast("Please select any medicine time")
         } else if (days.isEmpty()) {
             showToast("Please enter any days")
         } else {
             val medicineTime: MutableList<Time> = ArrayList()
+
             medicineTime.add(
                 Time(
-                    afterBreakfast,
-                    afterDinner,
-                    afterLunch,
                     beforeBreakfast,
+                    beforeLunch,
                     beforeDinner,
-                    beforeLunch
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
                 )
             )
-            val medicineData = Medicine(
-                days,
-                instructions,
-                medicineName = medicine,
-                medicineType,
-                medicineTime,
-                false
+            medicineTime.add(
+                Time(
+                    beforeBreakfast,
+                    beforeLunch,
+                    beforeDinner,
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
+                )
             )
+            medicineTime.add(
+                Time(
+                    beforeBreakfast,
+                    beforeLunch,
+                    beforeDinner,
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
+                )
+            )
+            medicineTime.add(
+                Time(
+                    beforeBreakfast,
+                    beforeLunch,
+                    beforeDinner,
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
+                )
+            )
+            medicineTime.add(
+                Time(
+                    beforeBreakfast,
+                    beforeLunch,
+                    beforeDinner,
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
+                )
+            )
+            medicineTime.add(
+                Time(
+                    beforeBreakfast,
+                    beforeLunch,
+                    beforeDinner,
+                    afterBreakfast,
+                    afterLunch,
+                    afterDinner
+                )
+            )
+            Log.e("TAG", "medicineTime $medicineTime")
+            val medicineData = Medicine(
+                days, instructions, medicineName = medicine, medicineType, medicineTime, false
+            )
+            Log.e("TAG", "medicineData $medicineData")
             addMedicine?.postValue(medicineData)
             findNavController().popBackStack()
         }

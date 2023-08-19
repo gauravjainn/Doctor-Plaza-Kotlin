@@ -27,7 +27,6 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
             with(binding) {
 
                 editLbl.isVisible = showEditView
-
                 expandView.isVisible = medicineData.isExpanded
 
                 medicine.text = medicineData.medicineName
@@ -36,13 +35,12 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
                 instructions.text = medicineData.medicineInstruction
 
                 setMedicineTimeSelectionViews(beforeBreakFast, medicineData.time[0].beforeBreakfast)
-                setMedicineTimeSelectionViews(afterBreakFast, medicineData.time[0].afterBreakfast)
+                setMedicineTimeSelectionViews(beforeLunch, medicineData.time[1].beforeLunch)
+                setMedicineTimeSelectionViews(beforeDinner, medicineData.time[2].beforeDinner)
 
-                setMedicineTimeSelectionViews(beforeLunch, medicineData.time[0].beforeLunch)
-                setMedicineTimeSelectionViews(afterLunch, medicineData.time[0].afterLunch)
-
-                setMedicineTimeSelectionViews(beforeDinner, medicineData.time[0].beforeDinner)
-                setMedicineTimeSelectionViews(afterDinner, medicineData.time[0].afterDinner)
+                setMedicineTimeSelectionViews(afterBreakFast, medicineData.time[3].afterBreakfast)
+                setMedicineTimeSelectionViews(afterLunch, medicineData.time[4].afterLunch)
+                setMedicineTimeSelectionViews(afterDinner, medicineData.time[5].afterDinner)
 
                 expandLbl.setOnClickListener {
                     medicineData.isExpanded = !medicineData.isExpanded
@@ -51,7 +49,7 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
 
                 editLbl.setOnClickListener {
                     editMedicineClickListener?.let {
-                        it(medicineData,adapterPosition)
+                        it(medicineData, adapterPosition)
                     }
                 }
             }
@@ -59,11 +57,11 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
     }
 
 
-    private fun setMedicineTimeSelectionViews(timView: TextView, status: Int) {
-        if (status == 0) {
+    private fun setMedicineTimeSelectionViews(timView: TextView, status: Boolean) {
+        if (!status) {
             timView.background =
                 ContextCompat.getDrawable(context, R.drawable.medicine_time_unselected)
-        } else if (status == 1) {
+        } else if (status) {
             timView.background =
                 ContextCompat.getDrawable(context, R.drawable.medicine_time_selected)
         }
@@ -84,7 +82,7 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
     }
     val differ = AsyncListDiffer(this, diffUtil)
 
-    private var editMedicineClickListener: ((data: Medicine,position:Int) -> Unit)? = null
+    private var editMedicineClickListener: ((data: Medicine, position: Int) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -106,11 +104,11 @@ class MedicineAdapter @Inject constructor() : RecyclerView.Adapter<MedicineAdapt
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    fun setOnEditClickListener(listener: (data: Medicine,position:Int) -> Unit) {
+    fun setOnEditClickListener(listener: (data: Medicine, position: Int) -> Unit) {
         editMedicineClickListener = listener
     }
 
-    fun hideEditView(status:Boolean){
+    fun hideEditView(status: Boolean) {
         showEditView = status
     }
 }

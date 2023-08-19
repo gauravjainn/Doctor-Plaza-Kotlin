@@ -33,7 +33,7 @@ data class Medicine(
     val medicineName: String,
     val medicineType: String,
     val time: List<Time>,
-    var isExpanded:Boolean = false
+    var isExpanded: Boolean = false
 ) : Serializable
 
 data class PatientId(
@@ -56,11 +56,12 @@ data class PatientId(
     val token: String,
     val updatedAt: String
 )
+
 data class Time(
-    val afterBreakfast: Int,
-    val afterDinner: Int,
-    val afterLunch: Int,
-    val beforeBreakfast: Int,
-    val beforeDinner: Int,
-    val beforeLunch: Int
+    val beforeBreakfast: Boolean,
+    val beforeLunch: Boolean,
+    val beforeDinner: Boolean,
+    val afterBreakfast: Boolean,
+    val afterLunch: Boolean,
+    val afterDinner: Boolean,
 )

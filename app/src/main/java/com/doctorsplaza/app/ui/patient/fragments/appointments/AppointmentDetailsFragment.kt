@@ -287,38 +287,6 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                 }
             }
         }
-        appointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    if (response.data?.status == 401) {
-                        session.isLogin = false
-                        logOutUnAuthorized(requireActivity(), response.data.message)
-                    } else {
-                        if (response.data?.code == 200) {
-                            appLoader.dismiss()
-                            binding.loader.isVisible = false
-
-                            if (response.data.data.isNotEmpty()) {
-                                prescriptionData = response.data.data
-                                setPrescriptionData(prescriptionData)
-
-                            } else {
-                                showToast(response.data?.message.toString())
-                            }
-                        }
-                    }
-                }
-
-                is Resource.Loading -> {
-                    appLoader.show()
-                }
-
-                is Resource.Error -> {
-                    appLoader.dismiss()
-                }
-            }
-        }
-
 
         appointmentViewModel.generateVideoToken.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -338,7 +306,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                                 addProperty("status", "calling")
                                 addProperty("appointmentId", appointmentId)
                             }
-                            //appointmentViewModel.callNotify(jsonObject)
+                            appointmentViewModel.callNotify(jsonObject)
                             startActivity(
                                 Intent(
                                     requireActivity(), VideoActivity::class.java
@@ -378,10 +346,45 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
             }
         }
 
+        appointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    Log.e("TAG","setPrescriptionData Success called")
+                    if (response.data?.status == 401) {
+                        session.isLogin = false
+                        logOutUnAuthorized(requireActivity(), response.data.message)
+                    } else {
+                        if (response.data?.code == 200) {
+                            appLoader.dismiss()
+                            binding.loader.isVisible = false
+                            Log.e("TAG","setPrescriptionData response called")
+                            if (response.data.data.isNotEmpty()) {
+                                prescriptionData = response.data.data
+                                Log.e("TAG","setPrescriptionData response called")
+                                setPrescriptionData(prescriptionData)
+
+                            } else {
+                                showToast(response.data?.message.toString())
+                            }
+                        }
+                    }
+                }
+
+                is Resource.Loading -> {
+                    appLoader.show()
+                }
+
+                is Resource.Error -> {
+                    appLoader.dismiss()
+                }
+            }
+        }
+
     }
 
     private fun setPrescriptionData(prescriptionData: List<PrescriptionData>) {
 
+        Log.e("TAG","setPrescriptionData called")
         var scan = false
         var pdf = false
 
@@ -399,6 +402,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
                 }
             } else {
+                Log.e("TAG","setPrescriptionData else called")
 //                                    medicine = it.medicine
                 val bundle = Bundle().apply {
                     putString("from", "patient")
@@ -423,6 +427,10 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
                     )
                     scan = true
                 }
+                else
+                {
+                    Log.e("TAG","setPrescriptionData else else called")
+                }
             }
         }
     }
@@ -444,6 +452,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
 
         timeSlotsDialog.findViewById<View>(R.id.dialogCancelBtn).setOnClickListener {
             consultationTimeView.text = ""
+            timeSlotsDialog.dismiss()
         }
 
         val timeSlotsRv = timeSlotsDialog.findViewById<RecyclerView>(R.id.timeSlotsRv)
@@ -566,6 +575,7 @@ class AppointmentDetailsFragment : Fragment(R.layout.fragment_appointment_detail
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.viewPrescription -> {
+                Log.e("TAG","viewPrescription Click called")
                 appointmentViewModel.getAppointmentPrescriptionDetails(appointmentId)
 
             }

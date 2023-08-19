@@ -15,8 +15,8 @@ android {
         applicationId "com.doctorsplaza.app"
         minSdk 21
         targetSdk 33
-        versionCode 32
-        versionName "1.0.32"
+        versionCode 34
+        versionName "1.0.34"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", "DoctorsPlaza v" + versionCode + " -v" + versionName)
@@ -108,11 +108,11 @@ dependencies {
 //    implementation "com.github.bumptech.glide:glide:4.13.2"
 
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.github.bumptech.glide:glide:4.15.0'
-    kapt 'com.github.bumptech.glide:annotations:4.15.0'
-    kapt 'com.github.bumptech.glide:compiler:4.15.0'
-//    annotationProcessor 'com.github.bumptech.glide:annotations:4.15.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    kapt 'com.github.bumptech.glide:annotations:4.15.1'
+    kapt 'com.github.bumptech.glide:compiler:4.15.1'
+    annotationProcessor 'com.github.bumptech.glide:annotations:4.15.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
 //    annotationProcessor 'androidx.annotation:annotation:1.6.0'
     implementation("com.github.bumptech.glide:okhttp3-integration:4.2.0") {
         exclude group: 'glide-parent'

@@ -205,9 +205,11 @@ class CheckOutBookingAppointmentFragment :
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -225,6 +227,7 @@ class CheckOutBookingAppointmentFragment :
                     selectedBookType = it
                     setPatientData("user")
                 }
+
                 "guest" -> {
                     binding.editPatientDetailsLbl.isVisible = false
                     binding.patientName.isEnabled = true
@@ -235,6 +238,7 @@ class CheckOutBookingAppointmentFragment :
 
                     setPatientData("guest")
                 }
+
                 "edit" -> {
                     binding.editPatientDetailsLbl.isVisible = false
                     binding.patientName.isEnabled = true
@@ -255,14 +259,16 @@ class CheckOutBookingAppointmentFragment :
                     showToast(response.data?.message.toString())
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else if (response.data?.code == 200) {
                         setCouponApplied(response.data.data)
                     }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -285,8 +291,8 @@ class CheckOutBookingAppointmentFragment :
         }
     }
 
-    private fun removeAppliedCoupon(){
-        with(binding){
+    private fun removeAppliedCoupon() {
+        with(binding) {
             applyCouponBtn.visibility = View.VISIBLE
             removeCouponBtn.visibility = View.GONE
             couponEdt.isEnabled = true
@@ -300,6 +306,7 @@ class CheckOutBookingAppointmentFragment :
         }
 
     }
+
     @SuppressLint("SetTextI18n")
     private fun setDoctorData() {
 
@@ -378,6 +385,7 @@ class CheckOutBookingAppointmentFragment :
                 binding.guestRadioBtn.isChecked = true
                 bookType.postValue("guest")
             }
+
             R.id.selfRadioBtn -> {
                 binding.selfRadioBtn.isChecked = true
                 binding.guestRadioBtn.isChecked = false
@@ -402,6 +410,7 @@ class CheckOutBookingAppointmentFragment :
                 selectedGender = "Female"
 
             }
+
             R.id.maleRadioBtn -> {
                 binding.maleRadioBtn.isChecked = true
                 binding.femaleRadioBtn.isChecked = false
@@ -425,7 +434,7 @@ class CheckOutBookingAppointmentFragment :
                 applyCoupon()
             }
 
-         R.id.removeCouponBtn -> {
+            R.id.removeCouponBtn -> {
                 removeAppliedCoupon()
             }
 
@@ -496,6 +505,7 @@ class CheckOutBookingAppointmentFragment :
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Success -> {
                     appLoader.dismiss()
                     if (response.data?.order_id!!.isNotEmpty()) {
@@ -507,6 +517,7 @@ class CheckOutBookingAppointmentFragment :
                         showToast(response.data.message)
                     }
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -541,6 +552,7 @@ class CheckOutBookingAppointmentFragment :
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Success -> {
                     appLoader.dismiss()
                     if (response.data?.order_id!!.isNotEmpty()) {
@@ -549,6 +561,7 @@ class CheckOutBookingAppointmentFragment :
                         showToast(response.data.message)
                     }
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
 
@@ -572,6 +585,7 @@ class CheckOutBookingAppointmentFragment :
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Success -> {
                     appLoader.dismiss()
                     if (response.data?.success!!) {
@@ -581,6 +595,7 @@ class CheckOutBookingAppointmentFragment :
                         showToast(response.data.message)
                     }
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
 
@@ -597,6 +612,7 @@ class CheckOutBookingAppointmentFragment :
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Success -> {
                     appLoader.dismiss()
 
@@ -607,6 +623,7 @@ class CheckOutBookingAppointmentFragment :
                         showToast(response.data.message)
                     }
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                     showToast("something went wrong")
@@ -630,7 +647,8 @@ class CheckOutBookingAppointmentFragment :
         val showDate = dateFormat.format(showDateParsed)
 
         confirmDialog.findViewById<TextView>(R.id.doctorName).text = doctorDetails.doctorName
-        confirmDialog.findViewById<TextView>(R.id.time).text = "($consultationStartTime - $consultationEndTime)"
+        confirmDialog.findViewById<TextView>(R.id.time).text =
+            "($consultationStartTime - $consultationEndTime)"
         confirmDialog.findViewById<TextView>(R.id.date).text = showDate
         confirmDialog.findViewById<TextView>(R.id.patientId).text = session.loginName
 

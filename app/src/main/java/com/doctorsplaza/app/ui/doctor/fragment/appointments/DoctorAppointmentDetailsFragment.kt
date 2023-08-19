@@ -245,7 +245,7 @@ class DoctorAppointmentDetailsFragment : Fragment(R.layout.fragment_doctor_appoi
                             addProperty("status", "calling")
                             addProperty("appointmentId", appointmentId)
                         }
-                        //doctorAppointmentViewModel.callNotify(jsonObject)
+                        doctorAppointmentViewModel.callNotify(jsonObject)
                         startActivity(
                             Intent(
                                 requireActivity(),

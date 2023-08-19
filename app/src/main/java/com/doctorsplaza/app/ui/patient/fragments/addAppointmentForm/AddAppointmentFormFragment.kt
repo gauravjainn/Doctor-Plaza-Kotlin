@@ -690,7 +690,8 @@ class AddAppointmentFormFragment : Fragment(R.layout.fragment_add_appoinmnet_for
             jsonObject.addProperty("status", "pending")
             jsonObject.addProperty("user_id", session.patientId)
             jsonObject.addProperty("user_id", session.patientId)
-            jsonObject.addProperty("showReports", showReports)
+            //jsonObject.addProperty("showReports", showReports)
+            jsonObject.addProperty("is_report", showReports)
             if (selectedPaymentType == "Online") {
                 jsonObjectOnline = jsonObject
                 createOrderId()

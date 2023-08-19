@@ -140,9 +140,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         setBannerView(response.data.data)
                     }
                 }
+
                 is Resource.Loading -> {
                     showLoading()
                 }
+
                 is Resource.Error -> {
                 }
             }
@@ -167,9 +169,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     showLoading()
                 }
+
                 is Resource.Error -> {
                 }
             }
@@ -188,9 +192,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
 
                 }
+
                 is Resource.Error -> {
 
                 }
@@ -216,8 +222,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                 }
+
                 is Resource.Error -> {
                 }
             }
@@ -246,9 +254,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
 
                 }
+
                 is Resource.Error -> {
                     showNoData()
                     showToast(response.message.toString())
@@ -264,19 +274,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         session.isLogin = false
                         logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                        if (response.data?.data?.isEmpty()!!) {
-                            showToast("No Slots Available for Selected Date")
-                            consultationTimeView.text = ""
-                        } else {
-                            timeSlotsList.clear()
-                            timeSlotsList.addAll(response.data.data)
-                            showTimeSlotsDialog()
+                        try {
+                            if (response.data?.data?.isEmpty()!!) {
+                                showToast("No Slots Available for Selected Date")
+                                consultationTimeView.text = ""
+                            } else {
+                                timeSlotsList.clear()
+                                timeSlotsList.addAll(response.data.data)
+                                if (!timeSlotsList.isNullOrEmpty()) {
+                                    showTimeSlotsDialog()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     doctorPlazaLoader.show()
                 }
+
                 is Resource.Error -> {
                     doctorPlazaLoader.dismiss()
                 }
@@ -300,9 +318,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     doctorPlazaLoader.show()
                 }
+
                 is Resource.Error -> {
                     doctorPlazaLoader.dismiss()
                 }
@@ -326,6 +346,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                         }
                     }
                 }
+
                 is Resource.Loading -> {
                     doctorPlazaLoader.show()
                 }
@@ -508,21 +529,25 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
+
             R.id.physioCallNow -> {
                 val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
+
             R.id.orderMedicineCallNow -> {
                 val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
+
             R.id.physioTherapyBg1 -> {
                 val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
                 requireActivity().startActivity(callIntent)
             }
+
             R.id.bookBloodTestBg1 -> {
                 val number = Uri.parse("tel:+918929280230")
                 val callIntent = Intent(Intent.ACTION_DIAL, number)
@@ -589,11 +614,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
 
         consultationTimeView.setOnClickListener {
             if (consultationDateView.text.toString().isNotEmpty()) {
-                if (timeSlotsList.isEmpty()) {
+                if (timeSlotsList.isNullOrEmpty()) {
                     showToast("there are no slots available for selected date")
                 } else {
                     showTimeSlotsDialog()
-
                 }
             }
         }
@@ -658,70 +682,75 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         datePicker.show(childFragmentManager, "DATE_PICKER")
 
         datePicker.addOnPositiveButtonClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val selectConsultationDateFormat =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val showDateSelectedFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-            consultationDate = sdf.format(it)
-            selectedConsultationDate = selectConsultationDateFormat.format(it)
-            val stringDate: Date = sdf.parse(this.consultationDate)
-            val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-            val consultationDay = dayFormat.format(stringDate)
+            try {
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val selectConsultationDateFormat =
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val showDateSelectedFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                consultationDate = sdf.format(it)
+                selectedConsultationDate = selectConsultationDateFormat.format(it)
+                val stringDate: Date = sdf.parse(this.consultationDate)
+                val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+                val consultationDay = dayFormat.format(stringDate)
 
 
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("clinicId", appointmentData.clinic_id._id)
-            jsonObject.addProperty("doctorId", appointmentData.doctor_id._id)
-            jsonObject.addProperty("date", selectedConsultationDate)
-            jsonObject.addProperty("day", consultationDay)
-            appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(
-                appointmentType = selectedAppointmentType,
-                jsonObject
-            )
-            consultationDateView.text = showDateSelectedFormat.format(stringDate).toString()
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("clinicId", appointmentData.clinic_id._id)
+                jsonObject.addProperty("doctorId", appointmentData.doctor_id._id)
+                jsonObject.addProperty("date", selectedConsultationDate)
+                jsonObject.addProperty("day", consultationDay)
+                appointmentViewModel.getRoomSlotDetailsByDrAndClinicId(
+                    appointmentType = selectedAppointmentType,
+                    jsonObject
+                )
+                consultationDateView.text = showDateSelectedFormat.format(stringDate).toString()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     private fun showTimeSlotsDialog() {
-        val timeSlotsDialog = Dialog(requireActivity())
-        timeSlotsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        timeSlotsDialog.setCancelable(false)
-        timeSlotsDialog.setContentView(R.layout.time_slots_dialogue)
-        timeSlotsDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        try {
+            val timeSlotsDialog = Dialog(requireActivity())
+            timeSlotsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            timeSlotsDialog.setCancelable(false)
+            timeSlotsDialog.setContentView(R.layout.time_slots_dialogue)
+            timeSlotsDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
-            timeSlotsDialog.dismiss()
-        }
-
-        timeSlotsDialog.findViewById<View>(R.id.submitBtn).setOnClickListener {
-            if (timeSlotSelected) {
-                timeSlotsDialog.dismiss()
-            } else {
-                showToast("Please Select Any One Time Slot")
+            timeSlotsDialog.findViewById<View>(R.id.submitBtn).setOnClickListener {
+                if (timeSlotSelected) {
+                    timeSlotsDialog.dismiss()
+                } else {
+                    showToast("Please Select Any One Time Slot")
+                }
             }
-        }
 
-        timeSlotsDialog.findViewById<View>(R.id.cancelBtn).setOnClickListener {
-            consultationTimeView.text = ""
-        }
+            timeSlotsDialog.findViewById<View>(R.id.dialogCancelBtn).setOnClickListener {
+                consultationTimeView.text = ""
+                timeSlotsDialog.dismiss()
+            }
 
-        val timeSlotsRv = timeSlotsDialog.findViewById<RecyclerView>(R.id.timeSlotsRv)
-        bookTimeAdapter.differ.submitList(timeSlotsList)
-        timeSlotsRv.apply {
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = bookTimeAdapter
-        }
-        timeSlotsDialog.show()
+            val timeSlotsRv = timeSlotsDialog.findViewById<RecyclerView>(R.id.timeSlotsRv)
+            bookTimeAdapter.differ.submitList(timeSlotsList)
+            timeSlotsRv.apply {
+                setHasFixedSize(true)
+                layoutManager = GridLayoutManager(requireContext(), 2)
+                adapter = bookTimeAdapter
+            }
+            timeSlotsDialog.show()
 
-        val displayMetrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val displayWidth = displayMetrics.widthPixels
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(timeSlotsDialog.window!!.attributes)
-        val dialogWindowWidth = (displayWidth * 0.9f).toInt()
-        layoutParams.width = dialogWindowWidth
-        timeSlotsDialog.window!!.attributes = layoutParams
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val displayWidth = displayMetrics.widthPixels
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(timeSlotsDialog.window!!.attributes)
+            val dialogWindowWidth = (displayWidth * 0.9f).toInt()
+            layoutParams.width = dialogWindowWidth
+            timeSlotsDialog.window!!.attributes = layoutParams
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun showCancelWarning(appointmentId: String) {

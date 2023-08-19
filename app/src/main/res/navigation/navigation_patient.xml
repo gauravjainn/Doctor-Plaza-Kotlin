@@ -49,7 +49,7 @@
         android:id="@+id/doctorDetailsFragment"
         android:name="com.doctorsplaza.app.ui.patient.fragments.doctorDetails.DoctorDetailsFragment"
         android:label="fragment_doctor_details"
-        tools:layout="@layout/fragment_doctor_details" >
+        tools:layout="@layout/fragment_doctor_details">
         <action
             android:id="@+id/action_doctorDetailsFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -60,6 +60,12 @@
         android:name="com.doctorsplaza.app.ui.patient.fragments.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/prescriptionFragment2"
+        android:name="com.doctorsplaza.app.ui.patient.prescription.PrescriptionFragment"
+        android:label="fragment_prescription"
+        tools:layout="@layout/fragment_prescription" />
 
     <fragment
         android:id="@+id/editProfileFragment"

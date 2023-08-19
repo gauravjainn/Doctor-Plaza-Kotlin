@@ -137,6 +137,7 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
     private fun setDoctorProfile(data: DoctorData) {
         with(binding) {
             session.loginImage = data.profile_picture
+//            Glide.with(requireContext()).load(data.profile_picture).into(userImage)
             Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
                 .load(data.profile_picture).into(userImage)
             name.text = data.doctorName
@@ -179,6 +180,7 @@ class DoctorProfileFragment : Fragment(R.layout.fragment_doctor_profile), View.O
     private fun setProfileImage() {
         Glide.with(requireContext()).applyDefaultRequestOptions(doctorRequestOption())
             .load(session.loginImage).into(binding.userImage)
+//        Glide.with(requireContext()).load(session.loginImage).into(binding.userImage)
     }
 
     override fun onResume() {

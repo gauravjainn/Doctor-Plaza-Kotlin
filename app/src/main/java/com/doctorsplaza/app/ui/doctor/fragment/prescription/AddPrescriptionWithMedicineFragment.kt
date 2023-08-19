@@ -2,6 +2,7 @@ package com.doctorsplaza.app.ui.doctor.fragment.prescription
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +21,11 @@ import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.Medicine
 import com.doctorsplaza.app.ui.doctor.fragment.prescription.model.MedicineModel
 import com.doctorsplaza.app.utils.*
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,16 +63,14 @@ class AddPrescriptionWithMedicineFragment :
     private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         if (currentView == null) {
             currentView =
                 inflater.inflate(R.layout.fragment_add_prescription_with_medicine, container, false)
             binding = FragmentAddPrescriptionWithMedicineBinding.bind(currentView!!)
             init()
-//            setObserver()
+            //setObserver()
             setOnClickListener()
         }
         return currentView!!
@@ -112,21 +113,22 @@ class AddPrescriptionWithMedicineFragment :
 
     private fun setObserver() {
 
-        if(addMedicine?.value!=null){
+        if (addMedicine?.value != null) {
             if (editMedicinePosition != null) {
                 medicines.removeAt(editMedicinePosition!!)
             }
+            Log.e("TAG", "setObserver medicineData ${addMedicine.value!!}")
             medicines.addAll(listOf(addMedicine.value!!))
             setMedicineRv()
         }
 
-       /* addMedicine.observe(requireActivity()) {
-            if (editMedicinePosition != null) {
-                medicines.removeAt(editMedicinePosition!!)
-            }
-            medicines.addAll(listOf(it))
-            setMedicineRv()
-        }*/
+        /* addMedicine.observe(requireActivity()) {
+             if (editMedicinePosition != null) {
+                 medicines.removeAt(editMedicinePosition!!)
+             }
+             medicines.addAll(listOf(it))
+             setMedicineRv()
+         }*/
 
         doctorAppointmentViewModel.doctorAppointmentPrescription.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -135,17 +137,20 @@ class AddPrescriptionWithMedicineFragment :
                     appLoader.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                    if (response.data?.code == 200) {
-                        setPrescriptionData(response.data.data)
-                    } else {
-                        showToast(response.data?.message.toString())
+                        if (response.data?.code == 200) {
+                            setPrescriptionData(response.data.data)
+                        } else {
+                            showToast(response.data?.message.toString())
+                        }
                     }
-                }}
+                }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -159,18 +164,24 @@ class AddPrescriptionWithMedicineFragment :
                     appLoader.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                    if (response.data?.success!!) {
-                        val bundle = Bundle().apply {
-                            putString("appointId",appointmentId)
+                        if (response.data?.success!!) {
+                            val bundle = Bundle().apply {
+                                putString("appointId", appointmentId)
+                            }
+                            findNavController().navigate(
+                                R.id.action_addPrescriptionWithMedicineFragment_to_doctorAppointmentDetailsFragment,
+                                bundle
+                            )
                         }
-                        findNavController().navigate(R.id.action_addPrescriptionWithMedicineFragment_to_doctorAppointmentDetailsFragment,bundle)
                     }
-                }}
+                }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -184,27 +195,30 @@ class AddPrescriptionWithMedicineFragment :
                     appLoader.dismiss()
                     if (response.data?.status == 401) {
                         session.isLogin = false
-                        logOutUnAuthorized(requireActivity(),response.data.message)
+                        logOutUnAuthorized(requireActivity(), response.data.message)
                     } else {
-                    if (response.data?.code == 200) {
-                        if (response.data.perscription.isNotEmpty()) {
-                            val bundle = Bundle().apply {
-                                putString("prescription", response.data.perscription)
-                            }
-                            if (from == "patient") {
-                                findNavController().navigate(R.id.prescriptionFragment, bundle)
-                            } else {
-                                findNavController().navigate(R.id.prescriptionFragment2, bundle)
+                        if (response.data?.code == 200) {
+                            if (response.data.perscription.isNotEmpty()) {
+                                val bundle = Bundle().apply {
+                                    putString("prescription", response.data.perscription)
+                                }
+                                if (from == "patient") {
+                                    findNavController().navigate(R.id.prescriptionFragment, bundle)
+                                } else {
+                                    findNavController().navigate(R.id.prescriptionFragment2, bundle)
 
+                                }
+                            } else {
+                                showToast("There is no pdf available")
                             }
-                        } else {
-                            showToast("There is no pdf available")
                         }
-                    }}
+                    }
                 }
+
                 is Resource.Loading -> {
                     appLoader.show()
                 }
+
                 is Resource.Error -> {
                     appLoader.dismiss()
                 }
@@ -218,6 +232,7 @@ class AddPrescriptionWithMedicineFragment :
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setMedicineRv() {
+        Log.e("TAG", "medicines $medicines")
         medicineAdapter.differ.submitList(medicines)
         binding.medicineRv.apply {
             setHasFixedSize(true)
@@ -302,24 +317,72 @@ class AddPrescriptionWithMedicineFragment :
             e.printStackTrace()
         }
 
+        val params = JsonObject().apply {
+            addProperty("ailmentDiagnosed", alimentDiagnosed)
+            addProperty("appointmentId", appointmentId.toString())
+            addProperty("complain", mainComplaint)
+            addProperty("date", currentDate)
+            addProperty("disease", disease)
+            addProperty("instructions", instructions)
+            addProperty("patientNote", prescriptionNote)
+            addProperty("suggestion", "")
+            addProperty("isExpanded", false)
+            add("medicines", JsonArray().apply {
+                for (medicine in medicines) {
+                    add(JsonObject().apply {
+                        addProperty("medicineName", medicine.medicineName)
+                        addProperty("medicineType", medicine.medicineType)
+                        addProperty("medicineInstruction", medicine.medicineInstruction)
+                        addProperty("days", medicine.days)
+                        addProperty("isExpanded", medicine.isExpanded)
+                        add("time", JsonArray().apply {
+                            add(JsonObject().apply {
+                                addProperty("beforeBreakfast", medicine.time[0].beforeBreakfast)
+                            })
+                            add(JsonObject().apply {
+                                addProperty("beforeLunch", medicine.time[1].beforeLunch)
+                            })
+                            add(JsonObject().apply {
+                                addProperty("beforeDinner", medicine.time[2].beforeDinner)
+                            })
+                            add(JsonObject().apply {
+                                addProperty("afterBreakfast", medicine.time[3].afterBreakfast)
+                            })
+                            add(JsonObject().apply {
+                                addProperty("afterLunch", medicine.time[4].afterLunch)
+                            })
+                            add(JsonObject().apply {
+                                addProperty("afterDinner", medicine.time[5].afterDinner)
+                            })
+                        })
+                    })
+                }
+            })
+        }
+
         when {
             disease.isEmpty() -> {
                 showToast("please enter disease")
             }
+
             mainComplaint.isEmpty() -> {
                 showToast("please enter main complaint")
             }
+
             alimentDiagnosed.isEmpty() -> {
                 showToast("please enter aliment diagnosed")
             }
+
             instructions.isEmpty() -> {
                 showToast("please enter instructions")
             }
+
             prescriptionNote.isEmpty() -> {
                 showToast("please enter prescription note")
             }
+
             else -> {
-                addPrescriptionViewModel.addPrescription(jsonObject = prescriptionJson!!)
+                addPrescriptionViewModel.addPrescription(jsonObject = params)
             }
         }
     }
@@ -333,6 +396,7 @@ class AddPrescriptionWithMedicineFragment :
             R.id.backArrow -> {
                 findNavController().popBackStack()
             }
+
             R.id.saveBtn -> {
                 validateAndAddPrescription()
             }
